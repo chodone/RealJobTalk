@@ -1,1 +1,0 @@
-C205 frontend 시작!
