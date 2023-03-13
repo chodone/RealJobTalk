@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active:
+  devtools:
+    livereload:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://j8c205.p.ssafy.io/sh_test?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    username: ssafyc205
+    password: ssafyc205!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: update
+  mvc:
+    pathmatch:
+      matching-strategy : ant_path_matcher
+
+server:
+  error:
+    include-exc9eption: false      # Response 에 Exception 을 표시할지
+    include-message: always       # Response 에 Exception Message 를 표시할지 (never | always | on_param)
+    include-stacktrace: on_param  # Response 에 Stack Trace 를 표시할지 (never | always | on_param) on_trace_params 은 deprecated
+    whitelabel.enabled: true
+
