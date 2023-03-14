@@ -6,7 +6,7 @@ pipeline
 	}
 	environment {
 		PROJECT = 'deco'
-		APP_API = 'module-api'
+		APP_API = 'datecourse'
 	}
 	stages {
 		// stage('environment') {
@@ -30,7 +30,8 @@ pipeline
 				echo 'Build Start "${APP_API}"'
 				sh 'chmod +x backend/gradlew'
 				sh '''
-					backend/gradlew -p backend/${APP_API} build -x test
+					backend/${APP_API}/gradlew -p backend/${APP_API} build -x test
+					docker build -t back-api-img backend/${APP_API} --no-cache
 				'''
 				echo 'Build End "${APP_API}"'
 			}
@@ -41,7 +42,7 @@ pipeline
 			}
 			steps {
 				echo 'Build Start Front App'
-				sh 'docker build -t app-vue frontend/. --no-cache'
+				sh 'docker build -t app-next frontend/. --no-cache'
 				echo 'Build End Front App'
 			}
 		}
@@ -53,8 +54,7 @@ pipeline
 			}
 			steps {
 				echo 'Deploy Start "${APP_API}"'
-				sh 'docker-compose -f backend/${APP_API}/docker-compose.yml build --no-cache'
-				sh 'docker-compose -f backend/${APP_API}/docker-compose.yml up -d'
+				sh 'docker run -d -p 8082:8082 --name back-api back-api-img '
 				echo 'Deploy End "${APP_API}"'
 			}
 		}
@@ -65,9 +65,7 @@ pipeline
 			steps {
 				echo 'Deploy Start Front App'
 				sh '''
-					docker stop front-app
-					docker rm front-app
-					docker run -d -p 3000:8083 --name front-app app-vue
+					docker run -d -p 3000:3000 --name front-app app-next
 				'''
 				echo 'Deploy End Front App'
 			}
