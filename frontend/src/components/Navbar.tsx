@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
-import {  Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-
+import {  Bars3Icon, XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Router from "next/router";
 
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
+  const route = Router
 
   return (
     //   navbar goes here
@@ -35,21 +36,21 @@ const Navbar = () => {
             {/* primary nav */}
             <div className="hidden md:flex items-center space-x-1">
               <a
-                href="/features"
+                href="/spot"
                 className="py-5 px-3 text-gray-700 hover:text-gray-900"
               >
-                Features
+                spot
               </a>
               <a
-                href="#"
+                href="/transportation"
                 className="py-5 px-3 text-gray-700 hover:text-gray-900"
               >
-                Pricing
+                Transportation
               </a>
             </div>
           </div>
 
-          {/* secondary nav */}
+          {/* mobile nav */}
           <div className="hidden md:flex items-center space-x-1">
             <a href="#" className="py-5 px-3">
               Login
@@ -68,7 +69,7 @@ const Navbar = () => {
               {menuToggle ? (
                 <XMarkIcon className="w-6 h-6" />
               ) : (
-                <Bars3Icon className="w-6 h-6" />
+                <MagnifyingGlassIcon className="w-6 h-6" />
               )}
             </button>
           </div>
