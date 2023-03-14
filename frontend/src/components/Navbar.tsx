@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
-import {  Bars3Icon, XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Router from "next/router";
 
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
   const route = Router
+  const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
 
   return (
     //   navbar goes here
@@ -52,7 +53,7 @@ const Navbar = () => {
 
           {/* mobile nav */}
           <div className="hidden md:flex items-center space-x-1">
-            <a href="#" className="py-5 px-3">
+            <a href={KAKAO_AUTH_URI} className="py-5 px-3">
               Login
             </a>
             <a
@@ -87,7 +88,6 @@ const Navbar = () => {
         <a href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">
           Pricing
         </a>
-
         <a href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">
           Login
         </a>
