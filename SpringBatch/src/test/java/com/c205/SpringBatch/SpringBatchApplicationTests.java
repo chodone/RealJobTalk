@@ -1,10 +1,10 @@
-package com.ssafy.datecourse;
+package com.c205.SpringBatch;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DatecourseApplicationTests {
+class SpringBatchApplicationTests {
 
 	@Test
 	void contextLoads() {
