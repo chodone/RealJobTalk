@@ -2,14 +2,16 @@ import Head from "next/head";
 import {useState,useEffect} from 'react'
 import Company from '../components/Company'
 
+export interface dbObject {
+  company: string;
+  url: string;
+}
+
 export default function Home() {
-  type dbObject = {
-    company: string;
-    url: string;
-  }
 
 
-  const [companies,setcompanies] = useState<dbObject>()
+
+  const [companies, setcompanies] = useState<dbObject[]>([]);
 
   useEffect(() => {
     getvalue()
@@ -22,10 +24,6 @@ export default function Home() {
     setcompanies(data)
   }
 
-  type dbProps = {
-    companies: 
-  }
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>
@@ -33,8 +31,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-        {companies}
+      <div className="grid grid-cols-4 gap-3">
+        {companies.map((company, idx) => <Company company={company} key={idx} />)}
       </div>
     </div>
   );

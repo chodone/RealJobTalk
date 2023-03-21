@@ -1,10 +1,17 @@
 import React from 'react'
+import Image from 'next/image';
 
-const Company = () => {
+export interface dbObject {
+  company: string;
+  url: string;
+}
+
+const Company = ({ company }: { company: dbObject }) => {
+  const imgurl = company.url
   return (
-    <div className='grid grid-flow-col auto-cols-'>
-      <img src="" alt="" />
-      <div>삼성전자</div>
+    <div>
+      <Image src={imgurl} alt=""  width={200} height={200} />
+      <div>{company.company}</div>
     </div>
   )
 }

@@ -6,7 +6,9 @@ import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue} from 'recoi
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </RecoilRoot>
   );
 }
