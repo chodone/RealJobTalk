@@ -20,7 +20,7 @@ const Navbar = () => {
           <div className="flex space-x-4">
             <div>
               <a href="/" className="flex items-center py-5 px-2">
-                <img  className="h-7" src="images/logo.png" alt="" />
+                <img className="h-7" src="images/logo.png" alt="" />
               </a>
             </div>
 
