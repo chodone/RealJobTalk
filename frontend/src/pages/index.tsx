@@ -9,7 +9,7 @@ export default function Home() {
       </Head>
 
       <h2>
-        메인페이지
+        메인페이지 11
 
       </h2>
     </div>
