@@ -1,4 +1,7 @@
+import Image from "next/image";
 import React, { useState } from "react";
+import logo from "@images/logo.png"
+
 
 import {
   Bars3Icon,
@@ -11,7 +14,8 @@ const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
   const route = Router;
   const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
-
+  const MainLogo = logo
+  
   return (
     //   navbar goes here
     <nav>
@@ -20,7 +24,7 @@ const Navbar = () => {
           <div className="flex space-x-4">
             <div>
               <a href="/" className="flex items-center py-5 px-2">
-                <img  className="h-7" src="images/logo.png" alt="" />
+                <Image  className="h-7 w-11" src={MainLogo} alt="" />
               </a>
             </div>
 
