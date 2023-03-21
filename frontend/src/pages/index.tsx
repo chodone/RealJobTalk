@@ -9,7 +9,8 @@ export default function Home() {
       </Head>
 
       <h2>
-        main page
+        메인페이지
+
       </h2>
     </div>
   );
