@@ -1,0 +1,65 @@
+spring:
+  profiles:
+    active:
+#  security:
+#    user:
+#      name: ssafy
+#      password: ssafy
+  devtools:
+    livereload:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://j8c205.p.ssafy.io/sh_test?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    username: ssafyc205
+    password: ssafyc205!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: opinmails
+#    password: jaoprdilxqwmptlz
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: update
+#
+#jwt:
+#  header: Authorization
+#  algorithm: "HS512"
+#  token: Bearer
+#  #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+#  #echo 'spring-boot-security-jwt-tutorial-opensourceCommunity-spring-boot-security-jwt'|base64
+#  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLW9wZW5zb3VyY2VDb21tdW5pdHktc3ByaW5nLWJvb3Qtc2VjdXJpdHktand0
+#  access-token-validity-in-seconds: 600000
+#  refresh-token-validity-in-seconds: 1200000
+
+#cloud:
+#  aws:
+#    credentials:
+#      accessKey: AKIA5XUACFAWPCASMRX2
+#      secretKey: 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
+#    s3:
+#      bucket: pangyo
+#    region:
+#      static: ap-northeast-2
+#    stack:
+#      auto: false
+
+server:
+  port: 8082
+
