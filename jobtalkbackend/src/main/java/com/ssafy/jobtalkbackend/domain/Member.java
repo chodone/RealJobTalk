@@ -21,14 +21,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
+
 	@Id
 	@GeneratedValue
 	@Column(name = "MEMBER_ID")
 	private Long id;
+
 	@NotNull
 	private String email;
+
 	@Column(name = "PASSWORD")
 	private String password;
+
 	@NotNull
 	private String nickname;
 	private String oauth;

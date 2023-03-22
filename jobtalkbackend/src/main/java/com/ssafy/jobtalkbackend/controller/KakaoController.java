@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Slf4j
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/kakao")
 public class KakaoController {
