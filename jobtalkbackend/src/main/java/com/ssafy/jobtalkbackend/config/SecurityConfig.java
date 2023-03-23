@@ -40,10 +40,7 @@ public class SecurityConfig {
         http
                 .csrf().disable();
 
-        http
-                .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
-                .anyRequest().authenticated();
+        http.apply(new JwtSecurityConfig(jwtTokenProvider));
 
         http
                 .sessionManagement()
@@ -53,8 +50,11 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint);
-
-        http.apply(new JwtSecurityConfig(jwtTokenProvider));
+        http
+                .authorizeRequests()
+                .antMatchers("/api/member/test").hasRole("USER")
+                .antMatchers("/api/**").permitAll()
+                .anyRequest().authenticated();
 
         return http.build();
     }

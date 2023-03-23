@@ -1,18 +1,22 @@
 package com.ssafy.jobtalkbackend.controller;
 
+import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequestDto;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequestDto;
 import com.ssafy.jobtalkbackend.dto.response.TokenDto;
 import com.ssafy.jobtalkbackend.repository.MemberRepository;
 import com.ssafy.jobtalkbackend.service.MemberService;
+import exception.member.MemberRuntimeException;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Request;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/member")
@@ -31,4 +35,21 @@ public class MemberController {
     public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginRequestDto request){
         return memberService.login(request);
     }
+
+    @PostMapping("/email/check")
+    public Boolean checkEmail(@RequestBody Map<String, String> email) {
+        return memberService.checkEmail(email.get("email"));
+    }
+
+    @PostMapping("/nickname/check")
+    public Boolean checkNickname(@RequestBody Map<String, String> nickname) {
+        return memberService.checkNickname(nickname.get("nickname"));
+    }
+
+    @PutMapping("/nickname/change")
+    public ResponseEntity<?> changeNickname(@RequestBody Map<String, String> nickname,
+                                            @AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(memberService.modifyNickname(nickname.get("nickname"), user), HttpStatus.OK);
+    }
+
 }

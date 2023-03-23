@@ -2,6 +2,7 @@ package com.ssafy.jobtalkbackend.service;
 
 import antlr.Token;
 import com.ssafy.jobtalkbackend.domain.Member;
+import com.ssafy.jobtalkbackend.domain.Role;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequestDto;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequestDto;
 import com.ssafy.jobtalkbackend.dto.response.TokenDto;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname())
+                .role(Role.ROLE_USER)
                 .build();
 
         memberRepository.save(member);
@@ -68,6 +71,31 @@ public class MemberServiceImpl implements MemberService {
         TokenDto tokenDto = jwtTokenProvider.createToken(authentication);
 
         return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+    }
+
+    @Override
+    public Boolean checkEmail(String email) {
+        if (memberRepository.findByEmail(email).isPresent()) {
+            throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_EXIST_EMAIL_EXCEPTION);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean checkNickname(String nickname) {
+        if (memberRepository.findByNickname(nickname).isPresent()) {
+            throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_EXIST_NICKNAME_EXCEPTION);
+        }
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public String modifyNickname(String nickname, User user) {
+        Member member = memberRepository.findByEmail(String.valueOf(user.getUsername())).orElse(null);
+        checkNickname(nickname);
+        member.modifyNickname(nickname);
+        return nickname;
 
     }
 }

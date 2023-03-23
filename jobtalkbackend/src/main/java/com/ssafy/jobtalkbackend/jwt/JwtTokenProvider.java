@@ -77,7 +77,7 @@ public class JwtTokenProvider {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
-        return null;
+        return "토큰이 비어있어요";
     }
 
     public boolean validateToken(String token) {

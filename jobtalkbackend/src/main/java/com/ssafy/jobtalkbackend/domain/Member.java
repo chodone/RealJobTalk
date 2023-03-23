@@ -35,5 +35,14 @@ public class Member {
 
 	@NotNull
 	private String nickname;
+
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
 	private String oauth;
+
+	public void modifyNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 }
