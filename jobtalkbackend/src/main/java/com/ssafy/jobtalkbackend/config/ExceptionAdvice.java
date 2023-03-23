@@ -1,8 +1,8 @@
 package com.ssafy.jobtalkbackend.config;
 
-import exception.ExceptionResponseEntity;
-import exception.auth.AuthRuntimeException;
-import exception.member.MemberRuntimeException;
+import com.ssafy.jobtalkbackend.exception.ExceptionResponseEntity;
+import com.ssafy.jobtalkbackend.exception.auth.AuthRuntimeException;
+import com.ssafy.jobtalkbackend.exception.member.MemberRuntimeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

@@ -1,14 +1,11 @@
 package com.ssafy.jobtalkbackend.controller;
 
-import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequestDto;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequestDto;
 import com.ssafy.jobtalkbackend.dto.response.TokenDto;
 import com.ssafy.jobtalkbackend.repository.MemberRepository;
 import com.ssafy.jobtalkbackend.service.MemberService;
-import exception.member.MemberRuntimeException;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Request;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +31,10 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginRequestDto request){
         return memberService.login(request);
+    }
+    @GetMapping("/test")
+    public String test() {
+        return "hello";
     }
 
     @PostMapping("/email/check")

@@ -2,8 +2,8 @@ package com.ssafy.jobtalkbackend.jwt;
 
 import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.repository.MemberRepository;
-import exception.member.MemberExceptionEnum;
-import exception.member.MemberRuntimeException;
+import com.ssafy.jobtalkbackend.exception.member.MemberExceptionEnum;
+import com.ssafy.jobtalkbackend.exception.member.MemberRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;

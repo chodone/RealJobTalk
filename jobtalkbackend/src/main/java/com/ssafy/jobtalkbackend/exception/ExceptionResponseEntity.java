@@ -1,4 +1,4 @@
-package exception;
+package com.ssafy.jobtalkbackend.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

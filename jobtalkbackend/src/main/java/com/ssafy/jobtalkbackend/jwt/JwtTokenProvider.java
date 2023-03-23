@@ -1,8 +1,8 @@
 package com.ssafy.jobtalkbackend.jwt;
 
 import com.ssafy.jobtalkbackend.dto.response.TokenDto;
-import exception.auth.AuthExceptionEnum;
-import exception.auth.AuthRuntimeException;
+import com.ssafy.jobtalkbackend.exception.auth.AuthExceptionEnum;
+import com.ssafy.jobtalkbackend.exception.auth.AuthRuntimeException;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +77,7 @@ public class JwtTokenProvider {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
-        return "토큰이 비어있어요";
+        return null;
     }
 
     public boolean validateToken(String token) {

@@ -1,6 +1,5 @@
-package exception.auth;
+package com.ssafy.jobtalkbackend.exception.auth;
 
-import exception.member.MemberExceptionEnum;
 import lombok.Getter;
 
 @Getter

@@ -1,4 +1,4 @@
-package exception.member;
+package com.ssafy.jobtalkbackend.exception.member;
 
 import lombok.Getter;
 

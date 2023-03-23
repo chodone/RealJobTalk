@@ -1,4 +1,4 @@
-package exception.auth;
+package com.ssafy.jobtalkbackend.exception.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

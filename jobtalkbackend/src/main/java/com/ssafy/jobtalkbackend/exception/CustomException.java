@@ -1,4 +1,4 @@
-package exception;
+package com.ssafy.jobtalkbackend.exception;
 
 import org.springframework.http.HttpStatus;
 
