@@ -5,7 +5,7 @@ pipeline
 		gradle 'gradle 7.6.1'
 	}
 	environment {
-		PROJECT = 'deco'
+		PROJECT = 'jobtalk'
 		APP_API = 'datecourse'
 	}
 	stages {
