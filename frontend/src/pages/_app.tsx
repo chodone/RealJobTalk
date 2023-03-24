@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import Layout from "@components/Layout"
 import type { AppProps } from 'next/app'
-import { SessionProvider } from "next-auth/react"
+import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue} from 'recoil';
 
 
 function MyApp({
@@ -9,11 +9,11 @@ function MyApp({
   pageProps : { session, ...pageProps },
 }: AppProps) {
   return (
-    <SessionProvider session={session} refetchInterval={5 * 60}>
+    <RecoilRoot>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </SessionProvider>
+    </RecoilRoot>
   );
 }
 
