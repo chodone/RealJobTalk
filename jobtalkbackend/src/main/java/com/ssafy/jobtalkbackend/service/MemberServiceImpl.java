@@ -4,6 +4,7 @@ import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.domain.Role;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequestDto;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequestDto;
+import com.ssafy.jobtalkbackend.dto.response.KakaoTokenDto;
 import com.ssafy.jobtalkbackend.dto.response.TokenDto;
 import com.ssafy.jobtalkbackend.jwt.JwtTokenProvider;
 import com.ssafy.jobtalkbackend.repository.MemberRepository;
@@ -95,6 +96,7 @@ public class MemberServiceImpl implements MemberService {
         checkNickname(nickname);
         member.modifyNickname(nickname);
         return nickname;
-
     }
+
+
 }
