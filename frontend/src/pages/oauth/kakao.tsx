@@ -5,11 +5,13 @@ import axios from "axios";
 
 export default function Home() {
     const router = useRouter();
-    const code = (router.asPath.split('?')[1] || '').split('=')[1];
 
     useEffect(() => {
-        axios.post(`http://localhost:8080/api/kakao/callback`, {
-            code,
+        const code = (router.asPath.split('?')[1] || '').split('=')[1];
+        console.log(code)
+
+        axios.post(`http://localhost:8082/api/kakao/callback`, {
+            code
         })
             .then((res) => {
                 console.log(res)
