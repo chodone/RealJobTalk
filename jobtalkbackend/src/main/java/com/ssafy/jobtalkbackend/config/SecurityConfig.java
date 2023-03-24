@@ -41,7 +41,7 @@ public class SecurityConfig {
         http
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/api/member/test").hasRole("USER")
+//                .antMatchers("/api/member/test").hasRole("USER")
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/kakao/callback").permitAll()
                 .anyRequest().authenticated();

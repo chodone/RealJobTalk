@@ -12,6 +12,7 @@ public class KakaoController {
     @PostMapping("/callback")
     public Boolean test(@RequestBody Map<String, String> code) {
         log.info(code.get("code"));
+
         return true;
     }
 }
