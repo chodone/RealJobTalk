@@ -3,7 +3,7 @@ package com.ssafy.jobtalkbackend.dto.request;
 import lombok.Getter;
 
 @Getter
-public class LoginRequestDto {
+public class LoginRequest {
 
     private String email;
 

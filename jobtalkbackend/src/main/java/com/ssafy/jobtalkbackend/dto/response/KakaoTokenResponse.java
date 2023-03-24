@@ -1,9 +1,11 @@
 package com.ssafy.jobtalkbackend.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class KakaoTokenDto {
+@Builder
+public class KakaoTokenResponse {
 
     private String accessToken;
 

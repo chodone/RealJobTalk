@@ -2,10 +2,9 @@ package com.ssafy.jobtalkbackend.service;
 
 import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.domain.Role;
-import com.ssafy.jobtalkbackend.dto.request.LoginRequestDto;
-import com.ssafy.jobtalkbackend.dto.request.SignUpRequestDto;
-import com.ssafy.jobtalkbackend.dto.response.KakaoTokenDto;
-import com.ssafy.jobtalkbackend.dto.response.TokenDto;
+import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
+import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
+import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
 import com.ssafy.jobtalkbackend.jwt.JwtTokenProvider;
 import com.ssafy.jobtalkbackend.repository.MemberRepository;
 import com.ssafy.jobtalkbackend.exception.member.MemberExceptionEnum;
@@ -35,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public Boolean signUp(SignUpRequestDto request){
+    public Boolean signUp(SignUpRequest request){
         if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_EXIST_EMAIL_EXCEPTION);
         }
@@ -58,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public ResponseEntity<TokenDto> login(LoginRequestDto request) {
+    public ResponseEntity<TokenResponse> login(LoginRequest request) {
 
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
@@ -68,9 +67,9 @@ public class MemberServiceImpl implements MemberService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        TokenDto tokenDto = jwtTokenProvider.createToken(authentication);
+        TokenResponse tokenResponse = jwtTokenProvider.createToken(authentication);
 
-        return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+        return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
     }
 
     @Override

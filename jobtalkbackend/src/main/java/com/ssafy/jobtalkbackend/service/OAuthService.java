@@ -1,8 +1,8 @@
 package com.ssafy.jobtalkbackend.service;
 
-import com.ssafy.jobtalkbackend.dto.response.KakaoTokenDto;
+import com.ssafy.jobtalkbackend.dto.response.KakaoTokenResponse;
 
 public interface OAuthService {
-    public KakaoTokenDto getKakaoToken(String code);
+    public KakaoTokenResponse getKakaoToken(String code);
 
 }
