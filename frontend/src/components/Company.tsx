@@ -9,8 +9,8 @@ export interface dbObject {
 const Company = ({ company }: { company: dbObject }) => {
   const imgurl = company.url
   return (
-    <div>
-      <Image src={imgurl} alt=""  width={200} height={200} />
+    <div >
+      <Image  src={imgurl} alt=""  width={200} height={200} />
       <div>{company.company}</div>
     </div>
   )
