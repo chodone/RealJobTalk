@@ -1,6 +1,8 @@
 package com.ssafy.jobtalkbackend.controller;
 
 import com.ssafy.jobtalkbackend.dto.response.KakaoTokenResponse;
+import com.ssafy.jobtalkbackend.dto.response.KakaoUserInfoResponse;
+import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
 import com.ssafy.jobtalkbackend.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +21,9 @@ public class OAuthController {
     private final OAuthService oAuthService;
 
     @PostMapping("/callback")
-    public ResponseEntity<?> getKakaoToken(@RequestBody Map<String, String> code) {
+    public ResponseEntity<TokenResponse> getKakao(@RequestBody Map<String, String> code) {
         KakaoTokenResponse kakaoTokenResponse = oAuthService.getKakaoToken(code.get("code"));
-
-        System.out.println(kakaoTokenResponse.getAccessToken());
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        KakaoUserInfoResponse kakaoUserInfoResponse = oAuthService.getKakaoUser(kakaoTokenResponse.getAccessToken());
+        return oAuthService.joinOrLogin(kakaoUserInfoResponse);
     }
 }
