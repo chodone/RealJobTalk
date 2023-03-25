@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
@@ -46,11 +47,16 @@ public class OAuthServiceImpl implements OAuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Value("${kakao.client-id}")
     private String API_KEY;
 
     @Value("${kakao.redirect-uri}")
     private String REDIRECT_URI;
+
+    @Value("{kakao.jobtalk-key}")
+    private String JOBTALK_KEY;
 
     private String tokenReqURL = "https://kauth.kakao.com/oauth/token";
 
@@ -65,6 +71,8 @@ public class OAuthServiceImpl implements OAuthService {
      * */
     @Override
     public KakaoTokenResponse getKakaoToken(String code) {
+        System.out.println("들어왔다!!!!!!!!!!");
+
         try {
             URL url = new URL(tokenReqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -85,7 +93,7 @@ public class OAuthServiceImpl implements OAuthService {
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            log.info("토큰 가져올 때 responseCode : ");
+            log.info("토큰 가져올 때 responseCode : " + responseCode);
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -161,37 +169,44 @@ public class OAuthServiceImpl implements OAuthService {
                     .build();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new AuthRuntimeException(AuthExceptionEnum.AUTH_KAKAO_ACCESSTOKEN_FAILED);
         }
-        return null;
+//        return null;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ResponseEntity<TokenResponse> joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse) {
         Member joinMember = memberRepository.findByOauthId(kakaoUserInfoResponse.getId()).orElse(null);
         if (joinMember == null) {
             Member member = Member
                     .builder()
                     .email(kakaoUserInfoResponse.getEmail())
-                    .password("카카오 로그인")
+                    .password(passwordEncoder.encode(JOBTALK_KEY))
                     .nickname(kakaoUserInfoResponse.getNickname())
                     .role(Role.ROLE_USER)
                     .oauthId(kakaoUserInfoResponse.getId())
                     .build();
             memberRepository.save(member);
+            System.out.println("👌");
+            System.out.println(member.getEmail());
+            System.out.println(member.getPassword());
 
+            System.out.println("👍");
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword())
+                    new UsernamePasswordAuthenticationToken(member.getEmail(), JOBTALK_KEY)
             );
+            System.out.println("🙌");
             TokenResponse tokenResponse = jwtTokenProvider.createToken(authentication);
+
+            System.out.println(tokenResponse.getAccessToken());
 
             return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
         } else {
             LoginRequest loginRequest = LoginRequest
                     .builder()
                     .email(joinMember.getEmail())
-                    .password(joinMember.getPassword())
+                    .password(JOBTALK_KEY)
                     .build();
             return memberService.login(loginRequest);
         }
