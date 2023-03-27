@@ -1,6 +1,6 @@
 package com.ssafy.jobtalkbackend.jwt;
 
-import com.ssafy.jobtalkbackend.dto.response.TokenDto;
+import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
 import com.ssafy.jobtalkbackend.exception.auth.AuthExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.auth.AuthRuntimeException;
 import io.jsonwebtoken.*;
@@ -31,7 +31,7 @@ public class JwtTokenProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    public TokenDto createToken(Authentication authentication) {
+    public TokenResponse createToken(Authentication authentication) {
 
         Claims claims = Jwts.claims().setSubject(authentication.getName());
 
@@ -47,7 +47,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, secret_key)
                 .compact();
 
-        return new TokenDto(accessToken, refreshToken);
+        return new TokenResponse(accessToken, refreshToken);
     }
 
     public String createAccessToken(Claims claims) {

@@ -44,6 +44,7 @@ public class SecurityConfig {
 //                .antMatchers("/api/member/test").hasRole("USER")
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/kakao/callback").permitAll()
+                .antMatchers("/oauth").permitAll()
                 .anyRequest().authenticated();
 
         http

@@ -17,8 +17,9 @@ public enum AuthExceptionEnum {
     AUTH_JWT_SIGNATURE_EXCEPTION(HttpStatus.UNAUTHORIZED, "A0005", "잘못된 JWT 서명입니다."),
     AUTH_SECURITY_AUTHENTICATION_EXCEPTION(HttpStatus.UNAUTHORIZED, "A0006",
             "Security UsernamePasswordAuthenticationToken 에러입니다."),
-    AUTH_SECURITY_USER_NOT_EXIST(HttpStatus.FORBIDDEN, "A0007", "토큰을 통해 유저 객체를 찾을 수 없습니다.");
-    ;
+    AUTH_SECURITY_USER_NOT_EXIST(HttpStatus.FORBIDDEN, "A0007", "토큰을 통해 유저 객체를 찾을 수 없습니다."),
+    AUTH_KAKAO_ACCESSTOKEN_FAILED(HttpStatus.NOT_FOUND, "A0008", "카카오 로그인 오류입니다. 고객센터에 문의하세요.");
+
     private final HttpStatus httpStatus;
     private final String errorCode;
     private final String errorMessage;

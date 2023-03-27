@@ -1,8 +1,8 @@
 package com.ssafy.jobtalkbackend.controller;
 
-import com.ssafy.jobtalkbackend.dto.request.LoginRequestDto;
-import com.ssafy.jobtalkbackend.dto.request.SignUpRequestDto;
-import com.ssafy.jobtalkbackend.dto.response.TokenDto;
+import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
+import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
+import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
 import com.ssafy.jobtalkbackend.repository.MemberRepository;
 import com.ssafy.jobtalkbackend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,12 @@ public class MemberController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/signup")
-    public Boolean signUp(@Valid @RequestBody SignUpRequestDto request){
+    public Boolean signUp(@Valid @RequestBody SignUpRequest request){
         return memberService.signUp(request);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginRequestDto request){
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request){
         return memberService.login(request);
     }
     @GetMapping("/test")

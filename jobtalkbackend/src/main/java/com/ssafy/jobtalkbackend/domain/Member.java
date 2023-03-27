@@ -1,12 +1,6 @@
 package com.ssafy.jobtalkbackend.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.sun.istack.NotNull;
 
@@ -24,13 +18,12 @@ public class Member {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "MEMBER_ID")
+	@Column(name = "member_id")
 	private Long id;
 
 	@NotNull
 	private String email;
 
-	@Column(name = "PASSWORD")
 	private String password;
 
 	@NotNull
@@ -39,7 +32,7 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
-	private String oauth;
+	private Long oauthId;
 
 	public void modifyNickname(String nickname) {
 		this.nickname = nickname;
