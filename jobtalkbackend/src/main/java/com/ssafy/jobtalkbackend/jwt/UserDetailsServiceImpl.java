@@ -25,11 +25,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        log.info("email in loadUserByUsername = " + email);
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
+        log.info("email in loadUserByUsername = " + member.getEmail());
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(member.getRole().name()));
+        System.out.println(member.getPassword());
 
         return new org
                 .springframework

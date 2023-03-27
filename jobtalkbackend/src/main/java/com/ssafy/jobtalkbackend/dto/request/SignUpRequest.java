@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
-public class SignUpRequestDto {
+public class SignUpRequest {
 
     @NotBlank(message = "아이디를 입력해주세요")
     private String email;

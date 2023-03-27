@@ -1,9 +1,11 @@
 package com.ssafy.jobtalkbackend.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class LoginRequestDto {
+@Builder
+public class LoginRequest {
 
     private String email;
 
