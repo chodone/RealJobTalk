@@ -1,19 +1,20 @@
+'use client';
+
 import Image from "next/image";
 import React, { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import logo from "@images/logo.png"
+import logo from "@public/images/logo.png"
 
 
 import {
-  Bars3Icon,
-  XMarkIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
-import {useRouter} from "next/router";
+  HiMagnifyingGlass,
+  HiOutlineXMark
+
+} from "react-icons/hi2";
+// import {useRouter} from "next/router";
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
   const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   const MainLogo = logo
   
@@ -25,19 +26,19 @@ const Navbar = () => {
           <div className="flex space-x-4">
             <div>
               <a href="/" className="flex items-center py-5 px-2">
-                <Image  className="h-7 w-11" src={MainLogo} alt="" />
+                <Image  className="h-6 w-24" src={MainLogo} alt="" />
               </a>
             </div>
 
             {/* primary nav */}
-            <div className="hidden md:flex items-center space-x-1">
+            <div className="flex items-center space-x-3">
               <div className="flex border-2 border-gray-200 rounded">
                 <input
                   type="text"
                   className="px-4 py-2 w-80"
                   placeholder="기업을 검색해보세요"
                 />
-                <MagnifyingGlassIcon className="w-6 h-6 my-2 mx-1" />
+                <HiMagnifyingGlass className="w-6 h-6 my-2 mx-1 border-gray-200" />
               </div>
               <div className="w20">
                 <select data-te-select-init>
@@ -55,18 +56,18 @@ const Navbar = () => {
           </div>
 
           {/* mobile nav */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="flex items-center space-x-1">
             <button
               type="button"
               className="py-5 px-3"
-              onClick={() => router.push('/signin')}
+              // onClick={() => router.push('/signin')}
             >
               로그인
             </button>
             <button
               type="button"
               className="py-5 px-3"
-              onClick={() => router.push('/signup')}
+              // onClick={() => router.push('/signup')}
             >
               회원가입
             </button>
@@ -76,9 +77,9 @@ const Navbar = () => {
           <div className="md:hidden flex items-center">
             <button onClick={() => setMenuToggle(!menuToggle)}>
               {menuToggle ? (
-                <XMarkIcon className="w-6 h-6" />
+                <HiOutlineXMark className="w-6 h-6" />
               ) : (
-                <MagnifyingGlassIcon className="w-6 h-6" />
+                <HiMagnifyingGlass className="w-6 h-6" />
               )}
             </button>
           </div>
