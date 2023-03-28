@@ -1,6 +1,6 @@
 import { getcompany } from '@/service/getCompany'
 import Link from 'next/link'
-import CompanyNavbar from '@/components/CompanyNavbar'
+
 
 
 
