@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import logo from "@public/images/logo.png"
+import { useRouter } from "next/navigation";
 
 
 import {
@@ -17,6 +18,7 @@ const Navbar = () => {
   // const router = useRouter();
   const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   const MainLogo = logo
+  const router = useRouter()
 
   return (
     //   navbar goes here
@@ -57,15 +59,13 @@ const Navbar = () => {
 
           {/* mobile nav */}
           <div className="flex items-center space-x-1">
-            <a href={KAKAO_AUTH_URI}>
               <button
                 type="button"
                 className="py-5 px-3"
-              // onClick={() => router.push('/signin')}
+                onClick={() => router.push('/signin')}
               >
                 로그인
               </button>
-            </a>
             <button
               type="button"
               className="py-5 px-3"

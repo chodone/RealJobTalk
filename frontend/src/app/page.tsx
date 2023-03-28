@@ -29,7 +29,7 @@ export default async function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="grid grid-cols-2 desktop:grid-cols-4 laptop:grid-cols-3 gap-8 items-center">
+      <div className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8 items-center">
         {companies.map((company, idx) => (
           <Company company={company} key={idx} />
         ))}

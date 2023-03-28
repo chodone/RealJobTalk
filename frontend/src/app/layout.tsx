@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={sans.className}>
-      <body>
+      <body className=' bg-gray-100 '>
         <header>
           <Navbar/>
         </header>
