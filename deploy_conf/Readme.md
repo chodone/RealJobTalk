@@ -7,7 +7,7 @@
 |개발환경|Java|11|
 |개발환경|SpringBoot|2.7.9|
 |**분산처리**|
-|분산처리도구|Hadoop|3.2.2|
+|분산처리도구|Hadoop|3.2.3|
 |**Frontend**|
 |개발환경|node.js|18.12.1|
 |**DevOps**|
