@@ -24,10 +24,10 @@ public class PassReview {
 
     private String url;
 
-    @OneToMany(mappedBy = "pass_review", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
     private List<Keyword> keywordList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pass_review", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
     private List<PassReviewLike> passReviewLikeList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
