@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 
 public interface MemberService {
-    public Boolean signUp(SignUpRequest request);
-    public ResponseEntity<TokenResponse> login(LoginRequest request);
-    public Boolean checkEmail(String email);
+    Boolean signUp(SignUpRequest request);
+    ResponseEntity<TokenResponse> login(LoginRequest request, boolean kakaoLogin);
+    Boolean checkEmail(String email);
 
-    public Boolean checkNickname(String nickname);
+    Boolean checkNickname(String nickname);
 
-    public String modifyNickname(String nickname, User user);
+    String modifyNickname(String nickname, User user);
 
 }

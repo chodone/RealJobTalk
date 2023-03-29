@@ -71,7 +71,6 @@ public class OAuthServiceImpl implements OAuthService {
      * */
     @Override
     public KakaoTokenResponse getKakaoToken(String code) {
-        System.out.println("들어왔다!!!!!!!!!!");
 
         try {
             URL url = new URL(tokenReqURL);
@@ -188,18 +187,11 @@ public class OAuthServiceImpl implements OAuthService {
                     .oauthId(kakaoUserInfoResponse.getId())
                     .build();
             memberRepository.save(member);
-            System.out.println("👌");
-            System.out.println(member.getEmail());
-            System.out.println(member.getPassword());
 
-            System.out.println("👍");
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(member.getEmail(), JOBTALK_KEY)
             );
-            System.out.println("🙌");
             TokenResponse tokenResponse = jwtTokenProvider.createToken(authentication);
-
-            System.out.println(tokenResponse.getAccessToken());
 
             return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
         } else {
@@ -208,7 +200,10 @@ public class OAuthServiceImpl implements OAuthService {
                     .email(joinMember.getEmail())
                     .password(JOBTALK_KEY)
                     .build();
-            return memberService.login(loginRequest);
+
+            return memberService.login(loginRequest, true);
         }
+
+
     }
 }
