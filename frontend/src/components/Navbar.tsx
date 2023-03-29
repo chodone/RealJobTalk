@@ -103,6 +103,7 @@ const Navbar = () => {
           Signup
         </a>
       </div>
+      <hr />
     </nav>
   );
 };
