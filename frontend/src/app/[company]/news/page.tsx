@@ -1,4 +1,5 @@
 import { getcompany } from "@/service/getCompany"
+import NewsCard from '@/components/NewsCard'
 
 type Props = {
   params: {
@@ -12,7 +13,7 @@ export default async function CompanyPage({ params :{company} }: Props) {
   
   return (
     <h1>
-      기업뉴스
+      <NewsCard/>
     </h1>
   )
   

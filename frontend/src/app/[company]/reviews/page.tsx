@@ -1,4 +1,5 @@
 import { getcompany } from "@/service/getCompany"
+import ReviewCard from '@/components/RevieCard'
 
 type Props = {
   params: {
@@ -12,7 +13,10 @@ export default async function CompanyPage({ params :{company} }: Props) {
   
   return (
     <h1>
-      기업후기
+
+      <ReviewCard />
+      <ReviewCard />
+      <ReviewCard/>
     </h1>
   )
   
