@@ -4,7 +4,7 @@ import com.ssafy.jobtalkbackend.dto.response.NewsResponse;
 
 import java.util.List;
 
-public interface NewsService {
+public interface EnterpriseService {
 
-    List<NewsResponse> getNews();
+    List<NewsResponse> getNews(Long enterpriseId);
 }

@@ -23,6 +23,8 @@ public class PassReview {
 
     private String url;
 
+    private String dateOfIssue;
+
     @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
     private List<Keyword> keywordList = new ArrayList<>();
 
