@@ -16,8 +16,8 @@ export default async function RootLayout({
   const company = decodeURI(params.company)
   const getValue = await getcompany(company)
 
-  const companyUrl = getValue?.url 
-  
+  // const companyUrl = getValue?.url 
+  const companyUrl= getValue?.url  as unknown as string
 
 
 
