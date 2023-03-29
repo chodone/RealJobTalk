@@ -16,7 +16,7 @@ const Company = ({ company }: { company: dbObject }) => {
   const companyName = company.company
   return (
     <Link href={`${companyName}/info`}>
-      <Image  src={imgurl} alt=""  width={300} height={300} />
+      <Image  src={imgurl} alt=""  width={200} height={200}/>
       <div>{companyName}</div>
     </Link>
   )
