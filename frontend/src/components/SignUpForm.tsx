@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { FormEvent,useState } from "react";
 import logo from "@public/images/logo.png";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { button } from "@material-tailwind/react";
+import { useForm, useWatch, Control} from "react-hook-form";
+
 
 interface FormData {
   email: string
@@ -15,19 +15,55 @@ interface FormData {
 
 
 
+function EmailCheckButton({ control, setEmailAva }: { control: Control<FormData>, setEmailAva:React.Dispatch<React.SetStateAction<boolean>> }) {
+  const email = useWatch({
+    control,
+    name: "email",
+    defaultValue: "default"
+  });
+  const emailCheck = (e: FormEvent) => {
+    e.preventDefault()
+    fetch("http://localhost:8082/api/member/email/check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({email}),
+    })
+    .then((response) => response.json())
+      .then((data) => {
+      console.log(data)
+      if (data === true) {
+        console.log("Success:", data);
+        setEmailAva(true);
+      }
+      else if(data.status=== 400){
+        alert(data.message)
+      }
+  })
+    
+  }
+
+  return (
+    <button onClick={(e) => {emailCheck(e)}} className="bg-green-500 text-white rounded-md px-1 my-2 text-xs float-right">중복체크</button>
+  )
+}
+
 
 
 
 const SignUphtmlForm = () => {
+  const [emailAva, setEmailAva] = useState(false)
+
   const MainLogo = logo;
   const router = useRouter()
   const { register,
     handleSubmit,
+    control,
     watch,
     formState: { isSubmitting, errors },} = useForm<FormData>({mode:"onChange"})
   
   const onSubmit = handleSubmit(({ email, nickname, password }) => {
-    console.log(email)
     fetch("http://localhost:8082/api/member/signup", {
       method: "POST",
       headers: {
@@ -78,7 +114,7 @@ const SignUphtmlForm = () => {
                       },
                     })}
                   />
-                  <button className="bg-green-500 text-white rounded-md px-1 my-2 text-xs float-right">중복체크</button>
+                  {!emailAva && <EmailCheckButton control={control} setEmailAva={setEmailAva} />}
                   <label
                     htmlFor="email"
                     className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
@@ -153,7 +189,6 @@ const SignUphtmlForm = () => {
                     Password Confirm
                   </label>
                 </div>
-                
                 <div className="relative">
                   <button className="bg-green-500 text-white rounded-md px-2 py-1">Submit</button>
                 </div>
