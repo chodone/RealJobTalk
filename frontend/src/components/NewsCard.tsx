@@ -10,7 +10,7 @@ const NewsCard = () => {
             <p className="text-sm text-gray-600 flex items-center">이데일리 </p>
             <p className="text-sm text-gray-600 flex items-center">2023.03.15 </p>
             <div className="text-gray-900 font-bold text-xl mb-2">
-              멀티캠퍼스, 박성태 -> 정석목 대표이사 체제로 변경
+              멀티캠퍼스, 박성태 정석목 대표이사 체제로 변경
             </div>
             <p className="text-gray-700 text-base leading-relaxed w-7xl h-14 mb-3">
               멀티캠퍼스는 기존 박성태에서 정석옥 대표이사 체제로 변경된다고 15일 공시했다.
