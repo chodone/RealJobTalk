@@ -32,11 +32,7 @@ const Navbar = () => {
             {/* primary nav */}
             <div className="flex items-center space-x-3">
               <div className="flex border-2 border-gray-200 rounded">
-                <input
-                  type="text"
-                  className="px-4 py-2 w-80"
-                  placeholder="기업을 검색해보세요"
-                />
+                <input type="text" className="px-4 py-2 w-80" placeholder="기업을 검색해보세요" />
                 <HiMagnifyingGlass className="w-6 h-6 my-2 mx-1 border-gray-200" />
               </div>
               <div className="w20">
@@ -56,18 +52,10 @@ const Navbar = () => {
 
           {/* mobile nav */}
           <div className="flex items-center space-x-1">
-              <button
-                type="button"
-                className="py-5 px-3"
-                onClick={() => router.push('/signin')}
-              >
-                로그인
-              </button>
-            <button
-              type="button"
-              className="py-5 px-3"
-            // onClick={() => router.push('/signup')}
-            >
+            <button type="button" className="py-5 px-3" onClick={() => router.push("/signin")}>
+              로그인
+            </button>
+            <button type="button" className="py-5 px-3" onClick={() => router.push("/signup")}>
               회원가입
             </button>
           </div>
@@ -87,10 +75,7 @@ const Navbar = () => {
 
       {/* mobile menu items */}
       <div className={`${!menuToggle ? "hidden" : ""} md:hidden`}>
-        <a
-          href="/features"
-          className="block py-2 px-4 text-sm hover:bg-gray-200"
-        >
+        <a href="/features" className="block py-2 px-4 text-sm hover:bg-gray-200">
           Features
         </a>
         <a href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">
