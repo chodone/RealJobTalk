@@ -35,7 +35,6 @@ pipeline
 				}
 			}
 		}
-
 		stage('build-front') {
 			when {
 				changeset "frontend/**/*"
@@ -53,6 +52,27 @@ pipeline
 					fi
 					'''
 					echo 'Front container stop Success';
+				}
+			}
+		}
+		stage('build-crawling'){
+			when {
+				changeset "Crawling/**/*"
+			}
+			steps {
+				echo 'Build Start Crawling'
+				sh 'docker build -t crawling Crawling/. --no-cache'
+				echo 'Build End Crawling'
+			}
+			post {
+				success {
+					echo 'Crawling container stop Start'
+					sh '''
+					if (docker ps | grep "crawling"); 
+					then docker stop crawling;
+					fi
+					'''
+					echo 'Crawling container stop Success';
 				}
 			}
 		}
@@ -78,6 +98,16 @@ pipeline
 					docker run -it -d --rm -p 3000:3000 --name front-app front-img
 				'''
 				echo 'Deploy End Front App'
+			}
+		}
+		stage('build-crawling'){
+			when {
+				changeset "Crawling/**/*"
+			}
+			steps {
+				echo 'Deploy Start Crawling'
+				sh 'docker run -it -d --rm -p 8084:8084 --name crawling crawling-img'
+				echo 'Deploy End Crawling'
 			}
 		}
 	}
