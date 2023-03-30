@@ -6,7 +6,15 @@ import logo from "@public/images/logo.png";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+
+
 import { HiMagnifyingGlass, HiOutlineXMark } from "react-icons/hi2";
+
+type Props = {
+  params: {
+    company: string
+  }
+}
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
