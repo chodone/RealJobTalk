@@ -24,16 +24,16 @@ pipeline
 				'''
 				echo 'Build End "${APP_API}"'
 			}
-			// post { post는 특정 stage 이후로 적절한 구현이 아닌 듯함.
-			// 	success {
-			// 		echo 'Build Success.'
-			// 		sh '''
-			// 		if (docker ps | grep "back-api"); then docker stop back-api;
-			// 		fi
-			// 		'''
-			// 		echo 'Container stop/remove Success';
-			// 	}
-			// }
+			post {
+				success {
+					echo 'Back-api container stop Start.'
+					sh '''
+					if (docker ps | grep "back-api"); then docker stop back-api;
+					fi
+					'''
+					echo 'Back-api container stop Success';
+				}
+			}
 		}
 		stage('build-front') {
 			when {
@@ -46,12 +46,12 @@ pipeline
 			}
 			post {
 				success {
-					echo 'Build Success.'
+					echo 'Front container stop Start'
 					sh '''
-					if (docker ps | grep "back-api"); then docker stop back-api;
+					if (docker ps | grep "front-app"); then docker stop front-app;
 					fi
 					'''
-					echo 'Container stop/remove Success';
+					echo 'Front container stop Success';
 				}
 			}
 		}
@@ -63,7 +63,7 @@ pipeline
 			}
 			steps {
 				echo 'Deploy Start "${APP_API}"'
-				sh 'docker run -d -p 18082:8082 --name back-api back-api-img '
+				sh 'docker run -d -p 8082:8082 --name back-api back-api-img'
 				echo 'Deploy End "${APP_API}"'
 			}
 		}
@@ -74,7 +74,7 @@ pipeline
 			steps {
 				echo 'Deploy Start Front App'
 				sh '''
-					docker run -it -d --rm -p 13000:3000 --name front-app front-img
+					docker run -it -d --rm -p 3000:3000 --name front-app front-img
 				'''
 				echo 'Deploy End Front App'
 			}
