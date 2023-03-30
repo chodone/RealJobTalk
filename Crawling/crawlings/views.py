@@ -8,7 +8,7 @@ import time
 
 def naver_news_crawlling():
     print('시작합니당')
-    client_hdfs = InsecureClient("http://172.17.0.4:29870", user="root")
+    client_hdfs = InsecureClient("http://localhost:29870", user="root")
     url = "https://openapi.naver.com/v1/search/news.json"
 
     headers = {
