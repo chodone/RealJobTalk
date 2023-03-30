@@ -24,15 +24,15 @@ pipeline
 				'''
 				echo 'Build End "${APP_API}"'
 			}
-			post {
-				success {
-					echo 'Back-api container stop Start.'
-					sh '''
-					if (docker ps | grep "back-api"); then docker stop back-api;
-					fi
-					'''
-					echo 'Back-api container stop Success';
-				}
+		}
+		post {
+			success {
+				echo 'Back-api container stop Start.'
+				sh '''
+				if (docker ps | grep "back-api"); then docker stop back-api;
+				fi
+				'''
+				echo 'Back-api container stop Success';
 			}
 		}
 		stage('build-front') {
