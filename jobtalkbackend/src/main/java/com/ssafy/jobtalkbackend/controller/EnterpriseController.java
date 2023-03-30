@@ -23,6 +23,4 @@ public class EnterpriseController {
         return ResponseEntity.ok().body(enterpriseService.getNews(enterpriseId, pageable));
     }
 
-//    @GetMapping("/{enterpriseId}/pass_reviews")
-//    public ResponseEntity<List<>>
 }
