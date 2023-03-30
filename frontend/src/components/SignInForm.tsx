@@ -29,16 +29,20 @@ const SignInForm = () => {
       },
       body: JSON.stringify({ email, password }),
     })
-    .then((response) => response.json())
-      .then((data) => {
-        if (data.status === 200) {
+      .then((response) => response.json())
+      .then((data ) => {
+        console.log();
+        if (data.status === 400) {
+          alert(data.message)
+        }
+        else {
           console.log("Success:", data);
           router.push("/");
         }
-        else {
-          alert(data.message)
-        }
-    })
+      })
+      .catch((err) => {
+        console.debug(err);
+      });
     
 
   })
