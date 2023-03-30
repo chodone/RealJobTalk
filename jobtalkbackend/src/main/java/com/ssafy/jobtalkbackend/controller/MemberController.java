@@ -30,10 +30,6 @@ public class MemberController {
     public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request){
         return memberService.login(request, false);
     }
-    @GetMapping("/test")
-    public String test() {
-        return "hello";
-    }
 
     @PostMapping("/email/check")
     public Boolean checkEmail(@RequestBody Map<String, String> email) {
@@ -50,5 +46,9 @@ public class MemberController {
                                             @AuthenticationPrincipal User user) {
         return new ResponseEntity<>(memberService.modifyNickname(nickname.get("nickname"), user), HttpStatus.OK);
     }
+
+//    @PostMapping("/scrap/news/{newsId}")
+
+
 
 }
