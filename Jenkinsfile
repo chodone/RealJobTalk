@@ -31,7 +31,6 @@ pipeline
 					if (docker ps | grep "back-api"); then docker stop back-api;
 					fi
 					'''
-					sh 'docker ps -a | grep "back-api"'
 					echo 'Back-api container stop Success';
 				}
 			}
