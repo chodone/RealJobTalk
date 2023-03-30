@@ -100,7 +100,7 @@ pipeline
 				echo 'Deploy End Front App'
 			}
 		}
-		stage('build-crawling'){
+		stage('deploy-crawling'){
 			when {
 				changeset "Crawling/**/*"
 			}
