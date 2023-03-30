@@ -8,7 +8,7 @@ import time
 
 def naver_news_crawlling():
     print('시작합니당')
-    client_hdfs = InsecureClient("http://172.17.0.4:9870", user="root")
+    client_hdfs = InsecureClient("http://172.17.0.4:29870", user="root")
     url = "https://openapi.naver.com/v1/search/news.json"
 
     headers = {
@@ -56,4 +56,4 @@ def naver_news_crawlling():
 
                         value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + cleantext + ('\n')  + ('\n') + content[0].text
 
-                        client_hdfs.write(f'/user/root/wordcount_test/{filename}.txt', data=value, overwrite=True, encoding="UTF8")
+                        client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True, encoding="UTF8")
