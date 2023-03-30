@@ -5,7 +5,7 @@ from .views import naver_news_crawlling
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=2, minute=16, id = 'crawling')
+    @scheduler.scheduled_job('cron', hour=3, minute=14, id = 'crawling')
     def auto_check():
         print('실행')
         naver_news_crawlling()
