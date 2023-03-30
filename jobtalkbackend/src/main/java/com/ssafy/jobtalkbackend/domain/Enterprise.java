@@ -20,6 +20,8 @@ public class Enterprise {
     @Column(name = "enterprise_id")
     private Long id;
 
+    private String name;
+
     private String homepageUrl;
 
     private String recruitpageUrl;

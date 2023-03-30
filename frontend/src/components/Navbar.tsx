@@ -1,22 +1,26 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import React, { useState } from "react";
-import logo from "@public/images/logo.png"
+import logo from "@public/images/logo.png";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 
-import {
-  HiMagnifyingGlass,
-  HiOutlineXMark
 
-} from "react-icons/hi2";
+import { HiMagnifyingGlass, HiOutlineXMark } from "react-icons/hi2";
+
+type Props = {
+  params: {
+    company: string
+  }
+}
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
   const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
-  const MainLogo = logo
-  const router = useRouter()
+  const MainLogo = logo;
+  const router = useRouter();
 
   return (
     <nav>
@@ -24,9 +28,9 @@ const Navbar = () => {
         <div className="flex justify-between">
           <div className="flex space-x-4">
             <div>
-              <a href="/" className="flex items-center py-5 px-2">
+              <Link className="flex items-center py-5 px-2" href="/">
                 <Image className="h-6 w-24" src={MainLogo} alt="" />
-              </a>
+              </Link>
             </div>
 
             {/* primary nav */}

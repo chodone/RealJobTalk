@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +22,8 @@ public class PassReview {
     private String title;
 
     private String url;
+
+    private String dateOfIssue;
 
     @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
     private List<Keyword> keywordList = new ArrayList<>();

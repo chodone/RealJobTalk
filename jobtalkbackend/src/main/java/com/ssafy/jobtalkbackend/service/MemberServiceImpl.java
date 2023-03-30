@@ -57,10 +57,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public ResponseEntity<TokenResponse> login(LoginRequest request) {
+    public ResponseEntity<TokenResponse> login(LoginRequest request, boolean kakaoLogin) {
 
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
+
+        if (kakaoLogin == false && member.getOauthId() != null) {
+            throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_NEED_KAKAO_LOGIN);
+        }
+
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
             throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
         }

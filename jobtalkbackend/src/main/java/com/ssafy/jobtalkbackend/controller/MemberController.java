@@ -3,7 +3,6 @@ package com.ssafy.jobtalkbackend.controller;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
 import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
-import com.ssafy.jobtalkbackend.repository.MemberRepository;
 import com.ssafy.jobtalkbackend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberRepository memberRepository;
 
     @PostMapping("/signup")
     public Boolean signUp(@Valid @RequestBody SignUpRequest request){
@@ -30,7 +28,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request){
-        return memberService.login(request);
+        return memberService.login(request, false);
     }
     @GetMapping("/test")
     public String test() {
