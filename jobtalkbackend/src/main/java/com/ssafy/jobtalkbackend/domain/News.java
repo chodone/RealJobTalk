@@ -26,6 +26,8 @@ public class News {
 
     private Integer hotRank;
 
+    private String dateOfIssue;
+
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private List<NewsLike> newsLikeList = new ArrayList<>();
 
