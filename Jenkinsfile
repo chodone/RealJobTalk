@@ -24,17 +24,19 @@ pipeline
 				'''
 				echo 'Build End "${APP_API}"'
 			}
-		}
-		post {
-			success {
-				echo 'Back-api container stop Start.'
-				sh '''
-				if (docker ps | grep "back-api"); then docker stop back-api;
-				fi
-				'''
-				echo 'Back-api container stop Success';
+			post {
+				success {
+					echo 'Back-api container stop Start.'
+					sh '''
+					if (docker ps | grep "back-api"); then docker stop back-api;
+					fi
+					'''
+					sh 'docker ps -a | grep "back-api"'
+					echo 'Back-api container stop Success';
+				}
 			}
 		}
+
 		stage('build-front') {
 			when {
 				changeset "frontend/**/*"
@@ -63,7 +65,7 @@ pipeline
 			}
 			steps {
 				echo 'Deploy Start "${APP_API}"'
-				sh 'docker run -d -p 8082:8082 --name back-api back-api-img'
+				sh 'docker run -it -d --rm -p 8082:8082 --name back-api back-api-img'
 				echo 'Deploy End "${APP_API}"'
 			}
 		}
