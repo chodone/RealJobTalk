@@ -5,10 +5,9 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PassReviewResponse {
+public class EnterpriseResponse {
     private Long id;
-    private String title;
-    private String url;
-    private String dateOfIssue;
+    private String name;
+    private String imgUrl;
 
 }
