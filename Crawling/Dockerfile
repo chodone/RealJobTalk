@@ -8,6 +8,7 @@ COPY . .
 ENV TZ Asia/Seoul
 
 RUN apt-get update && apt-get -y install sudo
+RUN chmod +x /usr/src/app/dockerstart.sh
 
 EXPOSE 8084
 
