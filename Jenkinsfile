@@ -61,7 +61,7 @@ pipeline
 			}
 			steps {
 				echo 'Build Start Crawling'
-				sh 'docker build -t crawling Crawling/. --no-cache'
+				sh 'docker build -t crawling-img Crawling/. --no-cache'
 				echo 'Build End Crawling'
 			}
 			post {

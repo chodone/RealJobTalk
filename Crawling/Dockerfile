@@ -7,6 +7,8 @@ RUN pip install -r requirements.txt
 COPY . .
 ENV TZ Asia/Seoul
 
+RUN apt-get update && apt-get -y install sudo
+
 EXPOSE 8084
 
-CMD ["python3", "manage.py", "runserver", "--noreload"]
+CMD ["/usr/src/app/dockerstart.sh"]
