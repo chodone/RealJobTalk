@@ -4,9 +4,41 @@ import Image from "next/image";
 import React, { useState } from "react";
 import logo from "@public/images/logo.png";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
-const SignInhtmlForm = () => {
+interface FormData {
+  email: string
+  password: string
+}
+
+
+
+
+
+
+const SignInForm = () => {
   const MainLogo = logo;
+  const { register, handleSubmit } = useForm<FormData>()
+  
+  const onSubmit = handleSubmit(({ email, password }) => {
+    console.log(email)
+    fetch("http://localhost:8082/api/member/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+    });
+
+  })
+
   return (
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
@@ -17,12 +49,17 @@ const SignInhtmlForm = () => {
               <Image className="h-8 w-32" src={MainLogo} alt="" />
             </div>
             <div className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+              <form action="" onSubmit={onSubmit} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <div className="relative">
                   <input
+                    {...register("email", {
+                      required: {
+                        value: true,
+                        message: "이메일을 입력해주세요.",
+                      },
+                    })}
                     autoComplete="off"
                     id="email"
-                    name="email"
                     type="text"
                     className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                     placeholder="Email address"
@@ -36,6 +73,12 @@ const SignInhtmlForm = () => {
                 </div>
                 <div className="relative">
                   <input
+                    {...register("password", {
+                      required: {
+                        value: true,
+                        message: "비밀번호를 입력해주세요.",
+                      },
+                    })}
                     autoComplete="off"
                     id="password"
                     name="password"
@@ -53,7 +96,7 @@ const SignInhtmlForm = () => {
                 <div className="relative">
                   <button className="bg-green-500 text-white rounded-md px-2 py-1">Submit</button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -62,4 +105,4 @@ const SignInhtmlForm = () => {
   );
 };
 
-export default SignInhtmlForm;
+export default SignInForm;
