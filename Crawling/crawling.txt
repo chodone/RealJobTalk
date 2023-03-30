@@ -1,0 +1,3 @@
+docker build -t crawling-img Crawling/. --no-cache
+if (docker ps | grep "crawling"); then docker stop crawling && echo "crawling docker stop success"; fi
+docker run -it -d --rm -p 8084:8084 --name crawling crawling-img
