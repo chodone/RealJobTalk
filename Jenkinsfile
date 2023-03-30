@@ -67,7 +67,7 @@ pipeline
 				echo 'Deploy End "${APP_API}"'
 			}
 		}
-		stage('build-deploy-front') {
+		stage('deploy-front') {
 			when {
 				changeset "frontend/**/*"
 			}
