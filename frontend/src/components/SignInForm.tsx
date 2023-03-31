@@ -5,6 +5,9 @@ import React, { useState } from "react";
 import logo from "@public/images/logo.png";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { authActions } from "@/redux/reducer/authReducer";
+import { useAppSelector, useAppDispatch } from '@/redux/hook'
+import jwtDecode from 'jwt-decode'
 
 interface FormData {
   email: string
@@ -17,6 +20,7 @@ interface FormData {
 
 
 const SignInForm = () => {
+  const dispatch = useAppDispatch();
   const MainLogo = logo;
   const router = useRouter()
   const { register, handleSubmit } = useForm<FormData>()
@@ -37,11 +41,18 @@ const SignInForm = () => {
         }
         else {
           console.log("Success:", data);
+          localStorage.setItem('accessToken', data.accessToken)
+          localStorage.setItem('refreshToken' , data.refreshToken)
+          const data_ = jwtDecode(data.accessToken)
+          
+          dispatch(authActions.logIn({data:data_}))
+
           router.push("/");
         }
       })
       .catch((err) => {
         console.debug(err);
+        console.log(err)
       });
     
 

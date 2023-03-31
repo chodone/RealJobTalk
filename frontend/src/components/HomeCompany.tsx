@@ -9,9 +9,11 @@ const HomeCompany = () => {
   const dispatch = useAppDispatch();
   const companies = useAppSelector((state) => state.action)
   const datas = companies.data;
+  const getAuth = useAppSelector((state) => state.auth)
   
   useEffect(() => {
     dispatch(getData())
+    console.log(getAuth)
   },[])
   return (
     <div>

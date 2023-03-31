@@ -3,6 +3,8 @@ import api from '../api'
 
 const initialState = {
   data: [],
+
+  
 }
 
 export const getData = createAsyncThunk(
@@ -13,6 +15,8 @@ export const getData = createAsyncThunk(
     return company.data
   }
 )
+
+
 
 const Reducer = createSlice({
   name: "reducer",
