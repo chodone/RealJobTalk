@@ -30,7 +30,7 @@ def naver_news_crawlling():
                 "display" : 100,
                 "start" : idx
             }
-
+            print(enterprise.strip(), '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             res = requests.get(url, headers=headers, params=params)
 
             for jsonIdx in res.json()['items']:
