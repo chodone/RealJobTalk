@@ -30,7 +30,7 @@ def naver_news_crawlling():
                 "display" : 100,
                 "start" : idx
             }
-            print(enterprise.strip(), '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            print(enterprise.strip(), '!!!!!!!!!')
             res = requests.get(url, headers=headers, params=params)
 
             for jsonIdx in res.json()['items']:
@@ -56,4 +56,4 @@ def naver_news_crawlling():
 
                         value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + cleantext + ('\n')  + ('\n') + content[0].text
 
-                        client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True)
+                        client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True, encoding="UTF8")
