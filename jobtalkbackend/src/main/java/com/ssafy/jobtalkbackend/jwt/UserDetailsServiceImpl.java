@@ -30,7 +30,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.info("email in loadUserByUsername = " + member.getEmail());
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(member.getRole().name()));
-        System.out.println(member.getPassword());
 
         return new org
                 .springframework

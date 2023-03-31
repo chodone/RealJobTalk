@@ -45,33 +45,32 @@ public class JwtTokenProvider {
         Member member = memberRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
+        Claims claims = Jwts.claims()
+                .setSubject(authentication.getName())
+                .setId(member.getNickname());
 
         Date now = new Date();
         Date expiresIn = new Date(now.getTime() + refreshTokenValidityTime);
 
-        String accessToken = createAccessToken(member.getEmail(), member.getNickname());
+        String accessToken = createAccessToken(claims);
 
         String refreshToken = Jwts.builder()
-                .claim("email", member.getEmail())
-                .claim("nickname", member.getNickname())
+                .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiresIn)
                 .signWith(SignatureAlgorithm.HS512, secret_key)
                 .compact();
 
-//        System.out.println(accessToken.);
-
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    public String createAccessToken(String email, String nickname) {
+    public String createAccessToken(Claims claims) {
 
         Date now = new Date();
         Date expiresIn = new Date(now.getTime() + accessTokenValidityTime);
 
         String accessToken =  Jwts.builder()
-                .claim("email", email)
-                .claim("nickname", nickname)
+                .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiresIn)
                 .signWith(SignatureAlgorithm.HS512, secret_key)
