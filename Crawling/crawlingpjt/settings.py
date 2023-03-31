@@ -11,9 +11,26 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(DEBUG=(bool, True))
+
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
+
+HDFS_IP = env('HDFS_IP')
+HDFS_USER = env('HDFS_USER')
+MYSQL_HOST = env('MYSQL_HOST')
+MYSQL_ID = env('MYSQL_ID')
+MYSQL_PASSWD = env('MYSQL_PASSWD')
+MYSQL_DB = env('MYSQL_DB')
+NAVER_CLIENT_ID = env('NAVER_CLIENT_ID')
 
 
 # Quick-start development settings - unsuitable for production
