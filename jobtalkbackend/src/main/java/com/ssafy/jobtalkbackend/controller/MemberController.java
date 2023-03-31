@@ -47,7 +47,6 @@ public class MemberController {
         return new ResponseEntity<>(memberService.modifyNickname(nickname.get("nickname"), user), HttpStatus.OK);
     }
 
-//    @PostMapping("/scrap/news/{newsId}")
 
 
 

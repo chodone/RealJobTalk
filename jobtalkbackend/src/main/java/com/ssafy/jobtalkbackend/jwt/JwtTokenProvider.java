@@ -1,9 +1,14 @@
 package com.ssafy.jobtalkbackend.jwt;
 
+import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
 import com.ssafy.jobtalkbackend.exception.auth.AuthExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.auth.AuthRuntimeException;
+import com.ssafy.jobtalkbackend.exception.member.MemberExceptionEnum;
+import com.ssafy.jobtalkbackend.exception.member.MemberRuntimeException;
+import com.ssafy.jobtalkbackend.repository.MemberRepository;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +23,11 @@ import java.util.Date;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
+
+    private final MemberRepository memberRepository;
+
     @Value("${jwt.secret}")
     private String secret_key;
 
@@ -33,30 +42,36 @@ public class JwtTokenProvider {
 
     public TokenResponse createToken(Authentication authentication) {
 
-        Claims claims = Jwts.claims().setSubject(authentication.getName());
+        Member member = memberRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
+
 
         Date now = new Date();
         Date expiresIn = new Date(now.getTime() + refreshTokenValidityTime);
 
-        String accessToken = createAccessToken(claims);
+        String accessToken = createAccessToken(member.getEmail(), member.getNickname());
 
         String refreshToken = Jwts.builder()
-                .setClaims(claims)
+                .claim("email", member.getEmail())
+                .claim("nickname", member.getNickname())
                 .setIssuedAt(now)
                 .setExpiration(expiresIn)
                 .signWith(SignatureAlgorithm.HS512, secret_key)
                 .compact();
 
+//        System.out.println(accessToken.);
+
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    public String createAccessToken(Claims claims) {
+    public String createAccessToken(String email, String nickname) {
 
         Date now = new Date();
         Date expiresIn = new Date(now.getTime() + accessTokenValidityTime);
 
         String accessToken =  Jwts.builder()
-                .setClaims(claims)
+                .claim("email", email)
+                .claim("nickname", nickname)
                 .setIssuedAt(now)
                 .setExpiration(expiresIn)
                 .signWith(SignatureAlgorithm.HS512, secret_key)
