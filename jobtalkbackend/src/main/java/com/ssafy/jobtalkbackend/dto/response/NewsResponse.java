@@ -1,8 +1,10 @@
 package com.ssafy.jobtalkbackend.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class NewsResponse {
     private Long id;
 
@@ -14,11 +16,5 @@ public class NewsResponse {
 
     private String dateOfIssue;
 
-    public void updateDto(Long id, String title, String url, Integer hotRank, String dateOfIssue) {
-        this.id = id;
-        this.title = title;
-        this.url = url;
-        this.hotRank = hotRank;
-        this.dateOfIssue = dateOfIssue;
-    }
+
 }

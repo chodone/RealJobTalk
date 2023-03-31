@@ -2,6 +2,7 @@ package com.ssafy.jobtalkbackend.config;
 
 import com.ssafy.jobtalkbackend.exception.ExceptionResponseEntity;
 import com.ssafy.jobtalkbackend.exception.auth.AuthRuntimeException;
+import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseRuntimeException;
 import com.ssafy.jobtalkbackend.exception.member.MemberRuntimeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,18 @@ public class ExceptionAdvice {
     @ExceptionHandler({AuthRuntimeException.class})
     private ResponseEntity<ExceptionResponseEntity> authExceptionHandler(
             final AuthRuntimeException runError) {
+        return new ResponseEntity<>(
+                new ExceptionResponseEntity(
+                        runError.getErrorEnum().getHttpStatus().value(),
+                        runError.getErrorEnum().getErrorCode(),
+                        runError.getMessage()
+                ),
+                runError.getErrorEnum().getHttpStatus());
+    }
+
+    @ExceptionHandler({EnterpriseRuntimeException.class})
+    private ResponseEntity<ExceptionResponseEntity> enterpriseExceptionHandler(
+            final EnterpriseRuntimeException runError) {
         return new ResponseEntity<>(
                 new ExceptionResponseEntity(
                         runError.getErrorEnum().getHttpStatus().value(),

@@ -22,6 +22,8 @@ public class Enterprise {
 
     private String name;
 
+    private String imgUrl;
+
     private String homepageUrl;
 
     private String recruitpageUrl;
