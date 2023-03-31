@@ -45,11 +45,7 @@ const Navbar = () => {
             <button type="button" className="py-5 px-3" onClick={() => router.push("/signin")}>
               로그인
             </button>
-            <button
-              type="button"
-              className="py-5 px-3"
-              // onClick={() => router.push('/signup')}
-            >
+            <button type="button" className="py-5 px-3" onClick={() => router.push("/signup")}>
               회원가입
             </button>
           </div>
