@@ -18,10 +18,10 @@ interface FormData {
 
 const SignInForm = () => {
   const MainLogo = logo;
+  const router = useRouter()
   const { register, handleSubmit } = useForm<FormData>()
   
   const onSubmit = handleSubmit(({ email, password }) => {
-    console.log(email)
     fetch("http://localhost:8082/api/member/login", {
       method: "POST",
       headers: {
@@ -29,13 +29,21 @@ const SignInForm = () => {
       },
       body: JSON.stringify({ email, password }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data);
-    })
-    .catch((error) => {
-      console.log("Error:", error);
-    });
+      .then((response) => response.json())
+      .then((data ) => {
+        console.log();
+        if (data.status === 400) {
+          alert(data.message)
+        }
+        else {
+          console.log("Success:", data);
+          router.push("/");
+        }
+      })
+      .catch((err) => {
+        console.debug(err);
+      });
+    
 
   })
 
