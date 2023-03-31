@@ -56,4 +56,4 @@ def naver_news_crawlling():
 
                         value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + cleantext + ('\n')  + ('\n') + content[0].text
 
-                        client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True, encoding="UTF8")
+                        client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True)
