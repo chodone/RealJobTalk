@@ -6,15 +6,13 @@ import logo from "@public/images/logo.png";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
-
 import { HiMagnifyingGlass, HiOutlineXMark } from "react-icons/hi2";
 
 type Props = {
   params: {
-    company: string
-  }
-}
+    company: string;
+  };
+};
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
@@ -39,18 +37,6 @@ const Navbar = () => {
                 <input type="text" className="px-4 py-2 w-80" placeholder="기업을 검색해보세요" />
                 <HiMagnifyingGlass className="w-6 h-6 my-2 mx-1 border-gray-200" />
               </div>
-              <div className="w20">
-                <select data-te-select-init>
-                  <option value="1">삼성전자</option>
-                  <option value="2">multicampus</option>
-                  <option value="3">당근서비스</option>
-                  <option value="4">NAVER Cloud</option>
-                  <option value="5">NAVER WEBTOON</option>
-                  <option value="6">Coupang</option>
-                  <option value="7">KAKAO</option>
-                  <option value="8">LG전자</option>
-                </select>
-              </div>
             </div>
           </div>
 
@@ -59,11 +45,7 @@ const Navbar = () => {
             <button type="button" className="py-5 px-3" onClick={() => router.push("/signin")}>
               로그인
             </button>
-            <button
-              type="button"
-              className="py-5 px-3"
-              // onClick={() => router.push('/signup')}
-            >
+            <button type="button" className="py-5 px-3" onClick={() => router.push("/signup")}>
               회원가입
             </button>
           </div>

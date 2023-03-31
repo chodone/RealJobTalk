@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { getCompanies } from "@/service/getCompany";
 import Company from "@/components/Company";
+import HomeCompany from '@/components/HomeCompany'
 export interface dbObject {
   company: string;
   url: string;
@@ -33,6 +34,7 @@ export default async function Home() {
         {companies.map((company, idx) => (
           <Company company={company} key={idx} />
         ))}
+        <HomeCompany/>
       </div>
     </div>
   );
