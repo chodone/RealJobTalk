@@ -6,7 +6,7 @@ from .views import test
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=3, minute=5, id = 'crawling')
+    @scheduler.scheduled_job('cron', hour=4, minute=30, id = 'crawling')
     def auto_check():
         print('실행')
         # test()
