@@ -31,7 +31,6 @@ public class EnterpriseController {
         return ResponseEntity.ok().body(enterpriseService.getEnterpriseDetail(enterpriseId));
     }
 
-
     @GetMapping("/{enterpriseId}/news")
     public ResponseEntity<List<NewsResponse>> getNews(@PathVariable Long enterpriseId,
                                                       @PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
