@@ -16,5 +16,7 @@ public class NewsResponse {
 
     private String dateOfIssue;
 
+    private Boolean isScrap;
+
 
 }

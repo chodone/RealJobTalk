@@ -44,14 +44,24 @@ public class MemberController {
     @PutMapping("/nickname/change")
     public ResponseEntity<?> changeNickname(@RequestBody Map<String, String> nickname,
                                             @AuthenticationPrincipal User user) {
-        System.out.println(user);
         return new ResponseEntity<>(memberService.modifyNickname(nickname.get("nickname"), user), HttpStatus.OK);
     }
 
-//    @PostMapping("/scrap")
-//    public
+//    @GetMapping("/scrap/news")
+//    public ResponseEntity<> getScrapNews(@AuthenticationPrincipal User user) {
+//
+//    }
 
+    @PostMapping("/scrap/news")
+    public Boolean scrapNews(@RequestBody Map<String, Long> newsId,
+                         @AuthenticationPrincipal User user) {
+        return memberService.scrapNews(newsId.get("newsId"), user);
+    }
 
-
+    @PostMapping("/scrap/pass_review")
+    public Boolean scrapPassReview(@RequestBody Map<String, Long> passReviewId,
+                                   @AuthenticationPrincipal User user) {
+        return memberService.scrapPassReview(passReviewId.get("passReviewId"), user);
+    }
 
 }

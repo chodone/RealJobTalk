@@ -1,20 +1,17 @@
 package com.ssafy.jobtalkbackend.service;
 
-import com.ssafy.jobtalkbackend.domain.Enterprise;
-import com.ssafy.jobtalkbackend.domain.News;
-import com.ssafy.jobtalkbackend.domain.PassReview;
+import com.ssafy.jobtalkbackend.domain.*;
 import com.ssafy.jobtalkbackend.dto.response.EnterpriseResponse;
 import com.ssafy.jobtalkbackend.dto.response.EnterpriseDetailResponse;
 import com.ssafy.jobtalkbackend.dto.response.NewsResponse;
 import com.ssafy.jobtalkbackend.dto.response.PassReviewResponse;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseRuntimeException;
-import com.ssafy.jobtalkbackend.repository.EnterpriseRepository;
-import com.ssafy.jobtalkbackend.repository.NewsRepository;
-import com.ssafy.jobtalkbackend.repository.PassReviewRepository;
+import com.ssafy.jobtalkbackend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +27,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     private final NewsRepository newsRepository;
     private final PassReviewRepository passReviewRepository;
     private final EnterpriseRepository enterpriseRepository;
+    private final NewsLikeRepository newsLikeRepository;
+    private final MemberRepository memberRepository;
 
 
     @Override
@@ -47,10 +46,22 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
         return enterpriseListResponse;
     }
+
     @Override
-    public List<NewsResponse> getNews(Long enterpriseId, Pageable pageable) {
+    public List<NewsResponse> getNews(Long enterpriseId, Pageable pageable, User user) {
+        Member member = memberRepository.findByEmail(user.getUsername()).orElse(null);
+
         List<News> newsList = newsRepository.findAllByEnterpriseId(enterpriseId, pageable);
+
         List<NewsResponse> newsResponseList = newsList.stream().map(news -> {
+            boolean isLike = false;
+            if (member != null) {
+                NewsLike newsLike = newsLikeRepository.findByNewsAndMember(news, member)
+                        .orElse(null);
+                if (newsLike != null) {
+                    isLike = true;
+                }
+            }
             NewsResponse newsResponse = NewsResponse
                     .builder()
                     .id(news.getId())
@@ -58,6 +69,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                     .url(news.getUrl())
                     .hotRank(news.getHotRank())
                     .dateOfIssue(news.getDateOfIssue())
+                    .isScrap(isLike)
                     .build();
             return newsResponse;
         }).collect(Collectors.toList());

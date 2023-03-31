@@ -39,7 +39,7 @@ public class EnterpriseController {
     public ResponseEntity<List<NewsResponse>> getNews(@PathVariable Long enterpriseId,
                                                       @PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
                                                       @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok().body(enterpriseService.getNews(enterpriseId, pageable));
+        return ResponseEntity.ok().body(enterpriseService.getNews(enterpriseId, pageable, user));
     }
 
     @GetMapping("/{enterpriseId}/pass_review")
