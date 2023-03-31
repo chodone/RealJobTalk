@@ -8,7 +8,8 @@ import time
 
 def test():
     client_hdfs = InsecureClient("http://172.17.0.4:9870", user="root")
-    client_hdfs.list('/user')
+    print(client_hdfs.list('/user'))
+    print(client_hdfs.list('/user/root'))
 
 def naver_news_crawlling():
     print('시작합니당')

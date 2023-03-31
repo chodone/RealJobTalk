@@ -7,7 +7,7 @@ import time
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=1, minute=50, id = 'crawling')
+    @scheduler.scheduled_job('cron', hour=2, minute=8, id = 'crawling')
     def auto_check():
         print('실행')
         test()
