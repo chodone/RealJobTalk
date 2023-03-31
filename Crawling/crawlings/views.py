@@ -6,6 +6,10 @@ from datetime import datetime
 from hdfs import InsecureClient
 import time
 
+def test():
+    client_hdfs = InsecureClient("http://172.17.0.4:9870", user="root")
+    client_hdfs.list('/user')
+
 def naver_news_crawlling():
     print('시작합니당')
     client_hdfs = InsecureClient("http://172.17.0.4:9870", user="root")

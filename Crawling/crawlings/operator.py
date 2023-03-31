@@ -6,7 +6,7 @@ import time
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=1, minute=35, id = 'crawling')
+    @scheduler.scheduled_job('cron', hour=1, minute=48, id = 'crawling')
     def auto_check():
         print('실행')
         time.sleep(3)
