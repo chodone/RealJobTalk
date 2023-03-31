@@ -44,8 +44,12 @@ public class MemberController {
     @PutMapping("/nickname/change")
     public ResponseEntity<?> changeNickname(@RequestBody Map<String, String> nickname,
                                             @AuthenticationPrincipal User user) {
+        System.out.println(user);
         return new ResponseEntity<>(memberService.modifyNickname(nickname.get("nickname"), user), HttpStatus.OK);
     }
+
+//    @PostMapping("/scrap")
+//    public
 
 
 
