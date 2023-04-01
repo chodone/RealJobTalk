@@ -1,13 +1,7 @@
 import Head from "next/head";
-import { getCompanies } from "@/service/getCompany";
-import Company from "@/components/Company";
-import HomeCompany from '@/components/HomeCompany'
+import HomeCompany from "@/components/HomeCompany";
 
 export default async function Home() {
-
-  const companies = await getCompanies()
-
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>
@@ -16,9 +10,8 @@ export default async function Home() {
       </Head>
 
       <div>
-        <HomeCompany/>
+        <HomeCompany />
       </div>
     </div>
   );
 }
-
