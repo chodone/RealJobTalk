@@ -35,7 +35,6 @@ const SignInForm = () => {
     })
       .then((response) => response.json())
       .then((data ) => {
-        console.log();
         if (data.status === 400) {
           alert(data.message)
         }
@@ -44,7 +43,7 @@ const SignInForm = () => {
           localStorage.setItem('accessToken', data.accessToken)
           localStorage.setItem('refreshToken' , data.refreshToken)
           const data_ = jwtDecode(data.accessToken)
-          
+          console.log(data_)
           dispatch(authActions.logIn({data:data_}))
 
           router.push("/");

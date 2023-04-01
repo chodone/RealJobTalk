@@ -6,6 +6,9 @@ import logo from "@public/images/logo.png";
 import { useAppSelector, useAppDispatch } from '@/redux/hook'
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { authActions } from "@/redux/reducer/authReducer";
+import jwtDecode from 'jwt-decode'
+
 
 import { HiMagnifyingGlass, HiOutlineXMark } from "react-icons/hi2";
 
@@ -17,16 +20,23 @@ type Props = {
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
-  useEffect(() => {
-
-  }, [])
-  const getAuth = useAppSelector((state) => state.auth)
   const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   const MainLogo = logo;
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const [logined, setLogined] = useState(getAuth.isLogined)
 
-  console.log(logined);
+  useEffect(() => { 
+    dispatch(authActions.checkAccessToken())
+
+  },[])
+
+
+  const getAuth = useAppSelector((state) => state.auth)
+  console.log(getAuth)
+  const logined = getAuth.isLogined
+
+
+  
 
   return (
     <nav>
@@ -49,14 +59,13 @@ const Navbar = () => {
           </div>
 
           {/* mobile nav */}
-          {logined ? (
+          {logined && 
             <div className="flex items-center space-x-1">
-              <button type="button" className="py-5 px-3" onClick={() => router.push("/signin")}>
+              <button type="button" className="py-5 px-3" onClick={() => { dispatch(authActions.logOut()); }}>
                 로그아웃
               </button>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-1">
+            </div>}
+          {!logined && <div className="flex items-center space-x-1">
               <button type="button" className="py-5 px-3" onClick={() => router.push("/signin")}>
                 로그인
               </button>
@@ -64,7 +73,10 @@ const Navbar = () => {
                 회원가입
               </button>
             </div>
-          )}
+          
+          }
+            
+        
 
           {/* mobile menu */}
           <div className="md:hidden flex items-center">

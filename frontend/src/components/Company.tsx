@@ -11,7 +11,7 @@ export interface dbObject {
 const Company = ({ company }: { company: dbObject }) => {
   const imgurl = company["imgUrl"];
   const companyName = company["name"];
-  console.log(company);
+  
   return (
     <Link
       className="transform h-64 w-64 transition duration-500 hover:scale-125"
