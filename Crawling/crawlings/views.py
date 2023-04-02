@@ -40,8 +40,13 @@ def tistory_review_crawling():
 
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument("--single-process")
+    options.add_argument("--disable-dev-shm-usage")
+    path='/usr/src/app/chromedriver'
 
-    browser = webdriver.Chrome('../chromedriver', options=options) #"./chromedriver.exe"
+    browser = webdriver.Chrome(path, options=options) #"./chromedriver.exe"
     browser.implicitly_wait(30)
     browser.maximize_window()
 
@@ -81,6 +86,7 @@ def tistory_review_crawling():
                 value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + aTag + ('\n') + title + ('\n') + cleantext
                 filename = dateOfIssue+"_tistory_pass_review_"+enterprise.strip()+"_"+str(val)
                 client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                
 
                 cursor = conn_aws.cursor()
 
@@ -151,7 +157,7 @@ def naver_news_crawlling():
                             contentVal += c.text.strip()
 
                         value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
-                        client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                        client_hdfs.write(f'/user/root/newsInput/{enterprise.strip()}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                         time.sleep(3)
 
