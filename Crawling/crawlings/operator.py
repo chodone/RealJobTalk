@@ -1,11 +1,13 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from .views import naver_news_crawlling
+from .views import tistory_review_crawling
 
 
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=9, minute=5, id = 'crawling')
+    @scheduler.scheduled_job('cron', hour=11, minute=35, id = 'crawling')
     def auto_check():
         naver_news_crawlling()
+        tistory_review_crawling()
     scheduler.start()
