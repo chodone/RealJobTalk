@@ -3,24 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import UnderNav from "@/components/UnderNav";
 
+
 const nav_item =
 [
   {
     'item': '기업정보',
-    'dir': 'info',
+    'dir': '',
     },
     {
       'item': '기업뉴스',
-      'dir': 'news',
+      'dir': '/news',
     },
     {
       'item': '합격후기',
-      'dir': 'reviews',
+      'dir': '/reviews',
     },
-    {
-      'item': '스크랩',
-      'dir': 'user',
-    }
 ]
 
 export default async function RootLayout({
@@ -29,23 +26,25 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
   params: {
-    company: string;
-    url: string;
+    company: string
+    enterpriseId:number
   };
 }) {
 
 
   const company = decodeURI(params.company);
+  
   const getValue = await getcompany(company);
+  
+  
 
-  // const companyUrl = getValue?.url
   const companyUrl = getValue?.url as unknown as string;
 
   return (
     <>
       <div className="flex flex-row">
         <div className="flex space-x-10 px-40 mt-10 mb-2 basis-7/8">
-          {nav_item.map((item, idx) => <Link href={`${company}/${item['dir']}`} key={idx}><UnderNav item={item['item']} id={idx}  key={idx}/></Link>)} 
+          {nav_item.map((item, idx) => <Link href={`/info/${company}${item['dir']}`} key={idx}><UnderNav item={item['item']} id={idx}  key={idx}/></Link>)} 
 
           {/* <Link className="font-bold" href={`${company}/info`}>
             기업 정보{" "}

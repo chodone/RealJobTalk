@@ -1,10 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import kakaoButton from "@public/images/kakaoButton.png"
 import React, { useState } from "react";
 import logo from "@public/images/logo.png";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { authActions } from "@/redux/reducer/authReducer";
+import { useAppSelector, useAppDispatch } from '@/redux/hook'
+import jwtDecode from 'jwt-decode'
+
 
 interface FormData {
   email: string
@@ -17,7 +22,9 @@ interface FormData {
 
 
 const SignInForm = () => {
+  const dispatch = useAppDispatch();
   const MainLogo = logo;
+  const kakao = kakaoButton;
   const router = useRouter()
   const { register, handleSubmit } = useForm<FormData>()
   
@@ -31,17 +38,23 @@ const SignInForm = () => {
     })
       .then((response) => response.json())
       .then((data ) => {
-        console.log();
         if (data.status === 400) {
           alert(data.message)
         }
         else {
           console.log("Success:", data);
+          localStorage.setItem('accessToken', data.accessToken)
+          localStorage.setItem('refreshToken' , data.refreshToken)
+          const data_ = jwtDecode(data.accessToken)
+          console.log(data_)
+          dispatch(authActions.logIn({data:data_}))
+
           router.push("/");
         }
       })
       .catch((err) => {
         console.debug(err);
+        console.log(err)
       });
     
 
@@ -56,8 +69,8 @@ const SignInForm = () => {
             <div className=" w-96 ">
               <Image className="h-8 w-32" src={MainLogo} alt="" />
             </div>
-            <div className="divide-y divide-gray-200">
-              <form action="" onSubmit={onSubmit} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+            <div className=" divide-gray-200">
+              <form action="" onSubmit={onSubmit} className="pt-8 pb-3 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <div className="relative">
                   <input
                     {...register("email", {
@@ -102,9 +115,10 @@ const SignInForm = () => {
                   </label>
                 </div>
                 <div className="relative">
-                  <button className="bg-green-500 text-white rounded-md px-2 py-1">Submit</button>
+                  <button className="bg-green-500 h-14 w-full text-white rounded-md px-2 py-1">Submit</button>
                 </div>
               </form>
+              <Image className="" src={kakao} alt="" />
             </div>
           </div>
         </div>
