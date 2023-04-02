@@ -68,10 +68,6 @@ def tistory_review_crawling():
             
             count += 1
 
-            print('atag ---')
-            print(aTag)
-            print('---')
-
             params = {
                 "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
                 "blogName" : aTag.split('/')[2].split('.')[0],
@@ -92,7 +88,7 @@ def tistory_review_crawling():
                     
                     filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
                     value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
-                    client_hdfs.write(f'/user/root/newsInput/{enterprise.strip()}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                    client_hdfs.write(f'/user/root/reviewInput/{enterprise.strip()}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                     cursor = conn_aws.cursor()
 
