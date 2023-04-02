@@ -6,7 +6,7 @@ from .views import tistory_review_crawling
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=16, minute=25, id = 'crawling')
+    @scheduler.scheduled_job('cron', hour=16, minute=34, id = 'crawling')
     def auto_check():
         naver_news_crawlling()
         tistory_review_crawling()
