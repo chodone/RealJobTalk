@@ -8,6 +8,7 @@ def start():
 
     @scheduler.scheduled_job('cron', hour=11, minute=35, id = 'crawling')
     def auto_check():
-        naver_news_crawlling()
         tistory_review_crawling()
+        naver_news_crawlling()
+        
     scheduler.start()
