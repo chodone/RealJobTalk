@@ -3,7 +3,7 @@ package com.ssafy.jobtalkbackend.service;
 import com.ssafy.jobtalkbackend.domain.*;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
-import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
+import com.ssafy.jobtalkbackend.dto.response.*;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseRuntimeException;
 import com.ssafy.jobtalkbackend.jwt.JwtTokenProvider;
@@ -12,6 +12,7 @@ import com.ssafy.jobtalkbackend.exception.member.MemberExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.member.MemberRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
     private final NewsRepository newsRepository;
     private final PassReviewRepository passReviewRepository;
     private final PassReviewLikeRepository passReviewLikeRepository;
+    private final EnterpriseService enterpriseService;
 
     @Override
     public Member searchMember(String email) {
@@ -114,6 +119,26 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public NewsTotalResponse getScrapNews(Pageable pageable, User user) {
+        List<NewsResponse> resultNewsList = new ArrayList<>();
+        Member member = searchMember(user.getUsername());
+
+        long totalSize = newsLikeRepository.countAllByMember(member);
+        List<NewsLike> newsLikeList = newsLikeRepository.findAllByMember(member, pageable);
+
+        for(NewsLike newsLike : newsLikeList) {
+            News news = newsLike.getNews();
+            resultNewsList.add(enterpriseService.buildNewsResponse(news, true));
+        }
+        int totalPages = (int) Math.ceil((double) totalSize / pageable.getPageSize());
+        return NewsTotalResponse
+                .builder()
+                .totalPages(totalPages)
+                .newsResponseList(resultNewsList)
+                .build();
+    }
+
+    @Override
     @Transactional
     public Boolean scrapNews(Long newsId, User user) {
 
@@ -134,6 +159,28 @@ public class MemberServiceImpl implements MemberService {
             newsLikeRepository.deleteById(newsLike.getId());
             return false;
         }
+    }
+
+    @Override
+    public PassReviewTotalResponse getScrapPassReview(Pageable pageable, User user) {
+        List<PassReviewResponse> resultPassReviewList = new ArrayList<>();
+        Member member = searchMember(user.getUsername());
+
+        long totalSize = passReviewLikeRepository.countAllByMember(member);
+        List<PassReviewLike> passReviewLikeList = passReviewLikeRepository.findAllByMember(member, pageable);
+
+        for(PassReviewLike passReviewLike : passReviewLikeList) {
+            PassReview passReview = passReviewLike.getPassReview();
+            resultPassReviewList.add(enterpriseService.buildPassReviewResponse(passReview, true));
+        }
+
+        int totalPages = (int) Math.ceil((double) totalSize / pageable.getPageSize());
+
+        return PassReviewTotalResponse
+                .builder()
+                .totalPages(totalPages)
+                .passReviewResponseList(resultPassReviewList)
+                .build();
     }
 
     @Transactional
@@ -157,6 +204,5 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
     }
-
 
 }

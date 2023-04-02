@@ -2,8 +2,6 @@ package com.ssafy.jobtalkbackend.service;
 
 import com.ssafy.jobtalkbackend.domain.*;
 import com.ssafy.jobtalkbackend.dto.response.*;
-import com.ssafy.jobtalkbackend.exception.auth.AuthExceptionEnum;
-import com.ssafy.jobtalkbackend.exception.auth.AuthRuntimeException;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseRuntimeException;
 import com.ssafy.jobtalkbackend.repository.*;
@@ -35,17 +33,15 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public List<EnterpriseResponse> getEnterprises() {
         List<Enterprise> enterpriseList = enterpriseRepository.findAll();
-        List<EnterpriseResponse> enterpriseListResponse = enterpriseList.stream().map(enterprise -> {
-            EnterpriseResponse enterpriseResponse = EnterpriseResponse
+
+        return enterpriseList.stream().map(enterprise -> {
+            return EnterpriseResponse
                     .builder()
                     .id(enterprise.getId())
                     .name(enterprise.getName())
                     .imgUrl(enterprise.getImgUrl())
                     .build();
-            return enterpriseResponse;
         }).collect(Collectors.toList());
-
-        return enterpriseListResponse;
     }
 
     @Override
@@ -54,7 +50,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         List<NewsResponse> resultNewsList = new ArrayList<>();
 
         List<News> newsList = newsRepository.findAllByEnterpriseId(enterpriseId, pageable);
-        int totalPages = (int) Math.ceil((double) newsRepository.count() / newsList.size());
+        int totalPages = (int) Math.ceil((double) newsRepository.count() / pageable.getPageSize());
 
         Member member = null;
         if (user != null) {
@@ -75,14 +71,14 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 resultNewsList.add(buildNewsResponse(news, false));
             }
         }
-        NewsTotalResponse newsTotalResponse = NewsTotalResponse
+        return NewsTotalResponse
                 .builder()
                 .totalPages(totalPages)
                 .newsResponseList(resultNewsList)
                 .build();
-        return newsTotalResponse;
     }
 
+    @Override
     public NewsResponse buildNewsResponse(News news, boolean isScrap) {
         return NewsResponse
                 .builder()
@@ -103,7 +99,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
         List<PassReview> passReviewList = passReviewRepository.findAllByEnterpriseId(enterpriseId, pageable);
 
-        int totalPages = (int) Math.ceil((double) passReviewRepository.count() / passReviewList.size());
+        int totalPages = (int) Math.ceil((double) passReviewRepository.count() / pageable.getPageSize());
 
         Member member = null;
 
@@ -125,14 +121,14 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 resultPassReviewList.add(buildPassReviewResponse(passReview, false));
             }
         }
-        PassReviewTotalResponse passReviewTotalResponse = PassReviewTotalResponse
+        return PassReviewTotalResponse
                 .builder()
                 .totalPages(totalPages)
                 .passReviewResponseList(resultPassReviewList)
                 .build();
-        return passReviewTotalResponse;
     }
 
+    @Override
     public PassReviewResponse buildPassReviewResponse(PassReview passReview, boolean isScrap) {
         return PassReviewResponse
                 .builder()
@@ -149,7 +145,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     public EnterpriseDetailResponse getEnterpriseDetail(Long enterpriseId) {
         Enterprise enterprise = enterpriseRepository.findById(enterpriseId)
                 .orElseThrow(() -> new EnterpriseRuntimeException(EnterpriseExceptionEnum.ENTERPRISE_EXIST_EXCEPTION));
-        EnterpriseDetailResponse enterpriseDetailResponse = EnterpriseDetailResponse
+        return EnterpriseDetailResponse
                 .builder()
                 .id(enterprise.getId())
                 .name(enterprise.getName())
@@ -160,6 +156,5 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .businessInformation(enterprise.getBusinessInformation())
                 .idealTalent(enterprise.getIdealTalent())
                 .build();
-        return enterpriseDetailResponse;
     }
 }
