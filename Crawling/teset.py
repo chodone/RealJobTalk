@@ -10,6 +10,7 @@ from django.conf import settings
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import json
+import xml.etree.ElementTree as elemTree
 import xmltodict
 
 enterpriseNameFile = open("enterpriseNames.txt", "r", encoding="UTF8")
@@ -62,47 +63,33 @@ for enterprise in lines:
             browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
         else:
             aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
-        
+        print('a tag ::: ', aTag)
         count += 1
-
-        print('atag ---')
-        print(aTag)
-        print('---')
-
+        
         params = {
             "access_token" : 'a9356d05163a6af4030ca9dd8a68da40_136d9085af9fefc038f15b14124717eb',
             "blogName" : aTag.split('/')[2].split('.')[0],
             "postId" : aTag.split('/')[-1]
         }
 
+        res = requests.get(url, headers=headers, params=params)
+        # print(res.text[:500])
+
+        tree = elemTree.fromstring(res.text)
+        xmlRoot = tree.find('tistory')
+        print(xmlRoot)
+
         try:
-            res = requests.get(url, headers=headers, params=params)
-            xpars = xmltodict.parse(res.text)
-            jsonDump = json.dumps(xpars)
-            jsonBody = json.loads(jsonDump)
             dateOfIssue = "".join(jsonBody['tistory']['item']['date'].split(' ')[0].split('-'))
+            print(dateOfIssue)
 
             if int(dateOfIssue[:4]) > 2019:
+                title =  jsonBody['tistory']['item']['title']
+                url = jsonBody['tistory']['item']['url']
                 cleantext = BeautifulSoup(jsonBody['tistory']['item']['content'], "lxml").text.strip()
-
-                cursor = conn_aws.cursor()
-
-                selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
-                cursor.execute(selectSql)
-                maxNewsId = cursor.fetchall()
-                maxNewsId = maxNewsId[0][0]
-                if maxNewsId == None:
-                    maxNewsId = -1
-
-                conn_aws.commit()
-
-                sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
-                value = (maxNewsId+1, dateOfIssue, jsonBody['tistory']['item']['title'], jsonBody['tistory']['item']['url'], enterprise_id, cleantext)
-                cursor.execute(sql, value)
-
-                conn_aws.commit()
+                
+                print('hdfs 전송완료')
+                print(title, url)
         except:
             continue
-
-        
     enterprise_id += 1
