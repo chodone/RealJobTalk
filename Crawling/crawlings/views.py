@@ -80,6 +80,7 @@ def tistory_review_crawling():
                 jsonDump = json.dumps(xpars)
                 jsonBody = json.loads(jsonDump)
                 dateOfIssue = "".join(jsonBody['tistory']['item']['date'].split(' ')[0].split('-'))
+                print(dateOfIssue)
 
                 if int(dateOfIssue[:4]) > 2019:
                     title =  jsonBody['tistory']['item']['title']
