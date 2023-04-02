@@ -54,57 +54,64 @@ def tistory_review_crawling():
     for enterprise in lines:
         browser.get("https://www.google.com/search?q="+enterprise.strip()+" 합격 후기 site:tistory.com")
         
-        val = 0
-        for idx in range(1, 300):
-            isWriteDate = False
-            try:
-                write_date = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{idx}]/div/div/div[2]/div/span[1]/span').text
-                isWriteDate = True
-            except:
-                pass
+        count = 1
+        for idx in range(300):
+            print(enterprise.strip(), count)
 
-            title = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{idx}]/div/div/div[1]/div/a/h3').text
+            aTag = ''
+            if count == 10:
+                aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
+                count = 0
+                browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
+            else:
+                aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
             
-            if (isWriteDate and int(write_date.split('.')[0]) > 2019) or '2021' in title or '2020' in title or '2022' in title or '21' in title or '22' in title or '20' in title:
+            count += 1
 
-                aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{idx}]/div/div/div[1]/div/a').get_attribute('href')
+            print('atag ---')
+            print(aTag)
+            print('---')
 
-                params = {
-                    "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
-                    "blogName" : aTag.split('/')[2].split('.')[0],
-                    "postId" : aTag.split('/')[-1]
-                }
+            params = {
+                "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
+                "blogName" : aTag.split('/')[2].split('.')[0],
+                "postId" : aTag.split('/')[-1]
+            }
 
+            try:
                 res = requests.get(url, headers=headers, params=params)
                 xpars = xmltodict.parse(res.text)
                 jsonDump = json.dumps(xpars)
                 jsonBody = json.loads(jsonDump)
                 dateOfIssue = "".join(jsonBody['tistory']['item']['date'].split(' ')[0].split('-'))
 
-                cleantext = BeautifulSoup(jsonBody['tistory']['item']['content'], "lxml").text.strip()
+                if int(dateOfIssue[:4]) > 2019:
+                    title =  jsonBody['tistory']['item']['title']
+                    url = jsonBody['tistory']['item']['url']
+                    cleantext = BeautifulSoup(jsonBody['tistory']['item']['content'], "lxml").text.strip()
+                    
+                    filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
+                    value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
+                    client_hdfs.write(f'/user/root/newsInput/{enterprise.strip()}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
-                value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + aTag + ('\n') + title + ('\n') + cleantext
-                filename = dateOfIssue+"_tistory_pass_review_"+enterprise.strip()+"_"+str(val)
-                client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
-                
+                    cursor = conn_aws.cursor()
 
-                cursor = conn_aws.cursor()
+                    selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
+                    cursor.execute(selectSql)
+                    maxNewsId = cursor.fetchall()
+                    maxNewsId = maxNewsId[0][0]
+                    if maxNewsId == None:
+                        maxNewsId = -1
 
-                selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
-                cursor.execute(selectSql)
-                maxNewsId = cursor.fetchall()
-                maxNewsId = maxNewsId[0][0]
-                if maxNewsId == None:
-                    maxNewsId = -1
+                    conn_aws.commit()
 
-                conn_aws.commit()
+                    sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
+                    value = (maxNewsId+1, dateOfIssue, title, url, enterprise_id, cleantext)
+                    cursor.execute(sql, value)
 
-                sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
-                value = (maxNewsId+1, dateOfIssue, title, aTag, enterprise_id, cleantext)
-                cursor.execute(sql, value)
-
-                conn_aws.commit()
-            val += 1
+                    conn_aws.commit()
+            except:
+                continue
         enterprise_id += 1
     conn_aws.close()
 
