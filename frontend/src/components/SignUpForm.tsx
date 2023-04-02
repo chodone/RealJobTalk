@@ -364,7 +364,7 @@ const SignUphtmlForm = () => {
                   </label>
                 </div>
                 <div className="relative">
-                  <button className="bg-green-500 text-white rounded-md px-2 py-1">Submit</button>
+                <button className="bg-green-500 h-14 w-full text-white rounded-md px-2 py-1">Submit</button>
                 </div>
               </form>
             </div>

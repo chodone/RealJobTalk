@@ -12,7 +12,7 @@ const HomeCompany = () => {
   const datas = companies.data;
   const getAuth = useAppSelector((state) => state.auth)
   
- 
+  console.log(datas)
   return (
     <div>
       <Carousel cols={4} rows={4} loop>

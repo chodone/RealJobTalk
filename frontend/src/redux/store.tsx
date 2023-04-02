@@ -1,5 +1,6 @@
 "use client";
 
+
 import { configureStore } from '@reduxjs/toolkit'
 import Reducer from './reducer/reducer'
 import authReducer from './reducer/authReducer'

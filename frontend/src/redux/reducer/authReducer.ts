@@ -37,6 +37,7 @@ const authReducer = createSlice({
       state.nickname = ''
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
+      // api 요청 필요
     },
     
 
