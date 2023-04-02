@@ -1,7 +1,14 @@
 "use client";
 import React from "react";
 
-const ReviewCard = () => {
+interface Review {
+  id: number,
+  title: string,
+  url: string,
+  dateOfIssue: string
+}
+
+const ReviewCard = ({review}:{review:Review}) => {
   return (
     <div>
       <div className="ml-20 px-10 py-3 mr-20">
