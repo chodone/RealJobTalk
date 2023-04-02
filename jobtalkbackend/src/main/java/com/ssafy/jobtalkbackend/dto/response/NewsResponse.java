@@ -10,6 +10,8 @@ public class NewsResponse {
 
     private String title;
 
+    private String content;
+
     private String url;
 
     private Integer hotRank;

@@ -1,9 +1,14 @@
+
+"use client";
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from '../api'
 
 const initialState = {
-  data: {},
-  loading:{}
+  data: [],
+  keyword:""
+
+  
 }
 
 export const getData = createAsyncThunk(
@@ -11,26 +16,28 @@ export const getData = createAsyncThunk(
     async () => {
     const company = await api.get('/api/enterprise')
 
-    return company
+    return company.data
   }
 )
+
+
 
 const Reducer = createSlice({
   name: "reducer",
   initialState,
   reducers: {
-
+    SEARCH_BY_NAME(state,action){
+      state.keyword = action.payload.keyword
+    },
+    
     
   }, extraReducers: (builder) => {
     builder.addCase(getData.pending, (state) => {
-      state.loading = 'pending';
     })
     builder.addCase(getData.fulfilled, (state, action) => {
       state.data = action.payload;
-      console.log(action.payload)
     })
     builder.addCase(getData.rejected, (state) => {
-      state.loading = 'failed';
     })
   }
 

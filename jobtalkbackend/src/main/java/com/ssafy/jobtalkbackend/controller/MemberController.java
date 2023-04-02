@@ -2,9 +2,14 @@ package com.ssafy.jobtalkbackend.controller;
 
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
+import com.ssafy.jobtalkbackend.dto.response.NewsTotalResponse;
+import com.ssafy.jobtalkbackend.dto.response.PassReviewTotalResponse;
 import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
 import com.ssafy.jobtalkbackend.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -47,15 +52,22 @@ public class MemberController {
         return new ResponseEntity<>(memberService.modifyNickname(nickname.get("nickname"), user), HttpStatus.OK);
     }
 
-//    @GetMapping("/scrap/news")
-//    public ResponseEntity<> getScrapNews(@AuthenticationPrincipal User user) {
-//
-//    }
+    @GetMapping("/scrap/news")
+    public ResponseEntity<NewsTotalResponse> getScrapNews(@PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                          @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(memberService.getScrapNews(pageable, user));
+    }
 
     @PostMapping("/scrap/news")
     public Boolean scrapNews(@RequestBody Map<String, Long> newsId,
                          @AuthenticationPrincipal User user) {
         return memberService.scrapNews(newsId.get("newsId"), user);
+    }
+
+    @GetMapping("/scrap/pass_review")
+    public ResponseEntity<PassReviewTotalResponse> getScrapPassReview(@PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(memberService.getScrapPassReview(pageable, user));
     }
 
     @PostMapping("/scrap/pass_review")

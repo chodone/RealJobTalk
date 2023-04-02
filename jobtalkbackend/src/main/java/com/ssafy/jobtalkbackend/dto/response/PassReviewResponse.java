@@ -11,6 +11,8 @@ public class PassReviewResponse {
 
     private String title;
 
+    private String content;
+
     private String url;
 
     private String dateOfIssue;

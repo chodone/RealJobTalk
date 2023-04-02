@@ -1,21 +1,52 @@
-'use client'
-import React from 'react'
-import {getData} from '@/redux/reducer/reducer'
-import { useAppSelector, useAppDispatch } from '@/redux/hook'
-import {useEffect} from 'react'
+"use client";
+import React from "react";
+import { getData } from "@/redux/reducer/reducer";
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import { useEffect,useState } from "react";
+import Company from "@/components/Company";
+import Carousel from "better-react-carousel";
 
-const HomeCompany = () => {
-  const dispatch = useAppDispatch();
-  const count = useAppSelector((state) => state.action)
-  console.log(count)
-  useEffect(() => {
-    dispatch(getData())
-  },[])
-  return (
-    <div>
-      hi
-    </div>
-  )
+export interface dbObject {
+  name: string;
+  imgUrl: string;
 }
 
-export default HomeCompany
+const HomeCompany = () => {
+
+  let [filteredList, setfilteredList] =useState([])
+  const companies = useAppSelector((state) => state.action);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (companies.keyword !== "") {
+
+      let datas = companies.data;
+
+      let list = datas.filter((company:dbObject) => company.name.includes(companies.keyword))
+      
+      setfilteredList(list);
+    }else{
+
+      let datas= companies.data;
+
+      setfilteredList(datas)
+    }
+
+    dispatch(getData());
+  }, [companies.keyword,companies]);
+
+  
+  const getAuth = useAppSelector((state) => state.auth)
+  
+  return (
+      <Carousel cols={4} rows={6}>
+            {filteredList.map((company, idx) => (
+              <Carousel.Item key={idx}><Company  company={company} key={idx} /></Carousel.Item>
+            ))}
+      </Carousel>
+  );
+};
+
+export default HomeCompany;
+
+// className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8 items-center"
