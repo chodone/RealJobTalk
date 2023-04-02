@@ -1,12 +1,13 @@
 package com.ssafy.jobtalkbackend.service;
 
-import com.ssafy.jobtalkbackend.domain.Member;
-import com.ssafy.jobtalkbackend.domain.Role;
+import com.ssafy.jobtalkbackend.domain.*;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
 import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
+import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseExceptionEnum;
+import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseRuntimeException;
 import com.ssafy.jobtalkbackend.jwt.JwtTokenProvider;
-import com.ssafy.jobtalkbackend.repository.MemberRepository;
+import com.ssafy.jobtalkbackend.repository.*;
 import com.ssafy.jobtalkbackend.exception.member.MemberExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.member.MemberRuntimeException;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,20 @@ import org.springframework.http.HttpStatus;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final NewsLikeRepository newsLikeRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final NewsRepository newsRepository;
+    private final PassReviewRepository passReviewRepository;
+    private final PassReviewLikeRepository passReviewLikeRepository;
+
+    @Override
+    public Member searchMember(String email) {
+        Member member = memberRepository.findByEmail(String.valueOf(email))
+                .orElseThrow(()-> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
+        return member;
+    }
 
     @Transactional
     @Override
@@ -59,8 +71,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public ResponseEntity<TokenResponse> login(LoginRequest request, boolean kakaoLogin) {
 
-        Member member = memberRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
+        Member member = searchMember(request.getEmail());
 
         if (kakaoLogin == false && member.getOauthId() != null) {
             throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_NEED_KAKAO_LOGIN);
@@ -96,10 +107,55 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public String modifyNickname(String nickname, User user) {
-        Member member = memberRepository.findByEmail(String.valueOf(user.getUsername())).orElse(null);
+        Member member = searchMember(user.getUsername());
         checkNickname(nickname);
         member.modifyNickname(nickname);
         return nickname;
+    }
+
+    @Override
+    @Transactional
+    public Boolean scrapNews(Long newsId, User user) {
+
+        Member member = searchMember(user.getUsername());
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(()-> new EnterpriseRuntimeException(EnterpriseExceptionEnum.ENTERPRISE_NEWS_NOT_EXIST_EXCEPTION));
+
+        NewsLike newsLike = newsLikeRepository.findByNewsAndMember(news, member).orElse(null);
+        if (newsLike == null) {
+            newsLike = NewsLike
+                    .builder()
+                    .member(member)
+                    .news(news)
+                    .build();
+            newsLikeRepository.save(newsLike);
+            return true;
+        } else {
+            newsLikeRepository.deleteById(newsLike.getId());
+            return false;
+        }
+    }
+
+    @Transactional
+    @Override
+    public Boolean scrapPassReview(Long passReviewId, User user) {
+        Member member = searchMember(user.getUsername());
+        PassReview passReview = passReviewRepository.findById(passReviewId)
+                .orElseThrow(() -> new EnterpriseRuntimeException(EnterpriseExceptionEnum.ENTERPRISE_PASSREVIEW_NOT_EXIST_EXCEPTION));
+        PassReviewLike passReviewLike = passReviewLikeRepository.findByPassReviewAndMember(passReview, member).orElse(null);
+
+        if (passReviewLike == null) {
+            passReviewLike = PassReviewLike
+                    .builder()
+                    .member(member)
+                    .passReview(passReview)
+                    .build();
+            passReviewLikeRepository.save(passReviewLike);
+            return true;
+        } else {
+            passReviewLikeRepository.deleteById(passReviewLike.getId());
+            return false;
+        }
     }
 
 
