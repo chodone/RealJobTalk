@@ -22,6 +22,9 @@ public class News {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
     private String url;
 
     private Integer hotRank;
