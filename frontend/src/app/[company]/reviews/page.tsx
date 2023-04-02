@@ -1,23 +1,19 @@
-import { getcompany } from "@/service/getCompany"
-import ReviewCard from '@/components/RevieCard'
+import { getcompany } from "@/service/getCompany";
+import CompanyReview from "@/components/CompanyReviews"
+
 
 type Props = {
   params: {
-    company: string
-  }
-}
+    company: string;
+  };
+};
 
-export default async function CompanyPage({ params :{company} }: Props) {
-  
+export default async function CompanyPage({ params: { company } }: Props) {
   const companyName = await getcompany(decodeURI(company));
-  
-  return (
-    <h1>
 
-      <ReviewCard />
-      <ReviewCard />
-      <ReviewCard/>
-    </h1>
-  )
-  
+
+
+  return (
+    <CompanyReview />
+  );
 }

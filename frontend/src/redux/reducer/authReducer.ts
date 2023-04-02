@@ -5,8 +5,8 @@ import jwtDecode from 'jwt-decode'
 import { useEffect } from "react";
 
 interface DecodedToken {
-  email: string;
-  nickname: string;
+  sub: string;
+  jti: string;
   // ... other properties
 }
 
@@ -27,8 +27,8 @@ const authReducer = createSlice({
   reducers: {
     logIn(state, action) {
       state.isLogined = true
-      state.email = action.payload.data.email
-      state.nickname = action.payload.data.nickname
+      state.email = action.payload.data.sub
+      state.nickname = action.payload.data.jti
     },
 
     logOut(state) {
@@ -52,8 +52,8 @@ const authReducer = createSlice({
         const data_ = jwtDecode(localStorage.getItem('accessToken') ?? '') as DecodedToken;
         console.log(data_);
         state.isLogined = true;
-        state.email = data_.email;
-        state.nickname = data_.nickname;
+        state.email = data_.sub;
+        state.nickname = data_.jti;
       } catch (error) {
         // 에러 처리
         console.log(error);
