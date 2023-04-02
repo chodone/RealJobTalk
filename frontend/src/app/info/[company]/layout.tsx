@@ -18,10 +18,6 @@ const nav_item =
       'item': '합격후기',
       'dir': '/reviews',
     },
-    {
-      'item': '스크랩',
-      'dir': '/user',
-    }
 ]
 
 export default async function RootLayout({
@@ -48,7 +44,7 @@ export default async function RootLayout({
     <>
       <div className="flex flex-row">
         <div className="flex space-x-10 px-40 mt-10 mb-2 basis-7/8">
-          {nav_item.map((item, idx) => <Link href={`${company}${item['dir']}`} key={idx}><UnderNav item={item['item']} id={idx}  key={idx}/></Link>)} 
+          {nav_item.map((item, idx) => <Link href={`/info/${company}${item['dir']}`} key={idx}><UnderNav item={item['item']} id={idx}  key={idx}/></Link>)} 
 
           {/* <Link className="font-bold" href={`${company}/info`}>
             기업 정보{" "}

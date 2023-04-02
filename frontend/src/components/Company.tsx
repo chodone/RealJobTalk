@@ -22,8 +22,10 @@ const Company = ({ company }: { company: dbObject }) => {
         query: { enterpriseId: enterpriseId },
       }}
     >
-      <Image src={imgurl} alt="" width={200} height={200} />
-      <div>{companyName}</div>
+      <div className="justify-center flex flex-col items-center transform transition duration-500 hover:scale-110">
+        <Image src={imgurl} alt="" width={238} height={87} style={{width :238,height:87}}/>
+        <div>{companyName}</div>
+      </div>
     </Link>
   );
 };
