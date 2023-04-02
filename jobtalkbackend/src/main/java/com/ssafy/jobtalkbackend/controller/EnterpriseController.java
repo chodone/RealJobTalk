@@ -1,6 +1,5 @@
 package com.ssafy.jobtalkbackend.controller;
 
-import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.dto.response.*;
 import com.ssafy.jobtalkbackend.service.EnterpriseService;
 import lombok.RequiredArgsConstructor;
