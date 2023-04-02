@@ -10,7 +10,9 @@ import { authActions } from "@/redux/reducer/authReducer";
 import jwtDecode from "jwt-decode";
 import { newactions } from "@/redux/reducer/reducer";
 
+
 import { HiMagnifyingGlass, HiOutlineXMark } from "react-icons/hi2";
+
 
 type Props = {
   params: {
@@ -35,7 +37,10 @@ const Navbar = () => {
     event.preventDefault();
 
     dispatch(newactions.SEARCH_BY_NAME({ keyword }));
+    router.push(`/${keyword}`)
   };
+
+
 
   const getAuth = useAppSelector((state) => state.auth);
   console.log(getAuth);
@@ -47,7 +52,7 @@ const Navbar = () => {
         <div className="flex justify-between">
           <div className="flex space-x-4">
             <div>
-              <Link className="flex items-center py-5 px-2" href="/">
+              <Link className="flex items-center py-5 px-2" href="/" >
                 <Image className="h-6 w-24" src={MainLogo} alt="" />
               </Link>
             </div>

@@ -28,7 +28,7 @@ const Reducer = createSlice({
   reducers: {
     SEARCH_BY_NAME(state,action){
       state.keyword = action.payload.keyword
-    }
+    },
     
     
   }, extraReducers: (builder) => {

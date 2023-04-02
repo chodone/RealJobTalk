@@ -14,7 +14,7 @@ const Company = ({ company }: { company: dbObject }) => {
   
   return (
     <Link 
-      href={`${companyName}/info`}
+      href={`info/${companyName}`}
     >
       <div className="justify-center flex flex-col items-center transform transition duration-500 hover:scale-110">
         <Image src={imgurl} alt="" width={238} height={87} style={{width :238,height:87}}/>
