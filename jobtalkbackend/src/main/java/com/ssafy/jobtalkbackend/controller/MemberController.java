@@ -47,10 +47,6 @@ public class MemberController {
         return new ResponseEntity<>(memberService.modifyNickname(nickname.get("nickname"), user), HttpStatus.OK);
     }
 
-//    @GetMapping("/scrap/news")
-//    public ResponseEntity<> getScrapNews(@AuthenticationPrincipal User user) {
-//
-//    }
 
     @PostMapping("/scrap/news")
     public Boolean scrapNews(@RequestBody Map<String, Long> newsId,

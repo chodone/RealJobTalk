@@ -113,21 +113,27 @@ public class MemberServiceImpl implements MemberService {
         return nickname;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Boolean scrapNews(Long newsId, User user) {
+
         Member member = searchMember(user.getUsername());
         News news = newsRepository.findById(newsId)
                 .orElseThrow(()-> new EnterpriseRuntimeException(EnterpriseExceptionEnum.ENTERPRISE_NEWS_NOT_EXIST_EXCEPTION));
 
-        NewsLike newsLike = NewsLike
-                .builder()
-                .member(member)
-                .news(news)
-                .build();
-
-        newsLikeRepository.save(newsLike);
-        return true;
+        NewsLike newsLike = newsLikeRepository.findByNewsAndMember(news, member).orElse(null);
+        if (newsLike == null) {
+            newsLike = NewsLike
+                    .builder()
+                    .member(member)
+                    .news(news)
+                    .build();
+            newsLikeRepository.save(newsLike);
+            return true;
+        } else {
+            newsLikeRepository.deleteById(newsLike.getId());
+            return false;
+        }
     }
 
     @Transactional
@@ -135,15 +141,21 @@ public class MemberServiceImpl implements MemberService {
     public Boolean scrapPassReview(Long passReviewId, User user) {
         Member member = searchMember(user.getUsername());
         PassReview passReview = passReviewRepository.findById(passReviewId)
-                .orElseThrow(()-> new EnterpriseRuntimeException(EnterpriseExceptionEnum.ENTERPRISE_PASSREVIEW_NOT_EXIST_EXCEPTION));
+                .orElseThrow(() -> new EnterpriseRuntimeException(EnterpriseExceptionEnum.ENTERPRISE_PASSREVIEW_NOT_EXIST_EXCEPTION));
+        PassReviewLike passReviewLike = passReviewLikeRepository.findByPassReviewAndMember(passReview, member).orElse(null);
 
-        PassReviewLike passReviewLike = PassReviewLike
-                .builder()
-                .member(member)
-                .passReview(passReview)
-                .build();
-        passReviewLikeRepository.save(passReviewLike);
-        return true;
+        if (passReviewLike == null) {
+            passReviewLike = PassReviewLike
+                    .builder()
+                    .member(member)
+                    .passReview(passReview)
+                    .build();
+            passReviewLikeRepository.save(passReviewLike);
+            return true;
+        } else {
+            passReviewLikeRepository.deleteById(passReviewLike.getId());
+            return false;
+        }
     }
 
 

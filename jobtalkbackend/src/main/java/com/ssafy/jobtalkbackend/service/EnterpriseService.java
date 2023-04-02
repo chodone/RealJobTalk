@@ -1,9 +1,6 @@
 package com.ssafy.jobtalkbackend.service;
 
-import com.ssafy.jobtalkbackend.dto.response.EnterpriseResponse;
-import com.ssafy.jobtalkbackend.dto.response.EnterpriseDetailResponse;
-import com.ssafy.jobtalkbackend.dto.response.NewsResponse;
-import com.ssafy.jobtalkbackend.dto.response.PassReviewResponse;
+import com.ssafy.jobtalkbackend.dto.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 
@@ -11,9 +8,9 @@ import java.util.List;
 
 public interface EnterpriseService {
 
-    List<NewsResponse> getNews(Long enterpriseId, Pageable pageable, User user);
+    NewsTotalResponse getNews(Long enterpriseId, Pageable pageable, User user);
 
-    List<PassReviewResponse> getPassReview(Long enterpriseId, Pageable pageable);
+    PassReviewTotalResponse getPassReview(Long enterpriseId, Pageable pageable, User user);
 
     List<EnterpriseResponse> getEnterprises();
 
