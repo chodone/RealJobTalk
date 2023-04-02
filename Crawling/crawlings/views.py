@@ -89,7 +89,7 @@ def tistory_review_crawling():
                     filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
                     value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
                     client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
-
+                    print('hdfs 전송완료')
                     cursor = conn_aws.cursor()
 
                     selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
@@ -106,7 +106,9 @@ def tistory_review_crawling():
                     cursor.execute(sql, value)
 
                     conn_aws.commit()
+                    print('mysql 전송완료')
             except:
+                count += 1
                 continue
         enterprise_id += 1
     conn_aws.close()
