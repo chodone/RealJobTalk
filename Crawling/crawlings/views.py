@@ -41,7 +41,7 @@ def tistory_review_crawling():
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
-    browser = webdriver.Chrome('../chromedriver.exe', options=options) #"./chromedriver.exe"
+    browser = webdriver.Chrome('../chromedriver', options=options) #"./chromedriver.exe"
     browser.implicitly_wait(30)
     browser.maximize_window()
 
