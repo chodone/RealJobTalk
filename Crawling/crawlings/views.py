@@ -58,23 +58,24 @@ def tistory_review_crawling():
         for idx in range(300):
             print(enterprise.strip(), count)
 
-            aTag = ''
-            if count == 10:
-                aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
-                count = 0
-                browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
-            else:
-                aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
-            
-            count += 1
-
-            params = {
-                "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
-                "blogName" : aTag.split('/')[2].split('.')[0],
-                "postId" : aTag.split('/')[-1]
-            }
-
             try:
+
+                aTag = ''
+                if count == 10:
+                    aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
+                    count = 0
+                    browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
+                else:
+                    aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
+                
+                count += 1
+
+                params = {
+                    "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
+                    "blogName" : aTag.split('/')[2].split('.')[0],
+                    "postId" : aTag.split('/')[-1]
+                }
+                
                 res = requests.get(url, headers=headers, params=params)
                 xpars = xmltodict.parse(res.text)
                 jsonDump = json.dumps(xpars)
