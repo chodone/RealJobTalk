@@ -59,7 +59,6 @@ def tistory_review_crawling():
             print(enterprise.strip(), count)
 
             try:
-
                 aTag = ''
                 if count == 10:
                     aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
@@ -75,7 +74,7 @@ def tistory_review_crawling():
                     "blogName" : aTag.split('/')[2].split('.')[0],
                     "postId" : aTag.split('/')[-1]
                 }
-                
+
                 res = requests.get(url, headers=headers, params=params)
                 xpars = xmltodict.parse(res.text)
                 jsonDump = json.dumps(xpars)
@@ -89,7 +88,7 @@ def tistory_review_crawling():
                     
                     filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
                     value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
-                    client_hdfs.write(f'/user/root/reviewInput/{enterprise.strip()}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                    client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                     cursor = conn_aws.cursor()
 
@@ -161,7 +160,7 @@ def naver_news_crawlling():
                             contentVal += c.text.strip()
 
                         value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
-                        client_hdfs.write(f'/user/root/newsInput/{enterprise.strip()}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                        client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                         time.sleep(3)
 
