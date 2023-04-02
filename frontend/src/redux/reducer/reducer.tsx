@@ -6,6 +6,7 @@ import api from '../api'
 
 const initialState = {
   data: [],
+  keyword:""
 
   
 }
@@ -25,6 +26,9 @@ const Reducer = createSlice({
   name: "reducer",
   initialState,
   reducers: {
+    SEARCH_BY_NAME(state,action){
+      state.keyword = action.payload.keyword
+    }
     
     
   }, extraReducers: (builder) => {

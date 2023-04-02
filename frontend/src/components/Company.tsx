@@ -13,12 +13,13 @@ const Company = ({ company }: { company: dbObject }) => {
   const companyName = company["name"];
   
   return (
-    <Link
-      className="transform h-64 w-64 transition duration-500 hover:scale-125"
+    <Link 
       href={`${companyName}/info`}
     >
-      <Image src={imgurl} alt="" width={200} height={200} />
-      <div>{companyName}</div>
+      <div className="justify-center flex flex-col items-center transform transition duration-500 hover:scale-110">
+        <Image src={imgurl} alt="" width={238} height={87} style={{width :238,height:87}}/>
+        <div>{companyName}</div>
+      </div>
     </Link>
   );
 };
