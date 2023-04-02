@@ -18,7 +18,7 @@ const Company = ({ company }: { company: dbObject }) => {
     <Link
       className="transform h-64 w-64 transition duration-500 hover:scale-125"
       href={{
-        pathname:`${companyName}`,
+        pathname:`info/${companyName}`,
         query: { enterpriseId: enterpriseId },
       }}
     >
