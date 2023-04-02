@@ -25,12 +25,12 @@ environ.Env.read_env(
 )
 
 HDFS_IP = env('HDFS_IP')
-HDFS_USER = env('HDFS_USER')
 MYSQL_HOST = env('MYSQL_HOST')
 MYSQL_ID = env('MYSQL_ID')
 MYSQL_PASSWD = env('MYSQL_PASSWD')
 MYSQL_DB = env('MYSQL_DB')
 NAVER_CLIENT_ID = env('NAVER_CLIENT_ID')
+TISTORY_APP_KEY=env('TISTORY_APP_KEY')
 
 
 # Quick-start development settings - unsuitable for production
