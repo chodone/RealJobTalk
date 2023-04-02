@@ -21,6 +21,9 @@ public class PassReview {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
     private String url;
 
     private String dateOfIssue;

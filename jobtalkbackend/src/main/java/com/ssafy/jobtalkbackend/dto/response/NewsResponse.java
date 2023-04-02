@@ -10,11 +10,15 @@ public class NewsResponse {
 
     private String title;
 
+    private String content;
+
     private String url;
 
     private Integer hotRank;
 
     private String dateOfIssue;
+
+    private Boolean isScrap;
 
 
 }

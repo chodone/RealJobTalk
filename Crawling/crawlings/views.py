@@ -7,21 +7,105 @@ from hdfs import InsecureClient
 import time
 import mysql.connector
 from django.conf import settings
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import json
+import xmltodict
+
+
+conn_aws = mysql.connector.connect(
+    host = getattr(settings, 'MYSQL_HOST', None), # host name
+    user = getattr(settings, 'MYSQL_ID', None), # user name
+    password = getattr(settings, 'MYSQL_PASSWD', None), # password
+    database = getattr(settings, 'MYSQL_DB', None),
+    port = '3306',
+    auth_plugin='mysql_native_password'
+)
+    
+client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+
+enterpriseNameFile = open("enterpriseNames.txt", "r", encoding="UTF8")
+lines = enterpriseNameFile.readlines()
+enterpriseNameFile.close()
+
+
+def tistory_review_crawling():
+    print('tistory_review_crawling 시작합니당')
+
+    url = "https://www.tistory.com/apis/post/read"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
+    browser = webdriver.Chrome('../chromedriver.exe', options=options) #"./chromedriver.exe"
+    browser.implicitly_wait(30)
+    browser.maximize_window()
+
+    enterprise_id = 0
+    for enterprise in lines:
+        browser.get("https://www.google.com/search?q="+enterprise.strip()+" 합격 후기 site:tistory.com")
+        
+        val = 0
+        for idx in range(1, 300):
+            isWriteDate = False
+            try:
+                write_date = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{idx}]/div/div/div[2]/div/span[1]/span').text
+                isWriteDate = True
+            except:
+                pass
+
+            title = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{idx}]/div/div/div[1]/div/a/h3').text
+            
+            if (isWriteDate and int(write_date.split('.')[0]) > 2019) or '2021' in title or '2020' in title or '2022' in title or '21' in title or '22' in title or '20' in title:
+
+                aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{idx}]/div/div/div[1]/div/a').get_attribute('href')
+
+                params = {
+                    "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
+                    "blogName" : aTag.split('/')[2].split('.')[0],
+                    "postId" : aTag.split('/')[-1]
+                }
+
+                res = requests.get(url, headers=headers, params=params)
+                xpars = xmltodict.parse(res.text)
+                jsonDump = json.dumps(xpars)
+                jsonBody = json.loads(jsonDump)
+                dateOfIssue = "".join(jsonBody['tistory']['item']['date'].split(' ')[0].split('-'))
+
+                cleantext = BeautifulSoup(jsonBody['tistory']['item']['content'], "lxml").text.strip()
+
+                value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + aTag + ('\n') + title + ('\n') + cleantext
+                filename = dateOfIssue+"_tistory_pass_review_"+enterprise.strip()+"_"+str(val)
+                client_hdfs.write(f'/user/root/test/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+
+                cursor = conn_aws.cursor()
+
+                selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
+                cursor.execute(selectSql)
+                maxNewsId = cursor.fetchall()
+                maxNewsId = maxNewsId[0][0]
+                if maxNewsId == None:
+                    maxNewsId = -1
+
+                conn_aws.commit()
+
+                sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
+                value = (maxNewsId+1, dateOfIssue, title, aTag, enterprise_id, cleantext)
+                cursor.execute(sql, value)
+
+                conn_aws.commit()
+            val += 1
+        enterprise_id += 1
+    conn_aws.close()
 
 
 def naver_news_crawlling():
     print('naver_news_crawlling 시작합니당')
-
-    conn_aws = mysql.connector.connect(
-        host = getattr(settings, 'MYSQL_HOST', None), # host name
-        user = getattr(settings, 'MYSQL_ID', None), # user name
-        password = getattr(settings, 'MYSQL_PASSWD', None), # password
-        database = getattr(settings, 'MYSQL_DB', None),
-        port = '3306',
-        auth_plugin='mysql_native_password'
-    )
     
-    client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
     url = "https://openapi.naver.com/v1/search/news.json"
 
     headers = {
@@ -29,10 +113,6 @@ def naver_news_crawlling():
         "X-Naver-Client-Secret" : "aCnFyu3h5i",
         "User-Agent": "Mozilla/5.0"
     }
-
-    enterpriseNameFile = open("enterpriseNames.txt", "r", encoding="UTF8")
-    lines = enterpriseNameFile.readlines()
-    enterpriseNameFile.close()
 
     enterprise_id = 0
     for enterprise in lines:
@@ -80,11 +160,14 @@ def naver_news_crawlling():
                         selectSql = "SELECT MAX(news_id) FROM news"
                         cursor.execute(selectSql)
                         maxNewsId = cursor.fetchall()
+                        maxNewsId = maxNewsId[0][0]
+                        if maxNewsId == None:
+                            maxNewsId = -1
 
                         conn_aws.commit()
 
                         sql = "INSERT INTO news (news_id, date_of_issue, title, url, enterprise_id, content)  VALUES (%s, %s, %s, %s, %s, %s)"
-                        value = (maxNewsId[0][0]+1, today, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip())
+                        value = (maxNewsId+1, today, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip())
                         cursor.execute(sql, value)
 
                         conn_aws.commit()
@@ -92,3 +175,5 @@ def naver_news_crawlling():
         enterprise_id += 1
 
     conn_aws.close()
+
+
