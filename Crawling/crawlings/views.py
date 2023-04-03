@@ -249,6 +249,7 @@ def to_hdfs():
         client_hdfs.write(f'/user/root/newsInput/{enterpriseId}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
         idx += 1
+    conn_aws.close()
 
 
 def naver_pass_review_crawlling():
@@ -324,6 +325,6 @@ def naver_pass_review_crawlling():
                     continue
 
         enterprise_id += 1
-    conn_aws.close()
+    
 
 
