@@ -12,6 +12,8 @@ from selenium.webdriver.common.by import By
 import json
 import xml.etree.ElementTree as elemTree
 import xmltodict
+import xml.etree.ElementTree as ET
+
 
 enterpriseNameFile = open("enterpriseNames.txt", "r", encoding="UTF8")
 lines = enterpriseNameFile.readlines()
@@ -44,52 +46,41 @@ options.add_argument("--single-process")
 options.add_argument("--disable-dev-shm-usage")
 path='../chromedriver'
 
-browser = webdriver.Chrome(path, options=options) #"./chromedriver.exe"
-browser.implicitly_wait(30)
-browser.maximize_window()
+aTag = "https://dogfootja.tistory.com/44"
+params = {
+    "access_token" : 'a9356d05163a6af4030ca9dd8a68da40_136d9085af9fefc038f15b14124717eb',
+    "blogName" : aTag.split('/')[2].split('.')[0],
+    "postId" : aTag.split('/')[-1]
+}
 
-enterprise_id = 0
-for enterprise in lines:
-    browser.get("https://www.google.com/search?q="+enterprise.strip()+" 합격 후기 site:tistory.com")
+print(params)
+print(url)
+
+res = requests.get(url, headers=headers, params=params)
+
+print()
+print(res.text)
+print()
+
+soup = BeautifulSoup(res.text, "xml")
+items = soup.find("tistory").find("item").find("title").text
+print("".join(soup.find("tistory").find("item").find("date").text.split(' ')[0].split('-')))
+
+# print(root)
+
+# print(res.text[:500])
+
+# tree = elemTree.fromstring(res.text)
+# xmlRoot = tree.find('tistory')
+# print(xmlRoot)
+
+# dateOfIssue = "".join(jsonBody['tistory']['item']['date'].split(' ')[0].split('-'))
+# print(dateOfIssue)
+
+# if int(dateOfIssue[:4]) > 2019:
+#     title =  jsonBody['tistory']['item']['title']
+#     url = jsonBody['tistory']['item']['url']
+#     cleantext = BeautifulSoup(jsonBody['tistory']['item']['content'], "lxml").text.strip()
     
-    count = 1
-    for idx in range(300):
-        print(enterprise.strip(), count)
-
-        aTag = ''
-        if count == 10:
-            aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
-            count = 0
-            browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
-        else:
-            aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
-        print('a tag ::: ', aTag)
-        count += 1
-        
-        params = {
-            "access_token" : 'a9356d05163a6af4030ca9dd8a68da40_136d9085af9fefc038f15b14124717eb',
-            "blogName" : aTag.split('/')[2].split('.')[0],
-            "postId" : aTag.split('/')[-1]
-        }
-
-        res = requests.get(url, headers=headers, params=params)
-        # print(res.text[:500])
-
-        tree = elemTree.fromstring(res.text)
-        xmlRoot = tree.find('tistory')
-        print(xmlRoot)
-
-        try:
-            dateOfIssue = "".join(jsonBody['tistory']['item']['date'].split(' ')[0].split('-'))
-            print(dateOfIssue)
-
-            if int(dateOfIssue[:4]) > 2019:
-                title =  jsonBody['tistory']['item']['title']
-                url = jsonBody['tistory']['item']['url']
-                cleantext = BeautifulSoup(jsonBody['tistory']['item']['content'], "lxml").text.strip()
-                
-                print('hdfs 전송완료')
-                print(title, url)
-        except:
-            continue
-    enterprise_id += 1
+#     print('hdfs 전송완료')
+#     print(title, url)

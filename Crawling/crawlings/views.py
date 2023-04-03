@@ -67,6 +67,7 @@ def tistory_review_crawling():
                 else:
                     aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
                 
+                print(aTag)
                 count += 1
 
                 params = {
@@ -76,16 +77,16 @@ def tistory_review_crawling():
                 }
 
                 res = requests.get(url, headers=headers, params=params)
-                xpars = xmltodict.parse(res.text)
-                jsonDump = json.dumps(xpars)
-                jsonBody = json.loads(jsonDump)
-                dateOfIssue = "".join(jsonBody['tistory']['item']['date'].split(' ')[0].split('-'))
+                soup = BeautifulSoup(res.text, "xml")
+                root = soup.find("tistory")
+
+                dateOfIssue = "".join(root.find("item").find("date").text.split(' ')[0].split('-'))
                 print(dateOfIssue)
 
                 if int(dateOfIssue[:4]) > 2019:
-                    title =  jsonBody['tistory']['item']['title']
-                    url = jsonBody['tistory']['item']['url']
-                    cleantext = BeautifulSoup(jsonBody['tistory']['item']['content'], "lxml").text.strip()
+                    title =  root.find("item").find("title").text
+                    url = root.find("item").find("url").text
+                    cleantext = root.find("item").find("content").text.strip()
                     
                     filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
                     value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
