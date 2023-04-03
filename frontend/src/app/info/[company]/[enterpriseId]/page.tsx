@@ -4,12 +4,13 @@ import api from "@/redux/api";
 
 type Props = {
   params: {
-    company: string
+    company: string,
+    enterpriseId: number
     
   }
 }
 
-export default async function CompanyPage({ params :{company} }: Props) {
+export default async function CompanyPage({ params :{company, enterpriseId} }: Props) {
   
   
   
