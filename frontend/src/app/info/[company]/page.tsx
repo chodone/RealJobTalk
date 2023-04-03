@@ -1,4 +1,6 @@
 import { getcompany } from "@/service/getCompany"
+import CompanyImage from "@/components/CompanyImage";
+import api from "@/redux/api";
 
 type Props = {
   params: {
@@ -9,13 +11,13 @@ type Props = {
 
 export default async function CompanyPage({ params :{company} }: Props) {
   
-  const companyName = await getcompany(decodeURI(company))
+  
   
   
   return (
-    <h1>
-      {companyName?.company}
-    </h1>
+    <div>
+      <CompanyImage company={company} />
+    </div>
   )
   
 }
