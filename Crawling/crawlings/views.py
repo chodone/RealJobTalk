@@ -19,7 +19,7 @@ conn_aws = mysql.connector.connect(
     auth_plugin='mysql_native_password'
 )
     
-client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+
 
 enterpriseNameFile = open("enterpriseNames.txt", "r", encoding="UTF8")
 lines = enterpriseNameFile.readlines()
@@ -90,6 +90,7 @@ def tistory_review_crawling():
 
             filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
             value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + aTag + ('\n') + title + ('\n') + content
+            client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
             client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
             print('hdfs 전송완료')
             cursor = conn_aws.cursor()
@@ -161,6 +162,7 @@ def naver_news_crawlling():
                             contentVal += c.text.strip()
 
                         value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
+                        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
                         client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                         time.sleep(3)
@@ -237,6 +239,7 @@ def naver_pass_review_crawlling():
 
                     filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
                     value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
+                    client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
                     client_hdfs.write(f'/user/root/revewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                     cursor = conn_aws.cursor()
