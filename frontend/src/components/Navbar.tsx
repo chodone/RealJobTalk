@@ -43,7 +43,7 @@ const Navbar = () => {
 
 
   const getAuth = useAppSelector((state) => state.auth);
-  console.log(getAuth);
+
   const logined = getAuth.isLogined;
 
   return (
