@@ -49,8 +49,11 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
         List<NewsResponse> resultNewsList = new ArrayList<>();
 
+        Enterprise enterprise = enterpriseRepository.findById(enterpriseId).orElse(null);
+
+        long totalSize = newsRepository.countAllByEnterprise(enterprise);
         List<News> newsList = newsRepository.findAllByEnterpriseId(enterpriseId, pageable);
-        int totalPages = (int) Math.ceil((double) newsRepository.count() / pageable.getPageSize());
+        int totalPages = (int) Math.ceil((double) totalSize / pageable.getPageSize());
 
         Member member = null;
         if (user != null) {
@@ -99,7 +102,11 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
         List<PassReview> passReviewList = passReviewRepository.findAllByEnterpriseId(enterpriseId, pageable);
 
-        int totalPages = (int) Math.ceil((double) passReviewRepository.count() / pageable.getPageSize());
+        Enterprise enterprise = enterpriseRepository.findById(enterpriseId).orElse(null);
+
+        long totalSize = passReviewRepository.countAllByEnterprise(enterprise);
+
+        int totalPages = (int) Math.ceil((double) totalSize / pageable.getPageSize());
 
         Member member = null;
 
@@ -157,4 +164,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .idealTalent(enterprise.getIdealTalent())
                 .build();
     }
+
+
+
 }
