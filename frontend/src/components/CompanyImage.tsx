@@ -4,22 +4,21 @@ import Image from "next/image";
 import { useSearchParams,  } from "next/navigation";
 
 
-const CompanyImage = ({company}:{company:string}) => {
+const CompanyImage = ({imgUrl}:{imgUrl:string}) => {
 
-  const params = useSearchParams()
-  const enterpriseId = params?.get('enterpriseId')
-  console.log(company)
+  
+  console.log(imgUrl)
 
   return (
-    <div className="group relative">
-      <div className="mr-20 group">
-        {/* <Image
-          className=" h-68 w-24 mt-9 mb-2 ml-20 "
-          src={companyUrl}
+    <div className="group flex relative justify-center items-center">
+      <div className="  group">
+        <Image
+          className=" h-80 w-80 mt-9 mb-9 "
+          src={imgUrl}
           alt=""
-          width={400}
-          height={400}
-        /> */}
+          width={238} height={87}
+          style={{ width: 238, height: 87 }}
+        />
       </div>
       <ul className="rounded absolute hidden group-hover:block">
         <a className="px-2text-center hover:bg-gray-400" href="">
