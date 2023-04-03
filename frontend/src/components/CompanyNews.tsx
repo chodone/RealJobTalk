@@ -7,7 +7,7 @@ import api from "@/redux/api";
 interface News{
 	id: number,
 	title: String,
-	url: String,
+	url: string,
   hotRank: number,
   content:String,
 	dateOfIssue: String
