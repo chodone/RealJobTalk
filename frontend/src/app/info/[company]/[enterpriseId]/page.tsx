@@ -1,3 +1,4 @@
+'use client';
 import { getcompany } from "@/service/getCompany"
 import CompanyInfo from "@/components/CompanyInfo";
 import CompanyImage from "@/components/CompanyImage";
@@ -43,8 +44,8 @@ export default async function CompanyPage({ params :{company, enterpriseId} }: P
   
   
   return (
-    <div className="grid grid-rows-6 gap-10">
-      <div className="grid grid-cols-3  row-end-2 mt-20">
+    <div className="grid grid-rows-6 gap-3">
+      <div className="grid grid-cols-4  row-end-2 mt-20">
         <CompanyImage imgUrl={companyInfo.imgUrl} />
         <div className=" col-span-2">
           <UrlButtons />
@@ -52,6 +53,7 @@ export default async function CompanyPage({ params :{company, enterpriseId} }: P
         </div>
 
       </div>
+      <hr className= " border-spacing-3"/>
       <div className="row-start-3 row-end-7">
 
       </div>

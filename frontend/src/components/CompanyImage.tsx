@@ -13,11 +13,11 @@ const CompanyImage = ({imgUrl}:{imgUrl:string}) => {
     <div className="group flex relative justify-center items-center">
       <div className="  group">
         <Image
-          className=" h-80 w-80 mt-9 mb-9 "
+          className=" h-80 w-80 "
           src={imgUrl}
           alt=""
-          width={238} height={87}
-          style={{ width: 238, height: 87 }}
+          width={300} height={100}
+          style={{ width: 300, height: 100 }}
         />
       </div>
       <ul className="rounded absolute hidden group-hover:block">
