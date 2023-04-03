@@ -24,14 +24,14 @@ interface Data {
 
 const ReviewList = ({ reviews }: { reviews: Array<Review> }) => {
   return (
-    <div className="grid ml-4">
+    <div className="grid ml-4" style={{ height: 900 }}>
       {reviews.map((review: Review) => {
         // console.debug(post.id);
         return <ReviewCard key={review.id} review={review} />;
       })}
     </div>
   );
-}; 
+};
 
 const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [totalPages, setTotalPages] = useState(0);
@@ -69,12 +69,12 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   };
 
   const getPreviousData = (num: number) => {
-    if (num == -1) alert( "첫 페이지입니다." );
+    if (num == -1) alert("첫 페이지입니다.");
     else changePage(num);
   };
 
   const getNextData = (num: number) => {
-    if (num == totalPages) alert("마지막 페이지입니다." );
+    if (num == totalPages) alert("마지막 페이지입니다.");
     else changePage(num);
   };
   const getPreviousTenData = () => {
@@ -118,107 +118,105 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   return (
     <>
       <ReviewList reviews={results} />
-      <div className="static ... ">
-        <nav className="grid grid justify-center pb-3 absolute bottom-3 left-0 right-0 ">
-          <ul className="inline-flex items-center -space-x-px cursor-pointer ...">
-            <li>
-              <div
-                onClick={() => {
-                  getPreviousTenData();
-                }}
-                className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700     "
+      <nav className="grid grid justify-center mb-3">
+        <ul className="inline-flex items-center -space-x-px cursor-pointer ...">
+          <li>
+            <div
+              onClick={() => {
+                getPreviousTenData();
+              }}
+              className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700     "
+            >
+              <span className="sr-only">Previous</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-5 h-5"
               >
-                <span className="sr-only">Previous</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
-                  />
-                </svg>
-              </div>
-            </li>
-            <li>
-              <div
-                onClick={() => {
-                  getPreviousData(page - 1);
-                }}
-                className="px-1 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     "
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+                />
+              </svg>
+            </div>
+          </li>
+          <li>
+            <div
+              onClick={() => {
+                getPreviousData(page - 1);
+              }}
+              className="px-1 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     "
+            >
+              <span className="sr-only">Previous</span>
+              <svg
+                aria-hidden="true"
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <span className="sr-only">Previous</span>
-                <svg
-                  aria-hidden="true"
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-            </li>
-            <Pagination curPage={page} totalPage={totalPages} />
-            <li>
-              <div
-                onClick={() => {
-                  getNextData(page + 1);
-                }}
-                className="px-1 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     "
+                <path
+                  fillRule="evenodd"
+                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+          </li>
+          <Pagination curPage={page} totalPage={totalPages} />
+          <li>
+            <div
+              onClick={() => {
+                getNextData(page + 1);
+              }}
+              className="px-1 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     "
+            >
+              <span className="sr-only">Previous</span>
+              <svg
+                aria-hidden="true"
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <span className="sr-only">Previous</span>
-                <svg
-                  aria-hidden="true"
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-            </li>
-            <li>
-              <div
-                onClick={() => {
-                  getNextTenData();
-                }}
-                className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700     "
+                <path
+                  fillRule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+          </li>
+          <li>
+            <div
+              onClick={() => {
+                getNextTenData();
+              }}
+              className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700     "
+            >
+              <span className="sr-only">Next</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-5 h-5"
               >
-                <span className="sr-only">Next</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-              </div>
-            </li>
-          </ul>
-        </nav>
-      </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </div>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 };
