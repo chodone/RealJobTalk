@@ -152,18 +152,18 @@ def naver_news_crawlling():
                     
                     if len(content) > 0:
                         today = datetime.today().strftime('%Y%m%d')
-                        filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
+                        # filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
                         val += 1
 
                         titleText = BeautifulSoup(jsonIdx['title'], "lxml").text
 
-                        contentVal = ''
-                        for c in (content):
-                            contentVal += c.text.strip()
+                        # contentVal = ''
+                        # for c in (content):
+                        #     contentVal += c.text.strip()
 
-                        value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
-                        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                        client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                        # value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
+                        # client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                        # client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                         time.sleep(3)
 
@@ -187,6 +187,68 @@ def naver_news_crawlling():
         enterprise_id += 1
 
     conn_aws.close()
+
+    to_hdfs()
+
+
+def to_hdfs():
+
+    cursor = conn_aws.cursor()
+
+    selectSql = "select a.*, b.name from pass_review a, enterprise b where a.enterprise_id = b.enterprise_id;"
+    cursor.execute(selectSql)
+    resultArr = cursor.fetchall()
+    conn_aws.commit()
+
+    idx = 0
+    for result in resultArr:
+        content = result[1]
+        dateOfIssue = result[2]
+        title = result[3]
+        url = result[4]
+
+        if enterpriseId < int(result[5]):
+            idx = 0
+        enterpriseId = result[5]
+
+        enterpriseName = result[6]
+
+        filename = dateOfIssue+"_naver_review_"+enterpriseId+"_"+str(idx+1)
+        value = enterpriseName + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + content
+
+        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+        client_hdfs.write(f'/user/root/reviewInput/{enterpriseId}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+
+        idx += 1
+
+
+    cursor = conn_aws.cursor()
+
+    selectSql = "select a.*, b.name from news a, enterprise b where a.enterprise_id = b.enterprise_id;"
+    cursor.execute(selectSql)
+    resultArr = cursor.fetchall()
+    conn_aws.commit()
+
+    idx = 0
+    for result in resultArr:
+        content = result[1]
+        dateOfIssue = result[2]
+        title = result[4]
+        url = result[5]
+
+        if enterpriseId < int(result[6]):
+            idx = 0
+        enterpriseId = result[6]
+
+        enterpriseName = result[7]
+
+        filename = dateOfIssue+"_naver_news_"+enterpriseId+"_"+str(idx+1)
+        value = enterpriseName + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + content
+
+        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+        client_hdfs.write(f'/user/root/newsInput/{enterpriseId}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+
+        idx += 1
 
 
 def naver_pass_review_crawlling():
@@ -237,10 +299,10 @@ def naver_pass_review_crawlling():
                     content = soup.find("div", attrs={"class" : "se-main-container"}).get_text()
                     content = content.replace("\n", "")
 
-                    filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
-                    value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
-                    client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                    client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                    # filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
+                    # value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
+                    # client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                    # client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                     cursor = conn_aws.cursor()
 
