@@ -19,11 +19,13 @@ public class PassReview {
     @Column(name = "pass_review_id")
     private Long id;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String title;
 
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String url;
 
     private String dateOfIssue;

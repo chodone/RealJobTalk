@@ -22,20 +22,25 @@ public class Enterprise {
 
     private String name;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String imgUrl;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String homepageUrl;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String recruitpageUrl;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String blogUrl;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String youtubeUrl;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String businessInformation;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String idealTalent;
 
     @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL)

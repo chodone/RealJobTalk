@@ -20,11 +20,13 @@ public class News {
     @Column(name = "news_id")
     private Long id;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String title;
 
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String url;
 
     private Integer hotRank;
