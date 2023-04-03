@@ -1,19 +1,21 @@
-import { getcompany } from "@/service/getCompany"
-import NewsCard from '@/components/NewsCard'
+
+import CompanyNews from '@/components/CompanyNews'
 
 type Props = {
   params: {
-    company: string
-  }
-}
+    company: string;
+    enterpriseId:number
+  };
+};
 
-export default async function CompanyPage({ params :{company} }: Props) {
+export default async function CompanyPage({ params: { company,enterpriseId } }: Props) {
   
-  const companyName = await getcompany(decodeURI(company));
+  const companyName = decodeURI(company)
+  const enterpriseId_ = enterpriseId
   
   return (
     <h1>
-      <NewsCard/>
+      <CompanyNews enterpriseId={enterpriseId_}/>
     </h1>
   )
   

@@ -1,19 +1,20 @@
-import { getcompany } from "@/service/getCompany";
+
 import CompanyReview from "@/components/CompanyReviews"
 
 
 type Props = {
   params: {
     company: string;
+    enterpriseId:number
   };
 };
 
-export default async function CompanyPage({ params: { company } }: Props) {
-  const companyName = await getcompany(decodeURI(company));
-
-
+export default async function CompanyPage({ params: { company,enterpriseId } }: Props) {
+  
+  const companyName = decodeURI(company)
+  const enterpriseId_ = enterpriseId
 
   return (
-    <CompanyReview />
+    <CompanyReview enterpriseId={enterpriseId_}/>
   );
 }
