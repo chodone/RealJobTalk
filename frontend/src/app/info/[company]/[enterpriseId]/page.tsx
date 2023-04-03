@@ -1,4 +1,4 @@
-'use client';
+
 import { getcompany } from "@/service/getCompany"
 import CompanyInfo from "@/components/CompanyInfo";
 import CompanyImage from "@/components/CompanyImage";

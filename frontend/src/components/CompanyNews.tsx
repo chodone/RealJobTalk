@@ -3,14 +3,15 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import NewsCard from "./NewsCard";
 import api from "@/redux/api";
+import HotRank from "@/components/HotRank";
 
-interface News{
-	id: number,
-	title: String,
-	url: string,
-  hotRank: number,
-  content:String,
-	dateOfIssue: String
+interface News {
+  id: number;
+  title: String;
+  url: string;
+  hotRank: number;
+  content: String;
+  dateOfIssue: String;
 }
 
 // interface Reviews {
@@ -23,16 +24,17 @@ interface Data {
   newsResponseList: Array<News>;
 }
 
-const NewsList = ({ news }: { news: Array<News> }) => {
+const NewsList = ({ news ,curPage}: { news: Array<News> ,curPage:number }) => {
   return (
-    <div className="grid ml-4">
+    <div className="grid ml-4" style={{height :900}}>
+      {curPage ===0?<HotRank />:""}
       {news.map((news: News) => {
         // console.debug(post.id);
         return <NewsCard key={news.id} news={news} />;
       })}
     </div>
   );
-}; 
+};
 
 const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [totalPages, setTotalPages] = useState(0);
@@ -71,12 +73,12 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
   };
 
   const getPreviousData = (num: number) => {
-    if (num == -1) alert( "첫 페이지입니다." );
+    if (num == -1) alert("첫 페이지입니다.");
     else changePage(num);
   };
 
   const getNextData = (num: number) => {
-    if (num == totalPages) alert("마지막 페이지입니다." );
+    if (num == totalPages) alert("마지막 페이지입니다.");
     else changePage(num);
   };
   const getPreviousTenData = () => {
@@ -119,9 +121,8 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
 
   return (
     <>
-      <NewsList news={results} />
-      <div className="static ... ">
-        <nav className="grid grid justify-center pb-3 absolute bottom-3 left-0 right-0 ">
+      <NewsList news={results} curPage={page} />
+        <nav className="grid grid justify-center mb-3" >
           <ul className="inline-flex items-center -space-x-px cursor-pointer ...">
             <li>
               <div
@@ -220,7 +221,6 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
             </li>
           </ul>
         </nav>
-      </div>
     </>
   );
 };
