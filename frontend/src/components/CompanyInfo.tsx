@@ -5,6 +5,7 @@ import { useSearchParams,  } from "next/navigation";
 import { useEffect, useState } from "react";
 import api from "@/redux/api";
 import CompanyImage from "./CompanyImage";
+import UrlButtons from "./UrlButtons/UrlButtons";
 
 interface Data{
   "id": number,
@@ -33,8 +34,15 @@ const [companyInfo_, setCompanyInfo_] = useState(Object)
   }, [])
 
   return (
-    <div>
-      <CompanyImage imgUrl={companyInfo_.imgUrl} />
+    <div className="grid grid-rows-6 gap-3">
+      <div className="grid grid-cols-4  row-end-2 mt-20">
+        <CompanyImage imgUrl={companyInfo_.imgUrl} />
+        <div className=" col-span-2">
+          <UrlButtons />
+        </div>
+      </div>
+      <hr className=" border-spacing-3" />
+      <div className="row-start-3 row-end-7"></div>
     </div>
   );
 }
