@@ -4,12 +4,16 @@ import React, { ReactElement, useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
 import api from "@/redux/api";
 
+
+
+
 interface Review {
   id: number;
   title: string;
   url: string;
   content: string;
   dateOfIssue: string;
+  isScrap:boolean
 }
 
 // interface Reviews {
@@ -22,12 +26,13 @@ interface Data {
   passReviewResponseList: Array<Review>;
 }
 
-const ReviewList = ({ reviews }: { reviews: Array<Review> }) => {
+
+
+const ReviewList = ({ reviews}: { reviews: Array<Review>}): ReactElement => {
   return (
     <div className="grid ml-4" style={{ height: 900 }}>
       {reviews.map((review: Review) => {
-        // console.debug(post.id);
-        return <ReviewCard key={review.id} review={review} />;
+        return <ReviewCard key={review.id} review={review}/>;
       })}
     </div>
   );
@@ -38,6 +43,7 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [results, setResults] = useState(Array<Review>);
   const [page, setPage] = useState(0);
   const size = 4;
+
 
   const pageCurSelect =
     "z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700   ";
@@ -50,11 +56,14 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
       .then(({ data }: { data: Data }) => {
         setTotalPages(data.totalPages);
         setResults([...data.passReviewResponseList]);
+        console.log(data)
       })
       .catch((error) => {
         console.debug(error);
       });
   }, []);
+
+
 
   const changePage = (num: number) => {
     api
@@ -217,6 +226,7 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
           </li>
         </ul>
       </nav>
+      
     </>
   );
 };
