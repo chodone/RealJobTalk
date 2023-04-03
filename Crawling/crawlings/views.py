@@ -9,9 +9,6 @@ import mysql.connector
 from django.conf import settings
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import json
-import xmltodict
-
 
 conn_aws = mysql.connector.connect(
     host = getattr(settings, 'MYSQL_HOST', None), # host name
@@ -32,12 +29,6 @@ enterpriseNameFile.close()
 def tistory_review_crawling():
     print('tistory_review_crawling 시작합니당')
 
-    url = "https://www.tistory.com/apis/post/read"
-
-    headers = {
-        "User-Agent": "Mozilla/5.0"
-    }
-
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     options.add_argument('--headless')
@@ -55,62 +46,69 @@ def tistory_review_crawling():
         browser.get("https://www.google.com/search?q="+enterprise.strip()+" 합격 후기 site:tistory.com")
         
         count = 1
-        for idx in range(300):
+        for idx in range(10):
             print(enterprise.strip(), count)
-            
+
             aTag = ''
-            if count == 10:
-                aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
-                count = 0
-                browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
-            else:
-                aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
-            
-            print(aTag)
+            try:
+                if count == 10:
+                    aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
+                    count = 1
+                    browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
+                else:
+                    aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
+                
+            except:
+                count += 1
+                continue
+
             count += 1
 
-            params = {
-                "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
-                "blogName" : aTag.split('/')[2].split('.')[0],
-                "postId" : aTag.split('/')[-1]
-            }
-            
-            # res = requests.get(url, headers=headers, params=params)
             res = requests.get(aTag)
-            print(res.text)
             soup = BeautifulSoup(res.text, "lxml")
-            root = soup.find("tistory")
-            dateOfIssue = "".join(root.find("item").find("date").text.split(' ')[0].split('-'))
-            print(dateOfIssue)
 
-            if int(dateOfIssue[:4]) > 2019:
-                title =  root.find("item").find("title").text
-                url = root.find("item").find("url").text
-                cleantext = root.find("item").find("content").text.strip()
-                
-                filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
-                value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
-                # client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
-                print('hdfs 전송완료')
-                cursor = conn_aws.cursor()
+            root = soup.find('body').find(attrs={"id":"content"})
+            if root == None:
+                continue
 
-                selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
-                cursor.execute(selectSql)
-                maxNewsId = cursor.fetchall()
-                print(maxNewsId)
-                maxNewsId = maxNewsId[0][0]
-                print(maxNewsId)
-                if maxNewsId == None:
-                    maxNewsId = -1
+            title = root.find('h1')
+            content = root.find(attrs={"class":"tt_article_useless_p_margin"})
+            if content == None:
+                continue
+            if content.find("li") != None:
+                content.find("li").decompose()
+            dateOfIssue = root.find(attrs={"class":"timeago"})
+            if dateOfIssue == None:
+                dateOfIssue = root.find(attrs={"class":"date"})
 
-                conn_aws.commit()
+            if title == None or dateOfIssue == None:
+                continue
 
-                sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
-                value = (maxNewsId+1, cleantext, dateOfIssue, title, url, enterprise_id)
-                cursor.execute(sql, value)
+            title = title.text
+            dateOfIssue = dateOfIssue.text
+            content = content.text
 
-                conn_aws.commit()
-                print('mysql 전송완료')
+            filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
+            value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + aTag + ('\n') + title + ('\n') + content
+            client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+            print('hdfs 전송완료')
+            cursor = conn_aws.cursor()
+
+            selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
+            cursor.execute(selectSql)
+            maxNewsId = cursor.fetchall()
+            maxNewsId = maxNewsId[0][0]
+            if maxNewsId == None:
+                maxNewsId = -1
+
+            conn_aws.commit()
+
+            sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
+            value = (maxNewsId+1, content, dateOfIssue, title, aTag, enterprise_id)
+            cursor.execute(sql, value)
+
+            conn_aws.commit()
+            print('mysql 전송완료')
         enterprise_id += 1
     conn_aws.close()
 
@@ -186,6 +184,81 @@ def naver_news_crawlling():
                         
         enterprise_id += 1
 
+    conn_aws.close()
+
+
+def naver_pass_review_crawlling():
+    print('naver_pass_review_crawlling 시작합니당')
+    
+    url = "https://openapi.naver.com/v1/search/blog.json"
+
+    headers = {
+        "X-Naver-Client-Id" : "j2tBF73QPcZXpZ4vpNQK",
+        "X-Naver-Client-Secret" : "aCnFyu3h5i",
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    enterprise_id = 0
+    for enterprise in lines:
+    
+        val = 1
+        for idx in range(1, 11): #page
+            params = {
+                "query" : enterprise.strip()+" 합격 후기",
+                "display" : 100,
+                "start" : idx
+            }
+            res = requests.get(url, headers=headers, params=params)
+
+            root = res.json()
+
+            for idx in range(100):
+            
+                title = BeautifulSoup(root['items'][idx]['title'], "lxml").text
+                link = root['items'][idx]['link']
+                postdate = root['items'][idx]['postdate']
+
+                headers2 = {
+                    "User-Agent": "Mozilla/5.0"
+                }
+                response = requests.get(link, headers=headers2)
+                response.raise_for_status()
+                soup = BeautifulSoup(response.text, "lxml")
+
+                src_url = "https://blog.naver.com/" + soup.iframe["src"]
+
+                response = requests.get(src_url, headers=headers2)
+                response.raise_for_status()
+                soup = BeautifulSoup(response.text, "lxml")
+
+                if soup.find("div", attrs={"class" : "se-main-container"}):
+                    content = soup.find("div", attrs={"class" : "se-main-container"}).get_text()
+                    content = content.replace("\n", "")
+
+                    filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
+                    value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
+                    client_hdfs.write(f'/user/root/revewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+
+                    cursor = conn_aws.cursor()
+
+                    selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
+                    cursor.execute(selectSql)
+                    maxNewsId = cursor.fetchall()
+                    maxNewsId = maxNewsId[0][0]
+                    if maxNewsId == None:
+                        maxNewsId = -1
+
+                    conn_aws.commit()
+
+                    sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
+                    value = (maxNewsId+1, content, postdate, title, link, enterprise_id)
+                    cursor.execute(sql, value)
+
+                    conn_aws.commit()
+                else:
+                    continue
+
+        enterprise_id += 1
     conn_aws.close()
 
 
