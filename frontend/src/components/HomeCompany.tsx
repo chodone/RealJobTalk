@@ -19,7 +19,6 @@ const HomeCompany = () => {
 
   useEffect(() => {
 
-
     dispatch(getData());
   }, []);
 
@@ -36,5 +35,3 @@ const HomeCompany = () => {
 };
 
 export default HomeCompany;
-
-// className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8 items-center"

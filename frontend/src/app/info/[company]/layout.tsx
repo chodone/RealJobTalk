@@ -2,6 +2,7 @@ import { getcompany } from "@/service/getCompany";
 import Image from "next/image";
 import Link from "next/link";
 import UnderNav from "@/components/UnderNav";
+import api from "@/redux/api";
 
 
 const nav_item =
@@ -27,7 +28,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: {
     company: string
-    enterpriseId:number
+    
   };
 }) {
 
@@ -35,6 +36,10 @@ export default async function RootLayout({
   const company = decodeURI(params.company);
   
   const getValue = await getcompany(company);
+  
+  
+
+
   
   
 
@@ -60,8 +65,9 @@ export default async function RootLayout({
           </Link> */}
         </div>
         <div className="flex-grow"></div>
+        
 
-        <div className="group relative">
+        {/* <div className="group relative">
           <div className="mr-20 group">
             <Image
               className=" h-68 w-24 mt-9 mb-2 ml-20 "
@@ -82,7 +88,7 @@ export default async function RootLayout({
               youtube
             </a>
           </ul>
-        </div>
+        </div> */}
       </div>
       <hr />
       <div>{children}</div>
