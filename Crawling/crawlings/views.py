@@ -57,61 +57,60 @@ def tistory_review_crawling():
         count = 1
         for idx in range(300):
             print(enterprise.strip(), count)
+            
+            aTag = ''
+            if count == 10:
+                aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
+                count = 0
+                browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
+            else:
+                aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
+            
+            print(aTag)
+            count += 1
 
-            try:
-                aTag = ''
-                if count == 10:
-                    aTag = browser.find_element(By.XPATH,'//*[@id="rso"]/div[10]/div/div/div/div[1]/div/a').get_attribute('href')
-                    count = 0
-                    browser.find_element(By.XPATH, '//*[@id="pnnext"]').click()
-                else:
-                    aTag = browser.find_element(By.XPATH, f'//*[@id="rso"]/div[{count}]/div/div/div[1]/div/a').get_attribute('href')
+            params = {
+                "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
+                "blogName" : aTag.split('/')[2].split('.')[0],
+                "postId" : aTag.split('/')[-1]
+            }
+            
+            # res = requests.get(url, headers=headers, params=params)
+            res = requests.get(aTag)
+            print(res.text)
+            soup = BeautifulSoup(res.text, "lxml")
+            root = soup.find("tistory")
+            dateOfIssue = "".join(root.find("item").find("date").text.split(' ')[0].split('-'))
+            print(dateOfIssue)
+
+            if int(dateOfIssue[:4]) > 2019:
+                title =  root.find("item").find("title").text
+                url = root.find("item").find("url").text
+                cleantext = root.find("item").find("content").text.strip()
                 
-                print(aTag)
-                count += 1
+                filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
+                value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
+                # client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                print('hdfs 전송완료')
+                cursor = conn_aws.cursor()
 
-                params = {
-                    "access_token" : getattr(settings, 'TISTORY_APP_KEY', None),
-                    "blogName" : aTag.split('/')[2].split('.')[0],
-                    "postId" : aTag.split('/')[-1]
-                }
+                selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
+                cursor.execute(selectSql)
+                maxNewsId = cursor.fetchall()
+                print(maxNewsId)
+                maxNewsId = maxNewsId[0][0]
+                print(maxNewsId)
+                if maxNewsId == None:
+                    maxNewsId = -1
 
-                res = requests.get(url, headers=headers, params=params)
-                soup = BeautifulSoup(res.text, "xml")
-                root = soup.find("tistory")
+                conn_aws.commit()
 
-                dateOfIssue = "".join(root.find("item").find("date").text.split(' ')[0].split('-'))
-                print(dateOfIssue)
+                sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
+                value = (maxNewsId+1, cleantext, dateOfIssue, title, url, enterprise_id)
+                cursor.execute(sql, value)
 
-                if int(dateOfIssue[:4]) > 2019:
-                    title =  root.find("item").find("title").text
-                    url = root.find("item").find("url").text
-                    cleantext = root.find("item").find("content").text.strip()
-                    
-                    filename = dateOfIssue+"_tistory_review_"+enterprise.strip()+"_"+str(idx+1)
-                    value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + cleantext
-                    client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
-                    print('hdfs 전송완료')
-                    cursor = conn_aws.cursor()
-
-                    selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
-                    cursor.execute(selectSql)
-                    maxNewsId = cursor.fetchall()
-                    maxNewsId = maxNewsId[0][0]
-                    if maxNewsId == None:
-                        maxNewsId = -1
-
-                    conn_aws.commit()
-
-                    sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
-                    value = (maxNewsId+1, dateOfIssue, title, url, enterprise_id, cleantext)
-                    cursor.execute(sql, value)
-
-                    conn_aws.commit()
-                    print('mysql 전송완료')
-            except:
-                count += 1
-                continue
+                conn_aws.commit()
+                print('mysql 전송완료')
         enterprise_id += 1
     conn_aws.close()
 
