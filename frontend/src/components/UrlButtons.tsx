@@ -1,10 +1,9 @@
 'use client';
 
 import Image from "next/image";
-import { useSearchParams,  } from "next/navigation";
 
 
-const CompanyImage = ({imgUrl}:{imgUrl:string}) => {
+const UrlButtons = ({imgUrl}:{imgUrl:string}) => {
 
   
   console.log(imgUrl)
@@ -35,4 +34,4 @@ const CompanyImage = ({imgUrl}:{imgUrl:string}) => {
   );
 }
 
-export default CompanyImage
+export default UrlButtons
