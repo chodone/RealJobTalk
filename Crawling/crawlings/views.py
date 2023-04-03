@@ -240,7 +240,7 @@ def naver_pass_review_crawlling():
                     filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
                     value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
                     client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                    client_hdfs.write(f'/user/root/revewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                    client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                     cursor = conn_aws.cursor()
 
