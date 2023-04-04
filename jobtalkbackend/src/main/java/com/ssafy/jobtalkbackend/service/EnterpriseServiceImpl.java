@@ -80,11 +80,43 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .newsResponseList(resultNewsList)
                 .build();
     }
-//
-//    @Override
-//    public HotNewsResponse getHotNews(Long enterpriseId, User user) {
-//
-//    }
+
+    @Override
+    public List<HotNewsResponse> getHotNews(Long enterpriseId, User user) {
+        List<News> newsList = newsRepository.findTop3ByEnterpriseIdOrderByHotRankDesc(enterpriseId);
+        List<HotNewsResponse> hotNewsResponseList = new ArrayList<>();
+
+        Member member = null;
+        if (user != null) {
+            member = memberRepository.findByEmail(user.getUsername()).orElse(null);
+        }
+        if (member != null) {
+            for (News news : newsList) {
+                boolean isScrap = false;
+                NewsLike newsLike = newsLikeRepository.findByNewsAndMember(news, member).orElse(null);
+                if (newsLike != null) {
+                    isScrap = true;
+                }
+               hotNewsResponseList.add(hotNewsBuilder(news, isScrap));
+            }
+        } else {
+            for (News news : newsList) {
+                hotNewsResponseList.add(hotNewsBuilder(news, false));
+            }
+        }
+        return hotNewsResponseList;
+    }
+
+    public HotNewsResponse hotNewsBuilder(News news, boolean isScrap) {
+        return HotNewsResponse
+                .builder()
+                .id(news.getId())
+                .title(news.getTitle())
+                .url(news.getUrl())
+                .count(news.getHotRank())
+                .isScrap(isScrap)
+                .build();
+    }
 
     @Override
     public NewsResponse buildNewsResponse(News news, boolean isScrap) {
@@ -163,6 +195,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .name(enterprise.getName())
                 .imgUrl(enterprise.getImgUrl())
                 .recruitpageUrl(enterprise.getRecruitpageUrl())
+                .homepageUrl(enterprise.getHomepageUrl())
                 .blogUrl(enterprise.getBlogUrl())
                 .youtubeUrl(enterprise.getYoutubeUrl())
                 .businessInformation(enterprise.getBusinessInformation())
