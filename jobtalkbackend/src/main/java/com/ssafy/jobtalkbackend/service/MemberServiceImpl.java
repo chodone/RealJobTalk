@@ -146,6 +146,8 @@ public class MemberServiceImpl implements MemberService {
         News news = newsRepository.findById(newsId)
                 .orElseThrow(()-> new EnterpriseRuntimeException(EnterpriseExceptionEnum.ENTERPRISE_NEWS_NOT_EXIST_EXCEPTION));
 
+        news.addScrapCount();
+
         NewsLike newsLike = newsLikeRepository.findByNewsAndMember(news, member).orElse(null);
         if (newsLike == null) {
             newsLike = NewsLike
