@@ -4,12 +4,16 @@ import React, { ReactElement, useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
 import api from "@/redux/api";
 
+
+
+
 interface Review {
   id: number;
   title: string;
   url: string;
   content: string;
   dateOfIssue: string;
+  isScrap:boolean
 }
 
 // interface Reviews {
@@ -22,12 +26,13 @@ interface Data {
   passReviewResponseList: Array<Review>;
 }
 
-const ReviewList = ({ reviews }: { reviews: Array<Review> }) => {
+
+
+const ReviewList = ({ reviews}: { reviews: Array<Review>}): ReactElement => {
   return (
     <div className="grid ml-4" style={{ height: 900 }}>
       {reviews.map((review: Review) => {
-        // console.debug(post.id);
-        return <ReviewCard key={review.id} review={review} />;
+        return <ReviewCard key={review.id} review={review}/>;
       })}
     </div>
   );
@@ -39,22 +44,44 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [page, setPage] = useState(0);
   const size = 4;
 
+
   const pageCurSelect =
     "z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700   ";
   const pageNonSelect =
     "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ";
 
   useEffect(() => {
-    api
-      .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`)
-      .then(({ data }: { data: Data }) => {
-        setTotalPages(data.totalPages);
-        setResults([...data.passReviewResponseList]);
-      })
-      .catch((error) => {
-        console.debug(error);
-      });
+    if (localStorage.getItem("accessToken")) {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then(({ data }: { data: Data }) => {
+          setTotalPages(data.totalPages);
+          setResults([...data.passReviewResponseList]);
+          console.log(data);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });  
+    }
+    else {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`)
+        .then(({ data }: { data: Data }) => {
+          setTotalPages(data.totalPages);
+          setResults([...data.passReviewResponseList]);
+          console.log(data)
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+    }
   }, []);
+
+
 
   const changePage = (num: number) => {
     api
@@ -217,6 +244,7 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
           </li>
         </ul>
       </nav>
+      
     </>
   );
 };
