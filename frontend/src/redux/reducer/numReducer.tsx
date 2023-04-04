@@ -15,6 +15,9 @@ const numReducer = createSlice({
     SEARCH_BY_NAV(state,action){
       state.num = action.payload.idx
     },
+    RESET_NUM(state) {
+      state.num = 0
+    }
     
   }
 })
