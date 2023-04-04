@@ -12,7 +12,7 @@ public interface EnterpriseService {
 
     NewsTotalResponse getNews(Long enterpriseId, Pageable pageable, User user);
 
-//    HotNewsResponse getHotNews(Long enterpriseId, User user);
+    List<HotNewsResponse> getHotNews(Long enterpriseId, User user);
 
     PassReviewTotalResponse getPassReview(Long enterpriseId, Pageable pageable, User user);
 

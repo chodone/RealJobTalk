@@ -12,4 +12,8 @@ public class HotNewsResponse {
 
     private String url;
 
+    private Integer count;
+
+    private Boolean isScrap;
+
 }

@@ -2,6 +2,7 @@ package com.ssafy.jobtalkbackend.controller;
 
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
+import com.ssafy.jobtalkbackend.dto.response.HotNewsResponse;
 import com.ssafy.jobtalkbackend.dto.response.NewsTotalResponse;
 import com.ssafy.jobtalkbackend.dto.response.PassReviewTotalResponse;
 import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
@@ -63,6 +64,7 @@ public class MemberController {
                          @AuthenticationPrincipal User user) {
         return memberService.scrapNews(newsId.get("newsId"), user);
     }
+
 
     @GetMapping("/scrap/pass_review")
     public ResponseEntity<PassReviewTotalResponse> getScrapPassReview(@PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
