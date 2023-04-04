@@ -40,4 +40,8 @@ public class News {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
+
+    public void addScrapCount() {
+        this.hotRank += 1;
+    }
 }
