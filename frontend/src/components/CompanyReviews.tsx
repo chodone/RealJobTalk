@@ -51,16 +51,34 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
     "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ";
 
   useEffect(() => {
-    api
-      .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`)
-      .then(({ data }: { data: Data }) => {
-        setTotalPages(data.totalPages);
-        setResults([...data.passReviewResponseList]);
-        console.log(data)
-      })
-      .catch((error) => {
-        console.debug(error);
-      });
+    if (localStorage.getItem("accessToken")) {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then(({ data }: { data: Data }) => {
+          setTotalPages(data.totalPages);
+          setResults([...data.passReviewResponseList]);
+          console.log(data);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });  
+    }
+    else {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`)
+        .then(({ data }: { data: Data }) => {
+          setTotalPages(data.totalPages);
+          setResults([...data.passReviewResponseList]);
+          console.log(data)
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+    }
   }, []);
 
 

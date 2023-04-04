@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
@@ -12,15 +12,20 @@ export default function ScrapModal({
   setIsScrap,
   logined,
   review_id,
+  isScrap,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsScrap: React.Dispatch<React.SetStateAction<boolean>>;
   logined: boolean;
   review_id: number;
+  isScrap: boolean;
 }) {
   const cancelButtonRef = useRef(null);
   const navigate = useRouter();
+
+  const [IsScrapBtn, setIsScrapBtn] = useState(!isScrap ? 'scrap' : 'unscrap')
+  const [word, setWord] = useState(!isScrap ? '후기를 스크랩하시겠습니까?' : '스크랩을 취소하시겠습니까?')
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -56,7 +61,7 @@ export default function ScrapModal({
                         as="h2"
                         className="text-2xl font-bold leading-6 text-gray-900 pt-4 pb-4"
                       >
-                        Modal 창이닷!!
+                        {word}
                       </Dialog.Title>
                     </div>
                   </div>
@@ -70,20 +75,34 @@ export default function ScrapModal({
                         e.preventDefault();
                         setOpen(false);
                         api
-                        .post("/api/scrap/pass_review", {
-                          passReviewId:review_id
-                        })
+                          .post(
+                            "/api/member/scrap/pass_review",
+                            {
+                              passReviewId: review_id,
+                            },
+                            {
+                              headers: {
+                                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                              },
+                            }
+                          )
                           .then((res) => {
-                            console.log(res)
-                            setIsScrap(true);
-                        })
-                        .catch((err) => {
-                          console.debug(err);
-                        });
-                        
+                            console.log(res);
+                            setIsScrap(res.data);
+                            setIsScrapBtn(!res.data ? 'scrap' : 'unscrap')
+                            setWord(
+                              !res.data
+                                ? "후기를 스크랩하시겠습니까?"
+                                : "스크랩을 취소하시겠습니까?"
+                            );
+                            
+                          })
+                          .catch((err) => {
+                            console.debug(err);
+                          });
                       }}
                     >
-                      SCRAP
+                      {IsScrapBtn}
                     </button>
                   )}
                   {!logined && (
