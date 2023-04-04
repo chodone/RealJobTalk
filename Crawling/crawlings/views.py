@@ -200,25 +200,27 @@ def to_db():
     for idx in range(300):
         try:
             with client_hdfs.read(f"/user/root/newsOutput/{idx}/part-r-00000", encoding="utf-8") as f:
-                print(f.readline())
-                word, count = f.readline().split(' ')
+                result = f.readlines()
+                for val in result:
+                    word, count = " ".join(val.split()[:-1]) , val.split()[-1]
+                    print(word, count)
 
-                cursor = conn_aws.cursor()
+                    cursor = conn_aws.cursor()
 
-                selectSql = "SELECT MAX(keyword_id) FROM keyword"
-                cursor.execute(selectSql)
-                maxId = cursor.fetchall()
-                maxId = maxId[0][0]
-                if maxId == None:
-                    maxId = -1
+                    selectSql = "SELECT MAX(keyword_id) FROM keyword"
+                    cursor.execute(selectSql)
+                    maxId = cursor.fetchall()
+                    maxId = maxId[0][0]
+                    if maxId == None:
+                        maxId = -1
 
-                conn_aws.commit()
+                    conn_aws.commit()
 
-                sql = "INSERT INTO keyword (keyword_id, enterprise_id, name, count)  VALUES (%s, %s, %s, %s)"
-                value = (maxId+1, idx, word, count)
-                cursor.execute(sql, value)
+                    sql = "INSERT INTO keyword (keyword_id, enterprise_id, name, count)  VALUES (%s, %s, %s, %s)"
+                    value = (maxId+1, idx, word, count)
+                    cursor.execute(sql, value)
 
-                conn_aws.commit()
+                    conn_aws.commit()
         except:
             continue
 
