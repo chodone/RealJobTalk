@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Link from "next/link";
+import { numactions } from "@/redux/reducer/numReducer";
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
 
 interface params {
   company: string;
@@ -11,6 +13,11 @@ interface params {
 
 const UnderNav = ({ params }: { params: params }) => {
   const company = decodeURI(params.company);
+  const dispatch = useAppDispatch();
+
+  
+
+  const order = useAppSelector((state) => state.numbers.num);
 
   const nav_item = [
     {
@@ -26,18 +33,14 @@ const UnderNav = ({ params }: { params: params }) => {
       dir: "/reviews",
     },
   ];
-  const [active, setactive] = useState(0);
 
-  const handleClick = (num: number) => {
-    setactive(num);
-  };
  
   return (
     <div className="flex flex-row">
       <div className="flex space-x-10 px-40 mt-10 mb-2 basis-7/8">
         {nav_item.map((item, idx) => (
           <Link href={`/info/${company}/${params.enterpriseId}${item["dir"]}`} key={idx}>
-            <div key={idx} className={active === idx ? "underline underline-offset-[12px] text-[#02E86E]" : ""} onClick={() => handleClick(idx)}>
+            <div key={idx} className={order === idx ? "underline underline-offset-[12px] text-[#02E86E]" : ""} onClick={() => dispatch(numactions.SEARCH_BY_NAV({ idx }))}>
               {item["item"]}
               </div>
             </Link>
