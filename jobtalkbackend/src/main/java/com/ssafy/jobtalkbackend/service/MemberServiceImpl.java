@@ -73,8 +73,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
-    public ResponseEntity<TokenResponse> login(LoginRequest request, boolean kakaoLogin) {
+    public TokenResponse login(LoginRequest request, boolean kakaoLogin) {
 
         Member member = searchMember(request.getEmail());
 
@@ -90,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
         );
         TokenResponse tokenResponse = jwtTokenProvider.createToken(authentication);
 
-        return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+        return tokenResponse;
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface OAuthService {
 
     KakaoUserInfoResponse getKakaoUser(String accessToken);
 
-    ResponseEntity<TokenResponse> joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse);
+    TokenResponse joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse);
 
 
 }

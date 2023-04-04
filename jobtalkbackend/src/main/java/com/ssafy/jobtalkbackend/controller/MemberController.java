@@ -1,5 +1,6 @@
 package com.ssafy.jobtalkbackend.controller;
 
+import com.ssafy.jobtalkbackend.config.SecurityConfig;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
 import com.ssafy.jobtalkbackend.dto.response.NewsTotalResponse;
@@ -7,15 +8,19 @@ import com.ssafy.jobtalkbackend.dto.response.PassReviewTotalResponse;
 import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
 import com.ssafy.jobtalkbackend.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -26,14 +31,32 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @Value("${jwt.token-validity-in-milliseconds}")
+    private int accessTokenValidityTime;
+
+    @Value("${jwt.refresh-token-validity-in-milliseconds}")
+    private int refreshTokenValidityTime;
+
     @PostMapping("/signup")
     public Boolean signUp(@Valid @RequestBody SignUpRequest request){
         return memberService.signUp(request);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request){
-        return memberService.login(request, false);
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request, HttpServletResponse response){
+        TokenResponse tokenResponse = memberService.login(request, false);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + tokenResponse.getAccessToken());
+        Cookie cookie = new Cookie("accessToken", tokenResponse.getAccessToken());
+        cookie.setPath("/");
+        cookie.setMaxAge(accessTokenValidityTime);
+        response.addCookie(cookie);
+
+        Cookie cookie2 = new Cookie("refreshToken", tokenResponse.getRefreshToken());
+        cookie2.setPath("/");
+        cookie2.setMaxAge(refreshTokenValidityTime);
+        response.addCookie(cookie2);
+        return new ResponseEntity<TokenResponse>(tokenResponse, httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/email/check")

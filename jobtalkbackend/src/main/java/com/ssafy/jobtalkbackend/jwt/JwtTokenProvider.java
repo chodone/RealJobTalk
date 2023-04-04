@@ -32,10 +32,10 @@ public class JwtTokenProvider {
     private String secret_key;
 
     @Value("${jwt.token-validity-in-milliseconds}")
-    private long accessTokenValidityTime;
+    private int accessTokenValidityTime;
 
     @Value("${jwt.refresh-token-validity-in-milliseconds}")
-    private long refreshTokenValidityTime;
+    private int refreshTokenValidityTime;
 
     @Autowired
     private UserDetailsService userDetailsService;

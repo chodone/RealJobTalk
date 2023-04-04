@@ -14,7 +14,7 @@ public interface MemberService {
 
     Member searchMember(String email);
     Boolean signUp(SignUpRequest request);
-    ResponseEntity<TokenResponse> login(LoginRequest request, boolean kakaoLogin);
+    TokenResponse login(LoginRequest request, boolean kakaoLogin);
     Boolean checkEmail(String email);
 
     Boolean checkNickname(String nickname);

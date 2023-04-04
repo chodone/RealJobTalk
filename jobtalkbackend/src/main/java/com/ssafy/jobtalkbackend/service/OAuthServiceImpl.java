@@ -175,7 +175,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     @Transactional
-    public ResponseEntity<TokenResponse> joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse) {
+    public TokenResponse joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse) {
         Member joinMember = memberRepository.findByOauthId(kakaoUserInfoResponse.getId()).orElse(null);
         if (joinMember == null) {
             Member member = Member
@@ -193,16 +193,16 @@ public class OAuthServiceImpl implements OAuthService {
             );
             TokenResponse tokenResponse = jwtTokenProvider.createToken(authentication);
 
-            return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+            return tokenResponse;
         } else {
             LoginRequest loginRequest = LoginRequest
                     .builder()
                     .email(joinMember.getEmail())
                     .password(JOBTALK_KEY)
                     .build();
-
             return memberService.login(loginRequest, true);
         }
+
 
 
     }
