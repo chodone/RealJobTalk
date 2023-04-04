@@ -44,4 +44,7 @@ public class News {
     public void addScrapCount() {
         this.hotRank += 1;
     }
+    public void minusScrapCount() {
+        this.hotRank -= 1;
+    }
 }
