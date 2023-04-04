@@ -83,6 +83,7 @@ const Navbar = () => {
                 className="py-5 px-3"
                 onClick={() => {
                   dispatch(authActions.logOut());
+                  location.reload()
                 }}
               >
                 로그아웃

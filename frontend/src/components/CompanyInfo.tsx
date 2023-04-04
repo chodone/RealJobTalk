@@ -41,6 +41,7 @@ const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId
       .get(`/api/enterprise/${enterpriseId}`)
       .then(({ data }: { data: Data }) => {
         setCompanyInfo_(data);
+        console.log(data)
       })
       .catch((error) => {
         console.debug(error);
@@ -54,13 +55,13 @@ const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId
           <CompanyImage imgUrl={companyInfo_.imgUrl} />
         </div>
         <div className=" col-span-4">
-          <UrlButtons />
+          <UrlButtons companyInfo={companyInfo_} />
         </div>
       </div>
       <hr className=" border-spacing-8" />
       <div className="row-start-3 row-end-7">
         <div className="grid grid-cols-10 row-end-2 ">
-          <div className=" col-start-1 col-span-2 mt-4 ml-4 ">
+          <div className=" col-start-1 col-span-3 mt-4 ml-4 ">
             <div className=" group flex relative justify-center items-center">
               <ul className="pt-3 pl-3 flex flex-wrap text-lg font-medium text-center text-gray-500  ">
                 <li className="mr-2">
@@ -87,10 +88,11 @@ const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId
             </div>
           </div>
         </div>
-        <div>h2</div>
-        <div>h1</div>
-        <div>h2</div>
-        <div>h1</div>
+        <div className=" col-span-4">
+          <p className=" text-xl">
+            {companyInfo_.businessInformation}
+          </p>
+        </div>
       </div>
     </div>
   );
