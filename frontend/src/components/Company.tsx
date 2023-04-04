@@ -21,9 +21,10 @@ const Company = ({ company }: { company: dbObject }) => {
         pathname:`info/${companyName}/${enterpriseId}`,
       }}
     >
-      <div className="justify-center flex flex-col items-center transform transition duration-500 hover:scale-110">
+      <div className=" m-4 border-2 rounded-lg justify-center flex flex-col items-center transform transition duration-500 hover:scale-110">
         <Image src={imgurl} alt="" width={238} height={87} style={{width :238,height:87}}/>
         <div>{companyName}</div>
+
       </div>
     </Link>
   );
