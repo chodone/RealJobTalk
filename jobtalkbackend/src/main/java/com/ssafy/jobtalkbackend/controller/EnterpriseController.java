@@ -39,11 +39,11 @@ public class EnterpriseController {
         return ResponseEntity.ok().body(enterpriseService.getNews(enterpriseId, pageable, user));
     }
 
-//    @GetMapping("/{enterpriseId}/hot_news")
-//    public ResponseEntity<HotNewsResponse> getHotNews(@PathVariable Long enterpriseId,
-//                                                   @AuthenticationPrincipal User user) {
-//        return ResponseEntity.ok().body(enterpriseService.getHotNews(enterpriseId, user));
-//    }
+    @GetMapping("/{enterpriseId}/hot_news")
+    public ResponseEntity<List<HotNewsResponse>> getHotNews(@PathVariable Long enterpriseId,
+                                                   @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(enterpriseService.getHotNews(enterpriseId, user));
+    }
 
     @GetMapping("/{enterpriseId}/pass_review")
     public ResponseEntity<PassReviewTotalResponse> getPassReview(@PathVariable Long enterpriseId,

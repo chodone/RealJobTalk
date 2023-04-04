@@ -10,4 +10,6 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, Long> {
     List<News> findAllByEnterpriseId(Long enterpriseId, Pageable pageable);
     Long countAllByEnterprise(Enterprise enterprise);
+
+    List<News> findTop3ByEnterpriseIdOrderByHotRankDesc(Long enterpriseId);
 }
