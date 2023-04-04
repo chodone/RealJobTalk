@@ -129,7 +129,7 @@ def naver_news_crawlling():
     for enterprise in lines:
     
         val = 1
-        for idx in range(1, 11): #page
+        for idx in range(1, 21): #page
 
             try:
                 params = {
