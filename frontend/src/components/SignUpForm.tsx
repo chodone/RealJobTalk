@@ -25,7 +25,7 @@ function EmailInput({ register, errors, name }:{ register:UseFormRegister<FormDa
   const callApi = debounce(async (value) => {
     console.log(value)
     const email = value
-    await fetch("http://localhost:8082/api/member/email/check", {
+    await fetch("https://j8c205.p.ssafy.io/api/member/email/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -135,7 +135,7 @@ function NicknameInput({ register, errors, name }:{ register:UseFormRegister<For
   const callApi = debounce(async (value) => {
     console.log(value)
     const nickname = value
-    await fetch("http://localhost:8082/api/member/nickname/check", {
+    await fetch("https://j8c205.p.ssafy.io/api/member/nickname/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -254,7 +254,7 @@ const SignUphtmlForm = () => {
     
   
   const onSubmit = handleSubmit(({ email, nickname, password }) => {
-    fetch("http://localhost:8082/api/member/signup", {
+    fetch("https://j8c205.p.ssafy.io/api/member/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
