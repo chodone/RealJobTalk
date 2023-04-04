@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "http://localhost:8082",
+  baseURL: "https://j8c205.p.ssafy.io/",
 })
 
 export default api;
