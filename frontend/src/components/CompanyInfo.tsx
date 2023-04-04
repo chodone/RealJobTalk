@@ -68,7 +68,9 @@ const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId
                     className={tab == businessInfo ? selected : deselected}
                     onClick={() => onClick(businessInfo)}
                   >
-                    사업개요
+                    <p className="text-sm">
+                      사업개요
+                    </p>
                   </div>
                 </li>
                 <li className="mr-2">
@@ -76,7 +78,9 @@ const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId
                     className={tab == keyword ? selected : deselected}
                     onClick={() => onClick(keyword)}
                   >
-                    키워드
+                    <p className="text-sm">
+                      키워드
+                    </p>
                   </div>
                 </li>
               </ul>

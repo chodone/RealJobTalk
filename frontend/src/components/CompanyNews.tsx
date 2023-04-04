@@ -12,6 +12,7 @@ interface News {
   hotRank: number;
   content: String;
   dateOfIssue: String;
+  isScrap: boolean
 }
 
 // interface Reviews {
@@ -40,7 +41,9 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState(Array<News>);
   const [page, setPage] = useState(0);
+  
   const size = 4;
+
 
   const pageCurSelect =
     "z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700";
@@ -49,7 +52,11 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
 
   useEffect(() => {
     api
-      .get(`api/enterprise/${enterpriseId}/news?page=${page}&size=${size}`)
+      .get(`api/enterprise/${enterpriseId}/news?page=${page}&size=${size}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then(({ data }: { data: Data }) => {
         console.log(data);
         setTotalPages(data.totalPages);
@@ -62,7 +69,11 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
 
   const changePage = (num: number) => {
     api
-      .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`)
+      .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then(({ data }: { data: Data }) => {
         setPage(num);
         setResults([...data.newsResponseList]);
