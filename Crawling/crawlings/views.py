@@ -193,65 +193,35 @@ def naver_news_crawlling():
     conn_aws.close()
 
 
-def to_hdfs():
+def to_db():
 
-    cursor = conn_aws.cursor()
+    client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
 
-    selectSql = "select a.*, b.name from pass_review a, enterprise b where a.enterprise_id = b.enterprise_id;"
-    cursor.execute(selectSql)
-    resultArr = cursor.fetchall()
-    conn_aws.commit()
+    for idx in range(300):
+        try:
+            with client_hdfs.read(f"/user/root/newsOutput/{idx}/part-r-00000", encoding="utf-8") as f:
+                print(f.readline())
+                word, count = f.readline().split(' ')
 
-    idx = 0
-    for result in resultArr:
-        content = result[1]
-        dateOfIssue = result[2]
-        title = result[3]
-        url = result[4]
+                cursor = conn_aws.cursor()
 
-        if enterpriseId < int(result[5]):
-            idx = 0
-        enterpriseId = result[5]
+                selectSql = "SELECT MAX(keyword_id) FROM keyword"
+                cursor.execute(selectSql)
+                maxId = cursor.fetchall()
+                maxId = maxId[0][0]
+                if maxId == None:
+                    maxId = -1
 
-        enterpriseName = result[6]
+                conn_aws.commit()
 
-        filename = dateOfIssue+"_naver_review_"+enterpriseId+"_"+str(idx+1)
-        value = enterpriseName + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + content
+                sql = "INSERT INTO keyword (keyword_id, enterprise_id, name, count)  VALUES (%s, %s, %s, %s)"
+                value = (maxId+1, idx, word, count)
+                cursor.execute(sql, value)
 
-        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-        client_hdfs.write(f'/user/root/reviewInput/{enterpriseId}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                conn_aws.commit()
+        except:
+            continue
 
-        idx += 1
-
-
-    cursor = conn_aws.cursor()
-
-    selectSql = "select a.*, b.name from news a, enterprise b where a.enterprise_id = b.enterprise_id;"
-    cursor.execute(selectSql)
-    resultArr = cursor.fetchall()
-    conn_aws.commit()
-
-    idx = 0
-    for result in resultArr:
-        content = result[1]
-        dateOfIssue = result[2]
-        title = result[4]
-        url = result[5]
-
-        if enterpriseId < int(result[6]):
-            idx = 0
-        enterpriseId = result[6]
-
-        enterpriseName = result[7]
-
-        filename = dateOfIssue+"_naver_news_"+enterpriseId+"_"+str(idx+1)
-        value = enterpriseName + ('\n') + dateOfIssue + ('\n') + url + ('\n') + title + ('\n') + content
-
-        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-        client_hdfs.write(f'/user/root/newsInput/{enterpriseId}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
-
-        idx += 1
-    conn_aws.close()
 
 
 def naver_pass_review_crawlling():
@@ -269,7 +239,7 @@ def naver_pass_review_crawlling():
     for enterprise in lines:
     
         val = 1
-        for idx in range(1, 11): #page
+        for idx in range(1, 21): #page
 
             try:
                 params = {
@@ -303,6 +273,22 @@ def naver_pass_review_crawlling():
                     if soup.find("div", attrs={"class" : "se-main-container"}):
                         content = soup.find("div", attrs={"class" : "se-main-container"}).get_text()
                         content = content.replace("\n", "")
+
+                        cursor = conn_aws.cursor()
+
+                        selectSql = "SELECT * FROM avoid_keyword"
+                        cursor.execute(selectSql)
+                        result = cursor.fetchall()
+                        conn_aws.commit()
+
+                        isAvoid = False
+                        for avKey in result:
+                            if avKey[1] in title or avKey[1] in content:
+                                isAvoid = True
+                                break
+
+                        if isAvoid:
+                            continue
 
                         filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
                         value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
