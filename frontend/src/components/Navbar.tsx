@@ -43,7 +43,7 @@ const Navbar = () => {
 
 
   const getAuth = useAppSelector((state) => state.auth);
-
+  const nickname = getAuth.nickname;
   const logined = getAuth.isLogined;
 
   return (
@@ -87,6 +87,13 @@ const Navbar = () => {
                 }}
               >
                 로그아웃
+              </button>
+              <button
+                type="button"
+                className="py-5 px-3"
+                onClick={() => router.push(`mypage/${nickname}`)}
+              >
+                마이페이지
               </button>
             </div>
           )}
