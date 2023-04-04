@@ -1,15 +1,12 @@
 "use client";
 import React, { ReactElement, useState } from "react";
-import ScrapModal from "./Modals/ScrapModal";
+import ScrapModal from "./Modals/ReviewScrapModal";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { authActions } from "@/redux/reducer/authReducer";
 import { TiTickOutline,TiTick } from "react-icons/ti";
 
 
-interface Data {
-  totalpage: number,
-  review: Array<Review>
-}
+
 
 
 interface Review {
