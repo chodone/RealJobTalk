@@ -32,7 +32,8 @@ const NewsCard = ({ news }: { news: News }) => {
       <a href={url} target="_blank">
         <div className="ml-20 px-10 py-3 mr-20">
           <div className="border-b border-gray-400 bg-white rounded-b p-4 leading-normal overflow-hidden">
-            <p className="text-sm text-gray-600 flex items-center">{news.dateOfIssue} </p>
+            <p className="text-sm text-gray-600 flex items-center">{news.dateOfIssue.substring(0,4)}.{news.dateOfIssue.substring(4,6)}.{news.dateOfIssue.substring(6,8)} </p>
+            
             <div className="text-gray-900 font-bold text-xl mb-2 justify-between flex">
               {news.title}
               {!isScrap && (

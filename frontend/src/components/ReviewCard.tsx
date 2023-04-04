@@ -36,7 +36,7 @@ const ReviewCard = ({ review}: { review: Review,  }): ReactElement => {
       <a href={url} target="_blank">
         <div className="ml-20 px-10 py-3 mr-20">
           <div className="border-b border-gray-400 bg-white rounded-b p-4 leading-normal overflow-hidden">
-            <p className="text-sm text-gray-600 flex items-center">{review.dateOfIssue}</p>
+            <p className="text-sm text-gray-600 flex items-center">{review.dateOfIssue.substring(0,4)}.{review.dateOfIssue.substring(4,6)}.{review.dateOfIssue.substring(6,8)}</p>
             <div className="text-gray-900 font-bold text-xl mb-2 justify-between flex">
               <div>{review.title}</div>
               {!isScrap && (
