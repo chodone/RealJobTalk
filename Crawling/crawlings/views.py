@@ -152,7 +152,7 @@ def naver_news_crawlling():
                     
                     if len(content) > 0:
                         today = datetime.today().strftime('%Y%m%d')
-                        # filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
+                        filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
                         val += 1
 
                         titleText = BeautifulSoup(jsonIdx['title'], "lxml").text
