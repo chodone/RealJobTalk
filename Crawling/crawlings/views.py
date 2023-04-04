@@ -130,60 +130,66 @@ def naver_news_crawlling():
     
         val = 1
         for idx in range(1, 11): #page
-            params = {
-                "query" : enterprise.strip(),
-                "display" : 100,
-                "start" : idx
-            }
-            res = requests.get(url, headers=headers, params=params)
 
-            for jsonIdx in res.json()['items']:
-                if 'n.news.naver' in jsonIdx['link']:
-                    #각 기사 html get하기
-                    header = {'User-Agent': 'Mozilla/5.0'}
-                    news = requests.get(jsonIdx['link'],headers=header)
-                    news_html = BeautifulSoup(news.text,"lxml")
+            try:
+                params = {
+                    "query" : enterprise.strip(),
+                    "display" : 100,
+                    "start" : idx
+                }
+                res = requests.get(url, headers=headers, params=params)
 
-                    # 뉴스 본문 가져오기
-                    content = news_html.select("div#dic_area")
-
-                    if content == []:
-                        content = news_html.select("#articeBody")
-                    
-                    if len(content) > 0:
-                        today = datetime.today().strftime('%Y%m%d')
-                        filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
-                        val += 1
+                for jsonIdx in res.json()['items']:
+                    if 'n.news.naver' in jsonIdx['link']:
+                        #각 기사 html get하기
+                        header = {'User-Agent': 'Mozilla/5.0'}
+                        news = requests.get(jsonIdx['link'],headers=header)
+                        news_html = BeautifulSoup(news.text,"lxml")
 
                         titleText = BeautifulSoup(jsonIdx['title'], "lxml").text
+                        if enterprise.strip() in titleText:
+                            
+                            # 뉴스 본문 가져오기
+                            content = news_html.select("div#dic_area")
 
-                        contentVal = ''
-                        for c in (content):
-                            contentVal += c.text.strip()
+                            if content == []:
+                                content = news_html.select("#articeBody")
+                            
+                            if len(content) > 0:
+                                today = datetime.today().strftime('%Y%m%d')
+                                filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
+                                val += 1
 
-                        value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
-                        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                        client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                                
 
-                        time.sleep(3)
+                                contentVal = ''
+                                for c in (content):
+                                    contentVal += c.text.strip()
 
-                        cursor = conn_aws.cursor()
+                                value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
+                                client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                                client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
-                        selectSql = "SELECT MAX(news_id) FROM news"
-                        cursor.execute(selectSql)
-                        maxNewsId = cursor.fetchall()
-                        maxNewsId = maxNewsId[0][0]
-                        if maxNewsId == None:
-                            maxNewsId = -1
+                                time.sleep(3)
 
-                        conn_aws.commit()
+                                cursor = conn_aws.cursor()
 
-                        sql = "INSERT INTO news (news_id, date_of_issue, title, url, enterprise_id, content)  VALUES (%s, %s, %s, %s, %s, %s)"
-                        value = (maxNewsId+1, today, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip())
-                        cursor.execute(sql, value)
+                                selectSql = "SELECT MAX(news_id) FROM news"
+                                cursor.execute(selectSql)
+                                maxNewsId = cursor.fetchall()
+                                maxNewsId = maxNewsId[0][0]
+                                if maxNewsId == None:
+                                    maxNewsId = -1
 
-                        conn_aws.commit()
-                        
+                                conn_aws.commit()
+
+                                sql = "INSERT INTO news (news_id, date_of_issue, title, url, enterprise_id, content)  VALUES (%s, %s, %s, %s, %s, %s)"
+                                value = (maxNewsId+1, today, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip())
+                                cursor.execute(sql, value)
+
+                                conn_aws.commit()
+            except:
+                continue        
         enterprise_id += 1
 
     conn_aws.close()
@@ -266,62 +272,65 @@ def naver_pass_review_crawlling():
     
         val = 1
         for idx in range(1, 11): #page
-            params = {
-                "query" : enterprise.strip()+" 합격 후기",
-                "display" : 100,
-                "start" : idx
-            }
-            res = requests.get(url, headers=headers, params=params)
 
-            root = res.json()
-
-            for idx in range(100):
-            
-                title = BeautifulSoup(root['items'][idx]['title'], "lxml").text
-                link = root['items'][idx]['link']
-                postdate = root['items'][idx]['postdate']
-
-                headers2 = {
-                    "User-Agent": "Mozilla/5.0"
+            try:
+                params = {
+                    "query" : enterprise.strip()+" 합격 후기",
+                    "display" : 100,
+                    "start" : idx
                 }
-                response = requests.get(link, headers=headers2)
-                response.raise_for_status()
-                soup = BeautifulSoup(response.text, "lxml")
+                res = requests.get(url, headers=headers, params=params)
 
-                src_url = "https://blog.naver.com/" + soup.iframe["src"]
+                root = res.json()
 
-                response = requests.get(src_url, headers=headers2)
-                response.raise_for_status()
-                soup = BeautifulSoup(response.text, "lxml")
+                for idx in range(100):
+                
+                    title = BeautifulSoup(root['items'][idx]['title'], "lxml").text
+                    link = root['items'][idx]['link']
+                    postdate = root['items'][idx]['postdate']
 
-                if soup.find("div", attrs={"class" : "se-main-container"}):
-                    content = soup.find("div", attrs={"class" : "se-main-container"}).get_text()
-                    content = content.replace("\n", "")
+                    headers2 = {
+                        "User-Agent": "Mozilla/5.0"
+                    }
+                    response = requests.get(link, headers=headers2)
+                    response.raise_for_status()
+                    soup = BeautifulSoup(response.text, "lxml")
 
-                    filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
-                    value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
-                    client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                    client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                    src_url = "https://blog.naver.com/" + soup.iframe["src"]
 
-                    cursor = conn_aws.cursor()
+                    response = requests.get(src_url, headers=headers2)
+                    response.raise_for_status()
+                    soup = BeautifulSoup(response.text, "lxml")
 
-                    selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
-                    cursor.execute(selectSql)
-                    maxNewsId = cursor.fetchall()
-                    maxNewsId = maxNewsId[0][0]
-                    if maxNewsId == None:
-                        maxNewsId = -1
+                    if soup.find("div", attrs={"class" : "se-main-container"}):
+                        content = soup.find("div", attrs={"class" : "se-main-container"}).get_text()
+                        content = content.replace("\n", "")
 
-                    conn_aws.commit()
+                        filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
+                        value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
+                        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                        client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
-                    sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
-                    value = (maxNewsId+1, content, postdate, title, link, enterprise_id)
-                    cursor.execute(sql, value)
+                        cursor = conn_aws.cursor()
 
-                    conn_aws.commit()
-                else:
-                    continue
+                        selectSql = "SELECT MAX(pass_review_id) FROM pass_review"
+                        cursor.execute(selectSql)
+                        maxNewsId = cursor.fetchall()
+                        maxNewsId = maxNewsId[0][0]
+                        if maxNewsId == None:
+                            maxNewsId = -1
 
+                        conn_aws.commit()
+
+                        sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
+                        value = (maxNewsId+1, content, postdate, title, link, enterprise_id)
+                        cursor.execute(sql, value)
+
+                        conn_aws.commit()
+                    else:
+                        continue
+            except:
+                continue
         enterprise_id += 1
     
 
