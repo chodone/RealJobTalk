@@ -133,7 +133,7 @@ def naver_news_crawlling():
 
             try:
                 params = {
-                    "query" : enterprise.strip(),
+                    "query" : enterprise.strip()+" 사업",
                     "display" : 100,
                     "start" : idx
                 }
@@ -159,8 +159,6 @@ def naver_news_crawlling():
                                 today = datetime.today().strftime('%Y%m%d')
                                 filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
                                 val += 1
-
-                                
 
                                 contentVal = ''
                                 for c in (content):
