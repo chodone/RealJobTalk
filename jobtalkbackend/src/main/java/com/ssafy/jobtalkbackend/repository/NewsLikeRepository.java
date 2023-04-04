@@ -17,8 +17,5 @@ public interface NewsLikeRepository extends JpaRepository<NewsLike, Long> {
     List<NewsLike> findAllByMember(Member member, Pageable pageable);
 
     Long countAllByMember(Member member);
-
-
-
-
+    
 }

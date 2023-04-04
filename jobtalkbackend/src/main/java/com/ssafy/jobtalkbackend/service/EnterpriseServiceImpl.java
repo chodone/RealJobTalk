@@ -80,6 +80,11 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .newsResponseList(resultNewsList)
                 .build();
     }
+//
+//    @Override
+//    public HotNewsResponse getHotNews(Long enterpriseId, User user) {
+//
+//    }
 
     @Override
     public NewsResponse buildNewsResponse(News news, boolean isScrap) {

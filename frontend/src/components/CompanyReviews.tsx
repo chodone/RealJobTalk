@@ -42,6 +42,7 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState(Array<Review>);
   const [page, setPage] = useState(0);
+  const[accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'))
   const size = 4;
 
 
@@ -51,7 +52,7 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
     "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ";
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
+    if (accessToken) {
       api
         .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`, {
           headers: {
@@ -84,7 +85,23 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
 
 
   const changePage = (num: number) => {
-    api
+    if (accessToken) {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${num}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then(({ data }: { data: Data }) => {
+          setPage(num);
+          setResults([...data.passReviewResponseList]);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+      
+    } else {
+      api
       .get(`api/enterprise/${enterpriseId}/pass_review?page=${num}&size=${size}`)
       .then(({ data }: { data: Data }) => {
         setPage(num);
@@ -93,6 +110,9 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
       .catch((error) => {
         console.debug(error);
       });
+    }
+
+
   };
 
   const getPreviousData = (num: number) => {
