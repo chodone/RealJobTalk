@@ -153,10 +153,12 @@ public class MemberServiceImpl implements MemberService {
                     .member(member)
                     .news(news)
                     .build();
+            news.addScrapCount();
             newsLikeRepository.save(newsLike);
             return true;
         } else {
             newsLikeRepository.deleteById(newsLike.getId());
+            news.minusScrapCount();
             return false;
         }
     }

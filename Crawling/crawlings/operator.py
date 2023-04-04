@@ -7,13 +7,15 @@ from .views import naver_pass_review_crawlling
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=9, minute=8, id = 'naver_pass_review_crawlling')
+    @scheduler.scheduled_job('cron', hour=7, minute=55, id = 'naver_pass_review_crawlling')
     def job1():
-        naver_pass_review_crawlling()
-
-    @scheduler.scheduled_job('cron', hour=9, minute=9, id = 'naver_news_crawlling')
-    def job2():
         naver_news_crawlling()
+        naver_pass_review_crawlling()
+        
+
+    # @scheduler.scheduled_job('cron', hour=9, minute=9, id = 'naver_news_crawlling')
+    # def job2():
+    #     naver_news_crawlling()
 
     # @scheduler.scheduled_job('cron', hour=7, minute=52, id = 'tistory_review_crawling')
     # def job3():
