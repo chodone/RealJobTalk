@@ -41,7 +41,7 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState(Array<News>);
   const [page, setPage] = useState(0);
-  
+  const[accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'))
   const size = 4;
 
 
