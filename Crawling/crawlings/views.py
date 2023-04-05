@@ -8,6 +8,7 @@ import time
 import mysql.connector
 from django.conf import settings
 from selenium import webdriver
+from datetime import datetime
 from selenium.webdriver.common.by import By
 
 conn_aws = mysql.connector.connect(
@@ -172,18 +173,22 @@ def naver_news_crawlling():
                             content = news_html.select("#articeBody")
                         
                         if len(content) > 0:
-                            today = datetime.today().strftime('%Y%m%d')
-                            filename = today+"_naver_news_"+enterprise.strip()+"_"+str(val)
+                            date_obj = datetime.strptime(' '.join(jsonIdx['pubDate'].split(', ')[1].split(' ')[:3]), '%d %b %Y')
+                            dateOfIssue = date_obj.strftime("%Y%m%d")
+                            filename = dateOfIssue+"_naver_news_"+enterprise.strip()+"_"+str(val)
                             val += 1
 
                             contentVal = ''
                             for c in (content):
                                 contentVal += c.text.strip()
 
-                            value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
+                            value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
                             client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
                             client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
                             
+                            filename = dateOfIssue+"_naver_news_title_"+enterprise_id+"_"+str(val)
+                            client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                            client_hdfs.write(f'/user/root/newsTitleInput/{enterprise_id}/{filename}.txt', data=titleText, overwrite=True, encoding="utf-8")
                             time.sleep(3)
 
                             cursor = conn_aws.cursor()
@@ -198,7 +203,7 @@ def naver_news_crawlling():
                             conn_aws.commit()
 
                             sql = "INSERT INTO news (news_id, date_of_issue, title, url, enterprise_id, content)  VALUES (%s, %s, %s, %s, %s, %s)"
-                            value = (maxNewsId+1, today, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip())
+                            value = (maxNewsId+1, dateOfIssue, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip())
                             cursor.execute(sql, value)
 
                             conn_aws.commit()

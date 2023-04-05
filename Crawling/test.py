@@ -1,7 +1,13 @@
-import tabula
-# Extaer los datos del pdf al DataFrame
-df = tabula.read_pdf("fff.pdf", pages='1')
-# lo convierte en un csv llamdo out.csv codificado con utf-8
+from datetime import datetime
 
-for d in df:
-    d.to_csv('out.csv', sep='\t', encoding='utf-8')
+
+
+date_time_str = "Thu, 06 Apr 2023 00:32:00 +0900"
+
+print()
+
+
+date_obj = datetime.strptime(' '.join(date_time_str.split(', ')[1].split(' ')[:3]), '%d %b %Y')
+
+result = date_obj.strftime("%Y%m%d")
+print(result)
