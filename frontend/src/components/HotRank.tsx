@@ -17,9 +17,15 @@ const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
 
   useEffect(() => {
     api
-      .get(`/api/enterprise/${enterpriseId}/hot_news`)
+      .get(`/api/enterprise/${enterpriseId}/hot_news`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then(({ data }: { data: Array<HOT> }) => {
-        setHotrank(data)
+        console.log("hotrank");
+        console.log(data);
+        setHotrank(data);
       })
       .catch((error) => {
         console.debug(error);

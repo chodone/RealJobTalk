@@ -52,29 +52,37 @@
 
 import React, { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import api from "@/redux/api";
 
-import axios from "axios";
 
 
-export default function Home() {
 
-  const router = useRouter()
+export default function KaKaoReturn() {
+
+  // const router = useRouter()
   // const searchParams = useSearchParams()
-
+  const code = useSearchParams()?.get('code')
+  console.log(code)
   useEffect(() => {
     // const code = (router.asPath.split('?')[1] || '').split('=')[1];
-    // const code = searchParams?.get('code')
     // console.log(code)
-    console.log(router)
+    // console.log(router)
+    console.log(code)
 
-    axios.post(`http://localhost:8082/api/kakao/callback`, {
-      // code
+    api.post(`/api/kakao/callback`, {
+      code:code
     })
       .then((res) => {
         console.log(res)
       })
       .catch((err) => {
-        console.log(err)
+        console.debug(err)
       })
   })
+
+  return (
+    <div>
+      callback
+    </div>
+  )
 }

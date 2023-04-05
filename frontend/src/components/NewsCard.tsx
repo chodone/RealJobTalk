@@ -15,9 +15,9 @@ interface News{
   isScrap:boolean
 }
 
-const NewsCard = ({ news }: { news: News }) => {
+const NewsCard = ({ news, }: { news: News }) => {
   const url = news.url
-
+  
   const [isScrap, setIsScrap] = useState(news.isScrap)
   const [open, setOpen] = useState(false);
 

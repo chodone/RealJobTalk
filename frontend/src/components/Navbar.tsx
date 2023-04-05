@@ -22,7 +22,6 @@ type Props = {
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
-  const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   const MainLogo = logo;
   const dispatch = useAppDispatch();
   const router = useRouter();
