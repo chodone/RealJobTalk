@@ -7,18 +7,18 @@ interface HOT {
   id: number;
   title: String;
   url: string;
-  count :number
+  count : number
   isScrap : boolean;
 }
 
 const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
 
-  const [Hotrank, setHotrank] = useState([]);
+  const [Hotrank, setHotrank] = useState(Array<HOT>);
 
   useEffect(() => {
     api
       .get(`/api/enterprise/${enterpriseId}/hot_news`)
-      .then(({ data }: { data: HOT }) => {
+      .then(({ data }: { data: Array<HOT> }) => {
         setHotrank(data)
       })
       .catch((error) => {
