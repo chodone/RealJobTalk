@@ -51,6 +51,7 @@ public class MemberController {
         cookie.setPath("/");
         cookie.setMaxAge(accessTokenValidityTime);
         response.addCookie(cookie);
+        System.out.println(accessTokenValidityTime);
 
         Cookie cookie2 = new Cookie("refreshToken", tokenResponse.getRefreshToken());
         cookie2.setPath("/");
