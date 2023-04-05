@@ -1,30 +1,33 @@
 "use client";
 import React,{useEffect,useState} from "react";
 import api from "@/redux/api"
+import HotRankCard from "@/components/HotRankCard"
 
-interface News {
+interface HOT {
   id: number;
   title: String;
   url: string;
-  hotRank: number;
-  content: String;
-  dateOfIssue: String;
+  count :number
+  isScrap : boolean;
 }
 
 const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
 
-  const [companyInfo_, setCompanyInfo_] = useState(Object);
+  const [Hotrank, setHotrank] = useState([]);
 
   useEffect(() => {
     api
       .get(`/api/enterprise/${enterpriseId}/hot_news`)
-      .then(({ data }: { data: News }) => {
-        console.log(data)
+      .then(({ data }: { data: HOT }) => {
+        setHotrank(data)
       })
       .catch((error) => {
         console.debug(error);
       });
   }, []);
+
+
+  console.log(Hotrank)
 
   return (
     <div>
@@ -36,9 +39,9 @@ const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
             ISSUE
           </div>
           <div className="grow ml-5">
-            <a href=""><div>1 bla</div> </a>
-            <a href=""><div>2 bla</div></a>
-            <a href=""><div>3 bla</div></a>
+            {Hotrank.map((item:HOT, idx:number) => (
+              <HotRankCard news={item}  key={idx}/>
+            ))}
           </div>
         </div>
       </div>
