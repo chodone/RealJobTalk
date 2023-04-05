@@ -28,5 +28,4 @@ public class EnterpriseDetailResponse {
 
     private String idealTalent;
 
-    private List<KeywordResponse> keywordList;
 }

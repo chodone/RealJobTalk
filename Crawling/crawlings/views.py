@@ -183,7 +183,7 @@ def naver_news_crawlling():
                             value = enterprise.strip() + ('\n') + today + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
                             client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
                             client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
-
+                            
                             time.sleep(3)
 
                             cursor = conn_aws.cursor()
@@ -202,6 +202,8 @@ def naver_news_crawlling():
                             cursor.execute(sql, value)
 
                             conn_aws.commit()
+
+                            
             except:
                 continue        
         enterprise_id += 1

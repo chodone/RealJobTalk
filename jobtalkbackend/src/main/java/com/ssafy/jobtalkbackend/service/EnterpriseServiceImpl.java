@@ -201,10 +201,10 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .youtubeUrl(enterprise.getYoutubeUrl())
                 .businessInformation(enterprise.getBusinessInformation())
                 .idealTalent(enterprise.getIdealTalent())
-                .keywordList(getKeyword(enterpriseId))
                 .build();
     }
 
+    @Override
     public List<KeywordResponse> getKeyword(Long enterpriseId) {
         List<Keyword> keywordList = keywordRepository.findTop100ByEnterpriseIdOrderByCountDesc(enterpriseId);
         return keywordList.stream().map(keyword -> {

@@ -24,5 +24,6 @@ public interface EnterpriseService {
 
     EnterpriseDetailResponse getEnterpriseDetail(Long enterpriseId);
 
+    List<KeywordResponse> getKeyword(Long enterpriseId);
 
 }
