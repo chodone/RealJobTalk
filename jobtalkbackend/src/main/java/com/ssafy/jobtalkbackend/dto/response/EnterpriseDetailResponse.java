@@ -1,5 +1,9 @@
 package com.ssafy.jobtalkbackend.dto.response;
 
+import java.util.List;
+
+import com.ssafy.jobtalkbackend.domain.Keyword;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,4 +27,6 @@ public class EnterpriseDetailResponse {
     private String businessInformation;
 
     private String idealTalent;
+
+    private List<KeywordResponse> keywordList;
 }

@@ -1,8 +1,11 @@
 package com.ssafy.jobtalkbackend.service;
 
+import java.util.List;
+
 import com.ssafy.jobtalkbackend.domain.Member;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
+import com.ssafy.jobtalkbackend.dto.response.EnterpriseResponse;
 import com.ssafy.jobtalkbackend.dto.response.NewsTotalResponse;
 import com.ssafy.jobtalkbackend.dto.response.PassReviewTotalResponse;
 import com.ssafy.jobtalkbackend.dto.response.TokenResponse;
@@ -28,5 +31,7 @@ public interface MemberService {
     PassReviewTotalResponse getScrapPassReview(Pageable pageable, User user);
 
     Boolean scrapPassReview(Long passReviewId, User user);
+
+    List<EnterpriseResponse> recommendEnterprise(User user);
 
 }
