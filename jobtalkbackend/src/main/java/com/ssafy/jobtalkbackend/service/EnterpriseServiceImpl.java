@@ -210,7 +210,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return keywordList.stream().map(keyword -> {
             return KeywordResponse.builder()
                 .text(keyword.getName())
-                .count(keyword.getCount())
+                .value(keyword.getCount())
                 .build();
         }).collect(Collectors.toList());
     }
