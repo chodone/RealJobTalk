@@ -2,6 +2,7 @@ package com.ssafy.jobtalkbackend.controller;
 
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
+import com.ssafy.jobtalkbackend.dto.response.EnterpriseResponse;
 import com.ssafy.jobtalkbackend.dto.response.HotNewsResponse;
 import com.ssafy.jobtalkbackend.dto.response.NewsTotalResponse;
 import com.ssafy.jobtalkbackend.dto.response.PassReviewTotalResponse;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -78,6 +81,10 @@ public class MemberController {
         return memberService.scrapPassReview(passReviewId.get("passReviewId"), user);
     }
 
+    @GetMapping("/recommend/enterprise")
+    public ResponseEntity<List<EnterpriseResponse>> recommendEnterprise(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(memberService.recommendEnterprise(user));
+        
     @GetMapping("/scrap/count")
     public ResponseEntity<?> getScrapCount(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(memberService.getScrapCount(user));

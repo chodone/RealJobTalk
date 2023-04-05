@@ -1,6 +1,7 @@
-enterpriseNameFile = open("test.txt", "r", encoding="UTF8")
-lines = enterpriseNameFile.readlines()
-enterpriseNameFile.close()
+import tabula
+# Extaer los datos del pdf al DataFrame
+df = tabula.read_pdf("fff.pdf", pages='1')
+# lo convierte en un csv llamdo out.csv codificado con utf-8
 
-for idx in lines:
-    print(" ".join(idx.split()[:-1]) , idx.split()[-1])
+for d in df:
+    d.to_csv('out.csv', sep='\t', encoding='utf-8')

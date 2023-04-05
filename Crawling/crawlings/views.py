@@ -19,12 +19,28 @@ conn_aws = mysql.connector.connect(
     auth_plugin='mysql_native_password'
 )
     
-
-
 enterpriseNameFile = open("enterpriseNames.txt", "r", encoding="UTF8")
 lines = enterpriseNameFile.readlines()
 enterpriseNameFile.close()
 
+def title_to_hdfs():
+
+    cursor = conn_aws.cursor()
+
+    val = 0
+    for idx in range(300):
+        selectSql = "SELECT title, date_of_issue FROM news WHERE enterprise_id="+idx
+        cursor.execute(selectSql)
+        result = cursor.fetchall()
+        conn_aws.commit()
+
+        for item in result:
+            filename = item[1]+"_naver_news_title_"+idx+"_"+str(val)
+            client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+            client_hdfs.write(f'/user/root/newsTitleInput/{idx}/{filename}.txt', data=item[0], overwrite=True, encoding="utf-8")
+
+            val += 1
+    
 
 def tistory_review_crawling():
     print('tistory_review_crawling 시작합니당')
@@ -199,7 +215,7 @@ def to_db():
 
     for idx in range(300):
         try:
-            with client_hdfs.read(f"/user/root/newsOutput/{idx}/part-r-00000", encoding="utf-8") as f:
+            with client_hdfs.read(f"/user/root/newsTitleOutput/{idx}/part-r-00000", encoding="utf-8") as f:
                 result = f.readlines()
                 for val in result:
                     word, count = " ".join(val.split()[:-1]) , val.split()[-1]

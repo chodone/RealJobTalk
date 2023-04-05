@@ -52,10 +52,6 @@ public class EnterpriseController {
         return ResponseEntity.ok().body(enterpriseService.getPassReview(enterpriseId, pageable, user));
     }
 
-    @GetMapping("/{enterpriseId}/keyword")
-    public ResponseEntity<List<KeywordResponse>> getKeyword(@PathVariable Long enterpriseId) {
-        return ResponseEntity.ok().body(enterpriseService.getKeyword(enterpriseId));
-    }
 
 }
 
