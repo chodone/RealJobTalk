@@ -82,8 +82,9 @@ public class MemberController {
     }
 
     @GetMapping("/recommend/enterprise")
-    public ResponseEntity<List<EnterpriseResponse>> recommendEnterprise(@AuthenticationPrincipal User user) {
+    public ResponseEntity<?> recommendEnterprise(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(memberService.recommendEnterprise(user));
+    }
         
     @GetMapping("/scrap/count")
     public ResponseEntity<?> getScrapCount(@AuthenticationPrincipal User user) {
