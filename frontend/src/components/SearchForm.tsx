@@ -30,7 +30,7 @@ const SearchForm = () => {
     }
 
     dispatch(getData());
-  }, [companies.keyword, companies]);
+  }, [companies.keyword]);
 
   return (
     <Carousel cols={4} rows={6}>
