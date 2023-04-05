@@ -30,7 +30,7 @@ const HomeCompany = () => {
   }, []);
 
 
-  console.log(datas)
+  console.log(companies)
   const getAuth = useAppSelector((state) => state.auth)
   const samsung = datas[0].imgUrl
   const hd = datas[1].imgUrl
