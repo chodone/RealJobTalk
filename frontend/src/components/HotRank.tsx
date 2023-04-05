@@ -27,7 +27,6 @@ const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
   }, []);
 
 
-  console.log(Hotrank)
 
   return (
     <div>

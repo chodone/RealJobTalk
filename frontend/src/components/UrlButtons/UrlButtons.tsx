@@ -21,10 +21,12 @@ const UrlButtons = ({companyInfo}:{companyInfo:dbObject}) => {
   const companyInfo_ = companyInfo
 
 
+  console.log(companyInfo_.homepageUrl)
+
   return (
-    <div className="grid grid-rows-2 font-mono font-bold">
+    <div className="grid font-mono font-bold">
       <div className="grid ml-10 pb-3 md:grid-cols-4 grid-cols-1 row-start-2 row-end-2">
-        <a
+        <a target="_blank"
           id="home"
           href={companyInfo_.homepageUrl}
           className="bg-white cursor-pointer transform hover:-translate-y-3  border-2 w-16 h-16 rounded-full duration-500 text-green-500 border-green-500 hover:bg-green-500 hover:text-white text-2xl"
@@ -34,7 +36,7 @@ const UrlButtons = ({companyInfo}:{companyInfo:dbObject}) => {
             <p className=" mb-3 text-xs text-slate-900 text">HOME</p>
           </i>
         </a>
-        <a
+        <a target="_blank"
           id="recurit"
           href={companyInfo_.recruitpageUrl}
           className="bg-white cursor-pointer transform hover:-translate-y-3  border-2 w-16 h-16 rounded-full duration-500 text-green-500 border-green-500 hover:bg-green-500 hover:text-white text-2xl"
@@ -44,7 +46,7 @@ const UrlButtons = ({companyInfo}:{companyInfo:dbObject}) => {
             <p className=" mb-3 text-xs text-slate-900 text">RECRUIT</p>
           </i>
         </a>
-        <a
+        <a target="_blank"
           id="blog"
           href={companyInfo_.blogUrl}
           className="bg-white cursor-pointer transform hover:-translate-y-3  border-2 w-16 h-16 rounded-full duration-500 text-green-500 border-green-500 hover:bg-green-500 hover:text-white text-2xl"
@@ -54,7 +56,7 @@ const UrlButtons = ({companyInfo}:{companyInfo:dbObject}) => {
             <p className=" mb-3 text-xs text-slate-900 text">BLOG</p>
           </i>
         </a>
-        <a
+        <a target="_blank"
           id="youtube"
           href={companyInfo_.youtubeUrl}
           className="bg-white cursor-pointer transform hover:-translate-y-3  border-2 w-16 h-16 rounded-full duration-500 text-red-500 border-red-500 hover:bg-red-500 hover:text-white text-2xl"
