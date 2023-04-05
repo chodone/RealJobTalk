@@ -106,7 +106,7 @@ pipeline
 			}
 			steps {
 				echo 'Deploy Start Crawling'
-				sh 'docker run -it -d --rm -p 8084:8084 --name crawling --link master1:master1 worker1:worker1 worker2:worker2 crawling-img'
+				sh 'docker run -it -d --rm -p 8084:8084 --name crawling crawling-img'
 				echo 'Deploy End Crawling'
 			}
 		}

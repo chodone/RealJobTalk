@@ -187,7 +187,6 @@ def naver_news_crawlling():
                             client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
                             
                             filename = dateOfIssue+"_naver_news_title_"+enterprise_id+"_"+str(val)
-                            client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
                             client_hdfs.write(f'/user/root/newsTitleInput/{enterprise_id}/{filename}.txt', data=titleText, overwrite=True, encoding="utf-8")
                             time.sleep(3)
 
