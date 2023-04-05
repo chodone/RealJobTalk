@@ -15,7 +15,7 @@ export const getData = createAsyncThunk(
   "getcompany",
     async () => {
       const company = await api.get('/api/enterprise')
-      console.log(company.data)
+      
 
     return company.data
   }
