@@ -9,15 +9,17 @@ import UrlButtons from "./UrlButtons/UrlButtons";
 import InfoButtons from "./InfoButtons";
 
 interface Data{
-  "id": number,
-	"name": string,
-	"imgUrl": string,
-	"homepageUrl":string,
-	"recruitpageUrl": string,
-	"blogUrl":string,
-	"youtubeUrl":string
-	"businessInformation":string,
-	"idealTalent":string
+  id: number,
+	name: string,
+	imgUrl: string,
+	homepageUrl:string,
+	recruitpageUrl: string,
+	blogUrl:string,
+	youtubeUrl:string
+	businessInformation:string,
+  idealTalent: string
+  
+  
 }
 
 const businessInfo = "businessInfo";
