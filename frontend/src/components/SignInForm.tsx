@@ -23,11 +23,15 @@ interface FormData {
 
 const SignInForm = () => {
   const dispatch = useAppDispatch();
+  const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code`;
   const MainLogo = logo;
   const kakao = kakaoButton;
   const router = useRouter()
   const { register, handleSubmit } = useForm<FormData>()
   
+  console.log(process.env.NEXT_PUBLIC_REST_API_KEY)
+  console.log(KAKAO_AUTH_URI)
+
   const onSubmit = handleSubmit(({ email, password }) => {
     fetch("https://j8c205.p.ssafy.io/api/member/login", {
       method: "POST",
@@ -118,7 +122,9 @@ const SignInForm = () => {
                   <button className="bg-green-500 h-14 w-full text-white rounded-md px-2 py-1">Submit</button>
                 </div>
               </form>
-              <Image className="" src={kakao} alt="" />
+              <a href={KAKAO_AUTH_URI}>
+                <Image className="" src={kakao} alt="" />
+              </a>
             </div>
           </div>
         </div>

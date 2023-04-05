@@ -14,7 +14,7 @@ interface HOT {
 
 const HotRankCard = ({ news }: { news: HOT }) => {
   const url = news.url;
-
+  
   const [isScrap, setIsScrap] = useState(news.isScrap);
   const [open, setOpen] = useState(false);
 
