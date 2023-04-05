@@ -7,7 +7,17 @@ import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax'
 import Company from "@/components/Company";
 import Carousel from "better-react-carousel";
 import logo2 from '@public/images/logo2.png'
+import samsung from '@public/images/company/samsung.png'
+import lg from '@public/images/company/lg.png'
+import sk from '@public/images/company/sk.png'
+import mobis from '@public/images/company/mobis.png'
+import kia from '@public/images/company/kia.png'
+import hd from '@public/images/company/hd.png'
+import hanhwa from '@public/images/company/hanhwa.png'
+import hana from '@public/images/company/hana.png'
+import gs from '@public/images/company/gs.png'
 import Image from "next/image";
+import api from "@/redux/api";
 
 
 export interface dbObject {
@@ -16,8 +26,6 @@ export interface dbObject {
   id:number
 }
 
-const url = (name: string, wrap = false) =>
-  `${wrap ? 'url(' : ''}https://awv3node-homepage.surge.sh/build/assets/${name}.svg${wrap ? ')' : ''}`
 
 const HomeCompany = () => {
 
@@ -29,18 +37,19 @@ const HomeCompany = () => {
   useEffect(() => {
 
     dispatch(getData());
+    
   }, []);
 
 
-  console.log(datas)
-  const getAuth = useAppSelector((state) => state.auth)
-  const samsung = datas[0].imgUrl
-  const hd = datas[1].imgUrl
-  const lg = datas[3].imgUrl
-  const kia = datas[4].imgUrl
-  const hanhaw = datas[6].imgUrl
-  const sk = datas[7].imgUrl
-  const hdMobis = datas[9].imgUrl
+  // console.log(companies)
+  // const getAuth = useAppSelector((state) => state.auth)
+  // const samsungLogo = samsung 
+  // const hd = datas[1].imgUrl
+  // const lg = datas[3].imgUrl
+  // const kia = datas[4].imgUrl
+  // const hanhaw = datas[6].imgUrl
+  // const sk = datas[7].imgUrl
+  // const hdMobis = datas[9].imgUrl
   return (
     <>
       <div style={{ width: "100%", height: "100%", background: "#87BCDE" }}>
@@ -52,22 +61,15 @@ const HomeCompany = () => {
           
 
           <ParallaxLayer offset={0} speed={0.8} style={{ opacity: 0.5 }}>
-          <Image src={hd} width={238} height={87} style={{ display: "block", width: "20%", marginLeft: "5%" }} alt="" />
-            <img src={url("cloud")} style={{ display: "block", width: "10%", marginLeft: "80%" }} />
-            <img src={url("cloud")} style={{ display: "block", width: "5%", marginLeft: "30%" }} />
-            <Image src={samsung} width={238} height={87} style={{ display: "block", width: "20%", marginLeft: "55%" }} alt="" />
-            <Image src={lg} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "15%" }} alt="" />
-            <Image src={hanhaw} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "0%" }} alt="" />
-            <div className="flex justify-between" style={{ display: "block", width: "40%", marginLeft: "40%" }}>
-              <img src={url("cloud")} style={{ display: "block", width: "5%", marginLeft: "30%" }} />
-              <Image src={sk} width={238} height={87} alt="" />
-            </div>
-            <div className="flex">
-              <img src={url("cloud")} style={{ display: "block", width: "5%", marginLeft: "10%" }} />
-              <Image src={kia} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "55%" }} alt="" />
-            </div>
-            <Image src={hdMobis} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "15%" }} alt=""/>
-            {/* <img src={url("cloud")} style={{ display: "block", width: "10%", marginLeft: "15%" }} /> */}
+          <Image src={hd} width={238} height={87} style={{ display: "block", width: "10%", marginLeft: "15%" }} alt="" />
+            <Image src={samsung} width={238} height={87} style={{ display: "block", width: "15%", marginLeft: "75%" }} alt="" />
+            <Image src={lg} width={238} height={87} style={{ display: "block", width: "10%", marginLeft: "40%" }} alt="" />
+            <Image src={hana} width={238} height={87} style={{ display: "block", width: "7%", marginLeft: "60%" }} alt="" />
+            <Image src={hanhwa} width={238} height={87} style={{ display: "block", width: "13%", marginLeft: "5%" }} alt="" />
+            <Image src={sk} width={238} height={87} alt="" style={{ display: "block", width: "8%", marginLeft: "35%" }}/>
+            <Image src={kia} width={238} height={87} style={{ display: "block", width: "9%", marginLeft: "80%" }} alt="" />
+            <Image src={mobis} width={238} height={87} style={{ display: "block", width: "6%", marginLeft: "15%" }} alt=""/>
+
           </ParallaxLayer>
 
           
@@ -90,7 +92,7 @@ const HomeCompany = () => {
             <section className="text-black body-font">
               <div className="container mx-auto mt-40 flex px-5 py-5 md:flex-row flex-col items-center">
                 <div className="lg:flex-grow flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-                  <h1 className="title-font tracking-wide sm:text-3xl md:text-6xl xl:text-7xl mb-4 font-bold ">
+                  <h1 className="title-font tracking-wide sm:text3xl md:text-6xl xl:text-6xl mb-4 font-bold ">
                     취업을 돕는 진짜 정보{" "}
                   </h1>
                   <div className="flex my-5">

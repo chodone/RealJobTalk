@@ -14,7 +14,8 @@ const initialState = {
 export const getData = createAsyncThunk(
   "getcompany",
     async () => {
-    const company = await api.get('/api/enterprise')
+      const company = await api.get('/api/enterprise')
+      
 
     return company.data
   }

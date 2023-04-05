@@ -1,36 +1,53 @@
-'use client';
+"use client";
 
 import Image from "next/image";
-import { useSearchParams,  } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import api from "@/redux/api";
 import CompanyImage from "./CompanyImage";
 import UrlButtons from "./UrlButtons/UrlButtons";
+import { render } from 'react-dom';
+import WordCloud from 'react-d3-cloud';
+
 import InfoButtons from "./InfoButtons";
 
 interface Data{
-  "id": number,
-	"name": string,
-	"imgUrl": string,
-	"homepageUrl":string,
-	"recruitpageUrl": string,
-	"blogUrl":string,
-	"youtubeUrl":string
-	"businessInformation":string,
-	"idealTalent":string
+  id: number,
+	name: string,
+	imgUrl: string,
+	homepageUrl:string,
+	recruitpageUrl: string,
+	blogUrl:string,
+	youtubeUrl:string
+	businessInformation:string,
+  idealTalent: string
+  
+  
 }
+
+interface Words {
+  text: string;
+  value: number;
+}
+
+
+
 
 const businessInfo = "businessInfo";
 const keyword = "keyword";
 
-const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId:number }) => {
+const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId: number }) => {
   const [companyInfo_, setCompanyInfo_] = useState(Object);
   const [tab, setTab] = useState(businessInfo);
 
-  const onClick = useCallback((item:string) => {
+  const [wordCount, setwordCount] = useState(Array<Words>);
+
+  const onClick = useCallback((item: string) => {
     setTab(item);
   }, []);
-  
+
+
+
   const selected =
     "inline-block px-7 py-3 border-2 border-green-400 text-green-600 rounded-sm  active ";
   const deselected =
@@ -41,17 +58,28 @@ const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId
       .get(`/api/enterprise/${enterpriseId}`)
       .then(({ data }: { data: Data }) => {
         setCompanyInfo_(data);
-        console.log(data)
+      })
+      .catch((error) => {
+        console.debug(error);
+      });
+
+    api
+      .get(`/api/enterprise/${enterpriseId}/keyword`)
+      .then(({ data }: { data:Array<Words> }) => {
+        setwordCount(data);
+        console.log(data);
       })
       .catch((error) => {
         console.debug(error);
       });
   }, []);
 
+  console.log(wordCount[0])
+
   return (
     <div className="grid grid-rows-7  mx-36">
-      <div className="grid grid-cols-10 row-end-2 mt-20">
-        <div className=" col-start-1 col-span-2 mt-4 ml-4 ">
+      <div className="grid grid-cols-10 row-end-2 mt-10">
+        <div className="pt-4  col-span-2 ml-4 ">
           <CompanyImage imgUrl={companyInfo_.imgUrl} />
         </div>
         <div className=" col-span-4">
@@ -59,43 +87,34 @@ const CompanyInfo =  ({ company, enterpriseId }: { company: string, enterpriseId
         </div>
       </div>
       <hr className=" border-spacing-8" />
+
       <div className="row-start-3 row-end-7">
-        <div className="grid grid-cols-10 row-end-2 ">
-          <div className=" col-start-1 col-span-3 mt-4 ml-4 ">
-            <div className=" group flex relative justify-center items-center">
-              <ul className="pt-3 pl-3 flex flex-wrap text-lg font-medium text-center text-gray-500  ">
-                <li className="mr-2">
-                  <div
-                    className={tab == businessInfo ? selected : deselected}
-                    onClick={() => onClick(businessInfo)}
-                  >
-                    <p className="text-sm">
-                      사업개요
-                    </p>
-                  </div>
-                </li>
-                <li className="mr-2">
-                  <div
-                    className={tab == keyword ? selected : deselected}
-                    onClick={() => onClick(keyword)}
-                  >
-                    <p className="text-sm">
-                      키워드
-                    </p>
-                  </div>
-                </li>
-              </ul>
+        <div className=" grid grid-cols-2  mt-4 ml-4 divide-x">
+          <div className="justify-center">
+            <div className="flex justify-center">
+              <div className=" w-48 border border-[#02E86E] mb-3 text-center rounded-lg">
+                기업개요
+              </div>
+            </div>
+            <div>
+              <p>{companyInfo_.businessInformation}</p>
             </div>
           </div>
-        </div>
-        <div className=" col-span-4">
-          <p className=" text-xl">
-            {companyInfo_.businessInformation}
-          </p>
+
+          <div className="justify-center">
+            <div className="flex justify-center">
+              <div className="w-48 border border-[#02E86E] mb-3 text-center rounded-lg">
+                워드클라우드
+              </div>
+            </div>
+            <div>
+              <WordCloud data={wordCount} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default CompanyInfo
+export default CompanyInfo;
