@@ -11,6 +11,7 @@ def start():
     @scheduler.scheduled_job('cron', hour=15, minute=59, id = 'naver_pass_review_crawlling')
     def job1():
         # title_to_hdfs()
+        
         naver_news_crawlling()
         naver_pass_review_crawlling()
         to_db()
