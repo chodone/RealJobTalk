@@ -228,10 +228,10 @@ public class MemberServiceImpl implements MemberService {
 
         String membersKeywordString = keywordListToString(memberFavoriteEnter.getId());
 
-        double[] top5Dou = new double[5]; // to keep track of top 5 dou values
-        int[] top5I = new int[5]; // to keep track of corresponding i values for top 5 dou values
+        double[] top5Dou = new double[5];
+        int[] top5I = new int[5];
 
-        Arrays.fill(top5Dou, Double.NEGATIVE_INFINITY); // initialize to negative infinity
+        Arrays.fill(top5Dou, Double.NEGATIVE_INFINITY);
 
         for (int i = 0; i < 300; i++) {
             if (i == memberFavoriteEnter.getId()) {
@@ -260,7 +260,7 @@ public class MemberServiceImpl implements MemberService {
         List<EnterpriseResponse> result = new ArrayList<>();
         for (int j = 0; j < 5; j++) {
             Enterprise enterprise = enterpriseRepository.findById(Long.valueOf(top5I[j])).orElse(null);
-            result.add(EnterpriseResponse.builder().id(enterprise.getId()).name(enterprise.getName()).build());
+            result.add(EnterpriseResponse.builder().id(enterprise.getId()).name(enterprise.getName()).imgUrl(enterprise.getImgUrl()).build());
         }
 
         return result;
@@ -283,7 +283,6 @@ public class MemberServiceImpl implements MemberService {
         }
         return 1.0;
     }
-
 
     public ScrapCountResponse getScrapCount(User user) {
         if (user == null) {
