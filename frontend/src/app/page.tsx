@@ -9,7 +9,7 @@ export default async function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="">
+      <div >
         <HomeCompany />
       </div>
     </div>
