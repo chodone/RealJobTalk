@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 public class KeywordResponse {
 
-	private String name;
+	private String text;
 
 	private Long count;
 }
