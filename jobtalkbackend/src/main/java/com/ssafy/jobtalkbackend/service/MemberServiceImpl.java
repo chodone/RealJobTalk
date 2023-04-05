@@ -4,6 +4,7 @@ import com.ssafy.jobtalkbackend.domain.*;
 import com.ssafy.jobtalkbackend.dto.request.LoginRequest;
 import com.ssafy.jobtalkbackend.dto.request.SignUpRequest;
 import com.ssafy.jobtalkbackend.dto.response.*;
+import com.ssafy.jobtalkbackend.exception.auth.AuthRuntimeException;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.enterprise.EnterpriseRuntimeException;
 import com.ssafy.jobtalkbackend.jwt.JwtTokenProvider;
@@ -12,6 +13,8 @@ import com.ssafy.jobtalkbackend.exception.member.MemberExceptionEnum;
 import com.ssafy.jobtalkbackend.exception.member.MemberRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,6 +47,8 @@ public class MemberServiceImpl implements MemberService {
     private final PassReviewRepository passReviewRepository;
     private final PassReviewLikeRepository passReviewLikeRepository;
     private final EnterpriseService enterpriseService;
+    private final EnterpriseRepository enterpriseRepository;
+    private final KeywordRepository keywordRepository;
 
     @Override
     public Member searchMember(String email) {
@@ -208,6 +216,74 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public List<EnterpriseResponse> recommendEnterprise(User user) {
+        if(user == null) {
+            throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+        }
+        Member member = searchMember(user.getUsername());
+
+        // member가 scrap한 뉴스들을 전부 본다. -> 가장 많은 기업을 하나 뽑는다.
+        Enterprise memberFavoriteEnter = enterpriseRepository.getMemberNewsLikeEnterprise(member.getId()).orElseThrow(
+            ()-> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NEED_SCRAP));
+
+        String membersKeywordString = keywordListToString(memberFavoriteEnter.getId());
+
+        double[] top5Dou = new double[5];
+        int[] top5I = new int[5];
+
+        Arrays.fill(top5Dou, Double.NEGATIVE_INFINITY);
+
+        for (int i = 0; i < 300; i++) {
+            if (i == memberFavoriteEnter.getId()) {
+                continue;
+            }
+
+            String compareString = keywordListToString(Long.valueOf(i));
+            double dou = findSimilarity(membersKeywordString, compareString);
+
+            // check if dou is among the top 5
+            for (int j = 0; j < 5; j++) {
+                if (dou > top5Dou[j]) {
+                    // shift the elements below j to the right
+                    for (int k = 4; k > j; k--) {
+                        top5Dou[k] = top5Dou[k-1];
+                        top5I[k] = top5I[k-1];
+                    }
+                    top5Dou[j] = dou;
+                    top5I[j] = i;
+                    break; // we found a spot for dou, break out of the loop
+                }
+            }
+        }
+
+        // 키워드와 비슷한 키워드를 가진 기업들을 뽑는다.
+        List<EnterpriseResponse> result = new ArrayList<>();
+        for (int j = 0; j < 5; j++) {
+            Enterprise enterprise = enterpriseRepository.findById(Long.valueOf(top5I[j])).orElse(null);
+            result.add(EnterpriseResponse.builder().id(enterprise.getId()).name(enterprise.getName()).imgUrl(enterprise.getImgUrl()).build());
+        }
+
+        return result;
+    }
+
+    public String keywordListToString(Long enterprise_id) {
+        List<Keyword> keywordList = keywordRepository.findTop100ByEnterpriseIdOrderByCountDesc(enterprise_id);
+        List<String> keyList = keywordList.stream().map(keyword -> {
+            return keyword.getName();
+        }).collect(Collectors.toList());
+        Collections.sort(keyList);
+        return String.join("", keyList);
+    }
+
+    public static double findSimilarity(String x, String y) {
+        double maxLength = Double.max(x.length(), y.length());
+        if (maxLength > 0) {
+            // 필요한 경우 선택적으로 대소문자를 무시합니다.
+            return (maxLength - StringUtils.getLevenshteinDistance(x, y)) / maxLength;
+        }
+        return 1.0;
+    }
+
     public ScrapCountResponse getScrapCount(User user) {
         if (user == null) {
             throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_ACCESS_EXCEPTION);

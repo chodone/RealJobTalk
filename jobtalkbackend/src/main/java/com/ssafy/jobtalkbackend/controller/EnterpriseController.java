@@ -53,9 +53,10 @@ public class EnterpriseController {
     }
 
     @GetMapping("/{enterpriseId}/keyword")
-    public ResponseEntity<List<KeywordResponse>> getKeyword(@PathVariable Long enterpriseId) {
+    public ResponseEntity<?> getKeyword(@PathVariable Long enterpriseId) {
         return ResponseEntity.ok().body(enterpriseService.getKeyword(enterpriseId));
     }
+
 
 }
 
