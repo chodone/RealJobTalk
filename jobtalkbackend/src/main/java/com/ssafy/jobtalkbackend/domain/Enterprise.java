@@ -43,4 +43,7 @@ public class Enterprise {
 
     @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL)
     private List<PassReview> passReviewList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL)
+    private List<Keyword> keywordList = new ArrayList<>();
 }

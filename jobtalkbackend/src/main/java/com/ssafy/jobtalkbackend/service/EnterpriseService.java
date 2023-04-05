@@ -23,4 +23,7 @@ public interface EnterpriseService {
     PassReviewResponse buildPassReviewResponse(PassReview passReview, boolean isScrap);
 
     EnterpriseDetailResponse getEnterpriseDetail(Long enterpriseId);
+
+    List<KeywordResponse> getKeyword(Long enterpriseId);
+
 }
