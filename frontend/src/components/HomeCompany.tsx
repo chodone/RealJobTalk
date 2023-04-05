@@ -16,8 +16,6 @@ export interface dbObject {
   id:number
 }
 
-const url = (name: string, wrap = false) =>
-  `${wrap ? 'url(' : ''}https://awv3node-homepage.surge.sh/build/assets/${name}.svg${wrap ? ')' : ''}`
 
 const HomeCompany = () => {
 
@@ -32,7 +30,7 @@ const HomeCompany = () => {
   }, []);
 
 
-  console.log(datas)
+  console.log(companies)
   const getAuth = useAppSelector((state) => state.auth)
   const samsung = datas[0].imgUrl
   const hd = datas[1].imgUrl
@@ -52,22 +50,14 @@ const HomeCompany = () => {
           
 
           <ParallaxLayer offset={0} speed={0.8} style={{ opacity: 0.5 }}>
-          <Image src={hd} width={238} height={87} style={{ display: "block", width: "20%", marginLeft: "5%" }} alt="" />
-            <img src={url("cloud")} style={{ display: "block", width: "10%", marginLeft: "80%" }} />
-            <img src={url("cloud")} style={{ display: "block", width: "5%", marginLeft: "30%" }} />
-            <Image src={samsung} width={238} height={87} style={{ display: "block", width: "20%", marginLeft: "55%" }} alt="" />
-            <Image src={lg} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "15%" }} alt="" />
-            <Image src={hanhaw} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "0%" }} alt="" />
-            <div className="flex justify-between" style={{ display: "block", width: "40%", marginLeft: "40%" }}>
-              <img src={url("cloud")} style={{ display: "block", width: "5%", marginLeft: "30%" }} />
-              <Image src={sk} width={238} height={87} alt="" />
-            </div>
-            <div className="flex">
-              <img src={url("cloud")} style={{ display: "block", width: "5%", marginLeft: "10%" }} />
-              <Image src={kia} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "55%" }} alt="" />
-            </div>
+          <Image src={hd} width={238} height={87} style={{ display: "block", width: "25%", marginLeft: "15%" }} alt="" />
+            <Image src={samsung} width={238} height={87} style={{ display: "block", width: "25%", marginLeft: "75%" }} alt="" />
+            <Image src={lg} width={238} height={87} style={{ display: "block", width: "15%", marginLeft: "40%" }} alt="" />
+            <Image src={hanhaw} width={238} height={87} style={{ display: "block", width: "15%", marginLeft: "0%" }} alt="" />
+            <Image src={sk} width={238} height={87} alt="" style={{ display: "block", width: "20%", marginLeft: "40%" }}/>
+            <Image src={kia} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "65%" }} alt="" />
             <Image src={hdMobis} width={238} height={87} style={{ display: "block", width: "15", marginLeft: "15%" }} alt=""/>
-            {/* <img src={url("cloud")} style={{ display: "block", width: "10%", marginLeft: "15%" }} /> */}
+
           </ParallaxLayer>
 
           
@@ -90,7 +80,7 @@ const HomeCompany = () => {
             <section className="text-black body-font">
               <div className="container mx-auto mt-40 flex px-5 py-5 md:flex-row flex-col items-center">
                 <div className="lg:flex-grow flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-                  <h1 className="title-font tracking-wide sm:text-3xl md:text-6xl xl:text-7xl mb-4 font-bold ">
+                  <h1 className="title-font tracking-wide sm:text3xl md:text-6xl xl:text-6xl mb-4 font-bold ">
                     취업을 돕는 진짜 정보{" "}
                   </h1>
                   <div className="flex my-5">

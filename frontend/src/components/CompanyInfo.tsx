@@ -11,18 +11,18 @@ import WordCloud from 'react-d3-cloud';
 
 import InfoButtons from "./InfoButtons";
 
-import { Black_And_White_Picture } from "next/font/google";
-
-interface Data {
-  id: number;
-  name: string;
-  imgUrl: string;
-  homepageUrl: string;
-  recruitpageUrl: string;
-  blogUrl: string;
-  youtubeUrl: string;
-  businessInformation: string;
-  idealTalent: string;
+interface Data{
+  id: number,
+	name: string,
+	imgUrl: string,
+	homepageUrl:string,
+	recruitpageUrl: string,
+	blogUrl:string,
+	youtubeUrl:string
+	businessInformation:string,
+  idealTalent: string
+  
+  
 }
 
 interface Words {

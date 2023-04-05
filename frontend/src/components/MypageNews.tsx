@@ -25,10 +25,9 @@ interface Data {
   newsResponseList: Array<News>;
 }
 
-const NewsList = ({ news ,curPage,enterpriseId}: { news: Array<News> ,curPage:number,enterpriseId:number }) => {
+const NewsList = ({ news ,curPage}: { news: Array<News> ,curPage:number }) => {
   return (
     <div className="grid ml-4" style={{height :900}}>
-      {curPage ===0?<HotRank enterpriseId = {enterpriseId}/>:""}
       {news.map((news: News) => {
         // console.debug(post.id);
         return <NewsCard key={news.id} news={news} />;
@@ -37,7 +36,7 @@ const NewsList = ({ news ,curPage,enterpriseId}: { news: Array<News> ,curPage:nu
   );
 };
 
-const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
+const MypageNews = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState(Array<News>);
   const [page, setPage] = useState(0);
@@ -51,9 +50,8 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
     "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700";
 
   useEffect(() => {
-    if (accessToken) {
       api
-        .get(`api/enterprise/${enterpriseId}/news?page=${page}&size=${size}`, {
+        .get(`/api/member/scrap/news?size=${size}&page=${page}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -66,50 +64,26 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
         .catch((error) => {
           console.debug(error);
         });
-    } else {
-      api
-      .get(`api/enterprise/${enterpriseId}/news?page=${page}&size=${size}`)
-      .then(({ data }: { data: Data }) => {
-        console.log(data);
-        setTotalPages(data.totalPages);
-        setResults([...data.newsResponseList]);
-      })
-      .catch((error) => {
-        console.debug(error);
-      });
-    }
   }, []);
 
   const changePage = (num: number) => {
-    console.log(num)
-    if (accessToken) {
+    
       api
-        .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`, {
+        .get(`/api/member/scrap/news?size=${size}&page=${num}`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         })
         .then(({ data }: { data: Data }) => {
           setPage(num);
-          console.log(data);
+          console.log(data)
           setResults([...data.newsResponseList]);
         })
         .catch((error) => {
           console.debug(error);
         });
       
-    } else {
-      api
-        .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`)
-        .then(({ data }: { data: Data }) => {
-          setPage(num);
-          setResults([...data.newsResponseList]);
-        })
-        .catch((error) => {
-          console.debug(error);
-        });
-      
-    }
+   
   };
 
   const getPreviousData = (num: number) => {
@@ -161,7 +135,7 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
 
   return (
     <>
-      <NewsList news={results} curPage={page} enterpriseId={enterpriseId}/>
+      <NewsList news={results} curPage={page} />
         <nav className="grid grid justify-center mb-3" >
           <ul className="inline-flex items-center -space-x-px cursor-pointer ...">
             <li>
@@ -265,4 +239,4 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
   );
 };
 
-export default CompanyNews;
+export default MypageNews;

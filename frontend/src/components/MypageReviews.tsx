@@ -38,7 +38,7 @@ const ReviewList = ({ reviews}: { reviews: Array<Review>}): ReactElement => {
   );
 };
 
-const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
+const MypageReviews = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState(Array<Review>);
   const [page, setPage] = useState(0);
@@ -52,9 +52,8 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
     "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ";
 
   useEffect(() => {
-    if (accessToken) {
       api
-        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`, {
+        .get(`api/member/scrap/pass_review?page=${page}&size=${size}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -67,50 +66,26 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
         .catch((error) => {
           console.debug(error);
         });  
-    }
-    else {
-      api
-        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`)
-        .then(({ data }: { data: Data }) => {
-          setTotalPages(data.totalPages);
-          setResults([...data.passReviewResponseList]);
-          console.log(data)
-        })
-        .catch((error) => {
-          console.debug(error);
-        });
-    }
+
   }, []);
 
 
 
   const changePage = (num: number) => {
-    if (accessToken) {
       api
-        .get(`api/enterprise/${enterpriseId}/pass_review?page=${num}&size=${size}`, {
+        .get(`api/member/scrap/pass_review?size=${size}&page=${num}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         })
         .then(({ data }: { data: Data }) => {
           setPage(num);
+          console.log(data)
           setResults([...data.passReviewResponseList]);
         })
         .catch((error) => {
           console.debug(error);
         });
-      
-    } else {
-      api
-      .get(`api/enterprise/${enterpriseId}/pass_review?page=${num}&size=${size}`)
-      .then(({ data }: { data: Data }) => {
-        setPage(num);
-        setResults([...data.passReviewResponseList]);
-      })
-      .catch((error) => {
-        console.debug(error);
-      });
-    }
 
 
   };
@@ -269,4 +244,4 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   );
 };
 
-export default Reviews;
+export default MypageReviews;
