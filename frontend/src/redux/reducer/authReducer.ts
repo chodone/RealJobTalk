@@ -35,8 +35,8 @@ const authReducer = createSlice({
       state.isLogined = false
       state.email = ''
       state.nickname = ''
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+      localStorage.setItem('accessToken','')
+      localStorage.setItem('refreshToken','')
       // api 요청 필요
     },
     

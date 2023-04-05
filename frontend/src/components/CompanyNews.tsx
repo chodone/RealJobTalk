@@ -51,12 +51,24 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
     "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700";
 
   useEffect(() => {
-    api
-      .get(`api/enterprise/${enterpriseId}/news?page=${page}&size=${size}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+    if (accessToken) {
+      api
+        .get(`api/enterprise/${enterpriseId}/news?page=${page}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then(({ data }: { data: Data }) => {
+          console.log(data);
+          setTotalPages(data.totalPages);
+          setResults([...data.newsResponseList]);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+    } else {
+      api
+      .get(`api/enterprise/${enterpriseId}/news?page=${page}&size=${size}`)
       .then(({ data }: { data: Data }) => {
         console.log(data);
         setTotalPages(data.totalPages);
@@ -65,22 +77,37 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
       .catch((error) => {
         console.debug(error);
       });
+    }
   }, []);
 
   const changePage = (num: number) => {
-    api
-      .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then(({ data }: { data: Data }) => {
-        setPage(num);
-        setResults([...data.newsResponseList]);
-      })
-      .catch((error) => {
-        console.debug(error);
-      });
+    if (accessToken) {
+      api
+        .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then(({ data }: { data: Data }) => {
+          setPage(num);
+          setResults([...data.newsResponseList]);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+      
+    } else {
+      api
+        .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`)
+        .then(({ data }: { data: Data }) => {
+          setPage(num);
+          setResults([...data.newsResponseList]);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+      
+    }
   };
 
   const getPreviousData = (num: number) => {
