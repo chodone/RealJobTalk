@@ -1,4 +1,13 @@
 # 포팅매뉴얼
+<span style='background-color: #fff5b1'> TODO : 하위 내용 작성 후 TODO 지우기</span>
+
+<span style='background-color: #fff5b1'> - 사용한 JVM, 웹 서버, WAS 제품 등의 종류와 설정값, 버전(IDE버전 포함) 기재</span>
+
+<span style='background-color: #fff5b1'> 빌드 시 사용되는 환경 변수 등의 주요 내용 상세 기재 (Done) </span>
+
+<span style='background-color: #fff5b1'> 배포 시 특이 사항 기재 (Done) </span> 
+
+<span style='background-color: #fff5b1'> DB 접속 정보 등 프로젝트(ERD)에 활용되는 주요 계정 및 프로퍼티가 정의된 파일 목록 </span>
 ## 🛫 기술 스택 및 배포 환경
 
 ### **Frontend**
@@ -7,6 +16,7 @@
 |개발환경|node.js|18.12.1|
 |개발환경|react| - |
 |개발환경|nextjs| - |
+|개발환경|VScode|-|
 
 <span style='background-color: #fff5b1'> TODO : front 담당자 기술 버전 작성 </span>
 
@@ -18,6 +28,8 @@
 |빌드도구|gradle|7.6.1|
 |개발환경|Java|11|
 |개발환경|SpringBoot|2.7.9|
+|개발환경|IntelliJ|2022.3.1|
+|DB|Mysql|8.0.32-0ubuntu0.20.04.2|
 <br>
 
 ### **Backend-crawling**
@@ -37,16 +49,17 @@
 |자연어처리|Komoran|3.3.4|
 <br>
 
-### **기타 배포 관련 환경**
+### **배포 관련 환경**
 |개요|기술|버전|
 |------|---|---|
 |배포환경|Ubuntu|20.04.5 LTS|
 |배포환경|Docker|23.0.1|
 |배포환경|Jenkins|2.387.1 LTS|
+<br>
 
 ## 배포
 현 프로젝트는 Jenkins와 Docker로 CI/CD 구성이 완료되어있습니다. Jenkins가 설치된 환경에서 프로젝트와 연결을 마친다면 자동으로 Jenkinsfile을 인식하여 배포 명령어를 실행합니다.
-자동 배포에 관련한 문서는 다음과 같습니다.
+자동 배포에 관련한 문서는 다음과 같으며, 이 이후에서는 수동 배포 명령어에 대한 설명을 작성합니다.
 - [DevOps_Jenkins_Docker_CICD_서버_환경_구축.pdf](DevOps_Jenkins_Docker_CICD_서버_환경_구축.pdf)
 <br/>
 
