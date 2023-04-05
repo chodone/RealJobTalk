@@ -209,7 +209,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         List<Keyword> keywordList = keywordRepository.findTop100ByEnterpriseIdOrderByCountDesc(enterpriseId);
         return keywordList.stream().map(keyword -> {
             return KeywordResponse.builder()
-                .id(keyword.getId())
                 .name(keyword.getName())
                 .count(keyword.getCount())
                 .build();
