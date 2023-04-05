@@ -9,5 +9,5 @@ public class KeywordResponse {
 
 	private String text;
 
-	private Long count;
+	private Long value;
 }
