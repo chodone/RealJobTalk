@@ -78,4 +78,8 @@ public class MemberController {
         return memberService.scrapPassReview(passReviewId.get("passReviewId"), user);
     }
 
+    @GetMapping("/scrap/count")
+    public ResponseEntity<?> getScrapCount(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(memberService.getScrapCount(user));
+    }
 }

@@ -207,4 +207,22 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public ScrapCountResponse getScrapCount(User user) {
+        if (user == null) {
+            throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_ACCESS_EXCEPTION);
+        } else {
+            Member member = searchMember(user.getUsername());
+            Long scrapNewsCount = newsLikeRepository.countAllByMember(member);
+            Long scrapPassReviewCount = passReviewLikeRepository.countAllByMember(member);
+            return ScrapCountResponse
+                    .builder()
+                    .email(member.getEmail())
+                    .nickname(member.getNickname())
+                    .scrapNewsCount(scrapNewsCount)
+                    .scrapPassReviewCount(scrapPassReviewCount)
+                    .build();
+        }
+    }
+
 }
