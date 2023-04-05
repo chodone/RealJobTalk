@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import com.sun.istack.NotNull;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -24,5 +26,13 @@ public class Keyword {
     @JoinColumn(name = "pass_review_id")
     private PassReview passReview;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
+
+    @NotNull
     private String name;
+
+    @NotNull
+    private Long count;
 }

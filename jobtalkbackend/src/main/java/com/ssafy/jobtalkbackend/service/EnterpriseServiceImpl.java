@@ -28,6 +28,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     private final NewsLikeRepository newsLikeRepository;
     private final PassReviewLikeRepository passReviewLikeRepository;
     private final MemberRepository memberRepository;
+    private final KeywordRepository keywordRepository;
 
 
     @Override
@@ -203,6 +204,16 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .build();
     }
 
-
+    @Override
+    public List<KeywordResponse> getKeyword(Long enterpriseId) {
+        List<Keyword> keywordList = keywordRepository.findTop100ByEnterpriseIdOrderByCountDesc(enterpriseId);
+        return keywordList.stream().map(keyword -> {
+            return KeywordResponse.builder()
+                .id(keyword.getId())
+                .name(keyword.getName())
+                .count(keyword.getCount())
+                .build();
+        }).collect(Collectors.toList());
+    }
 
 }
