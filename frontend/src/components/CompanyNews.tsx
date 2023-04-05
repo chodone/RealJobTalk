@@ -25,10 +25,10 @@ interface Data {
   newsResponseList: Array<News>;
 }
 
-const NewsList = ({ news ,curPage,enterpriseId}: { news: Array<News> ,curPage:number,enterpriseId:number }) => {
+const NewsList = ({ news ,curPage, enterpriseId}: { news: Array<News> ,curPage:number, enterpriseId:number }) => {
   return (
     <div className="grid ml-4" style={{height :900}}>
-      {curPage ===0?<HotRank enterpriseId = {enterpriseId}/>:""}
+      {curPage ===0?<HotRank enterpriseId={enterpriseId} />:""}
       {news.map((news: News) => {
         // console.debug(post.id);
         return <NewsCard key={news.id} news={news} />;
@@ -81,7 +81,6 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
   }, []);
 
   const changePage = (num: number) => {
-    console.log(num)
     if (accessToken) {
       api
         .get(`api/enterprise/${enterpriseId}/news?page=${num}&size=${size}`, {
@@ -161,7 +160,7 @@ const CompanyNews = ({ enterpriseId }: { enterpriseId: number }) => {
 
   return (
     <>
-      <NewsList news={results} curPage={page} enterpriseId={enterpriseId}/>
+      <NewsList news={results} curPage={page} enterpriseId={enterpriseId} />
         <nav className="grid grid justify-center mb-3" >
           <ul className="inline-flex items-center -space-x-px cursor-pointer ...">
             <li>
