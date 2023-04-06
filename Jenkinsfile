@@ -137,7 +137,7 @@ pipeline
 			}
 			steps {
 				echo 'Deploy Start Hdfs'
-				sh 'docker run -it -d --rm -p 8084:8084 --name hdfs --link master1:master1 --link worker1:worker1 --link worker2:worker2 hdfs-img'
+				sh 'docker run -it -d --rm -p 8086:8086 --name hdfs --link master1:master1 --link worker1:worker1 --link worker2:worker2 hdfs-img'
 				echo 'Deploy End Hdfs'
 			}
 		}
