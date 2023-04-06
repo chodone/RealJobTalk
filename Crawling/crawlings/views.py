@@ -98,13 +98,13 @@ def naver_news_crawlling():
                             for c in (content):
                                 contentVal += c.text.strip()
 
-                            value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
-                            client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                            client_hdfs.write(f'/user/root/newsInput/{str(enterprise_id)}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                            # value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
+                            # client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                            # client_hdfs.write(f'/user/root/newsInput/{str(enterprise_id)}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
                             
-                            filename = dateOfIssue+"_naver_news_title_"+str(enterprise_id)+"_"+str(val)
-                            client_hdfs.write(f'/user/root/newsTitleInput/{str(enterprise_id)}/{filename}.txt', data=titleText, overwrite=True, encoding="utf-8")
-                            time.sleep(3)
+                            # filename = dateOfIssue+"_naver_news_title_"+str(enterprise_id)+"_"+str(val)
+                            # client_hdfs.write(f'/user/root/newsTitleInput/{str(enterprise_id)}/{filename}.txt', data=titleText, overwrite=True, encoding="utf-8")
+                            # time.sleep(3)
 
                             cursor = conn_aws.cursor()
 
@@ -178,7 +178,7 @@ def naver_pass_review_crawlling():
         "User-Agent": "Mozilla/5.0"
     }
 
-    enterprise_id = 0
+    enterprise_id = 2
     for enterprise in lines:
     
         val = 1
@@ -233,10 +233,10 @@ def naver_pass_review_crawlling():
                         if isAvoid:
                             continue
 
-                        filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
-                        value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
-                        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                        client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                        # filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
+                        # value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
+                        # client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                        # client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                         cursor = conn_aws.cursor()
 
@@ -333,10 +333,10 @@ def naver_pass_review_crawlling2():
                         if isAvoid:
                             continue
 
-                        filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
-                        value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
-                        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                        client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                        # filename = postdate+"_naver_review_"+enterprise.strip()+"_"+str(idx+1)
+                        # value = enterprise.strip() + ('\n') + postdate + ('\n') + link + ('\n') + title + ('\n') + content
+                        # client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+                        # client_hdfs.write(f'/user/root/reviewInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
 
                         cursor = conn_aws.cursor()
 
