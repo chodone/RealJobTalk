@@ -8,7 +8,7 @@ from .views import title_to_hdfs
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=2, minute=6, id = 'naver_pass_review_crawlling')
+    @scheduler.scheduled_job('cron', hour=2, minute=11, id = 'naver_pass_review_crawlling')
     def job1():
         # title_to_hdfs()
         naver_news_crawlling()

@@ -202,8 +202,8 @@ def naver_news_crawlling():
 
                         conn_aws.commit()
 
-                        sql = "INSERT INTO news (news_id, date_of_issue, title, url, enterprise_id, content)  VALUES (%s, %s, %s, %s, %s, %s)"
-                        value = (maxNewsId+1, dateOfIssue, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip())
+                        sql = "INSERT INTO news (news_id, date_of_issue, title, url, enterprise_id, content, hot_rank)  VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                        value = (maxNewsId+1, dateOfIssue, titleText, jsonIdx['link'], enterprise_id, content[0].text.strip(), 0)
                         cursor.execute(sql, value)
 
                         conn_aws.commit()
@@ -329,8 +329,8 @@ def naver_pass_review_crawlling():
 
                         conn_aws.commit()
 
-                        sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s)"
-                        value = (maxNewsId+1, content, postdate, title, link, enterprise_id)
+                        sql = "INSERT INTO pass_review VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                        value = (maxNewsId+1, content, postdate, title, link, enterprise_id, 0)
                         cursor.execute(sql, value)
 
                         conn_aws.commit()
