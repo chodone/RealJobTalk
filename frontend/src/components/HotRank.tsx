@@ -14,22 +14,39 @@ interface HOT {
 const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
 
   const [Hotrank, setHotrank] = useState(Array<HOT>);
+  const accessToken = localStorage.getItem('accessToken')
 
   useEffect(() => {
-    api
-      .get(`/api/enterprise/${enterpriseId}/hot_news`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then(({ data }: { data: Array<HOT> }) => {
-        console.log("hotrank");
-        console.log(data);
-        setHotrank(data);
-      })
-      .catch((error) => {
-        console.debug(error);
-      });
+    if (accessToken) {
+      api
+        .get(`/api/enterprise/${enterpriseId}/hot_news`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then(({ data }: { data: Array<HOT> }) => {
+          console.log("hotrank");
+          console.log(data);
+          setHotrank(data);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+      
+    } else {
+      api
+        .get(`/api/enterprise/${enterpriseId}/hot_news`)
+        .then(({ data }: { data: Array<HOT> }) => {
+          console.log("hotrank");
+          console.log(data);
+          setHotrank(data);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+
+    }
+    
   }, []);
 
 
