@@ -58,7 +58,7 @@ const HomeCompany = () => {
           <ParallaxLayer offset={1} speed={1} style={{ backgroundColor: "#fafafa" }} />
           <ParallaxLayer offset={0} speed={0.8} style={{ opacity: 0.5 }}>
           <Image src={hd} width={238} height={87} style={{ display: "block", width: "10%", marginLeft: "15%" }} alt="" />
-            <Image src={samsung} width={238} height={87} style={{ display: "block", width: "15%", marginLeft: "75%" }} alt="" />
+            <Image className="animate-bounce" src={samsung} width={238} height={87} style={{ display: "block", width: "15%", marginLeft: "75%" }} alt="" />
             <Image src={lg} width={238} height={87} style={{ display: "block", width: "10%", marginLeft: "40%" }} alt="" />
             <Image src={hana} width={238} height={87} style={{ display: "block", width: "7%", marginLeft: "60%" }} alt="" />
             <Image src={hanhwa} width={238} height={87} style={{ display: "block", width: "13%", marginLeft: "5%" }} alt="" />
