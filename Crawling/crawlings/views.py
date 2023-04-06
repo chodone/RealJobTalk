@@ -174,7 +174,7 @@ def naver_news_crawlling():
                     
                     if len(content) > 0:
                         date_obj = datetime.strptime(' '.join(jsonIdx['pubDate'].split(', ')[1].split(' ')[:3]), '%d %b %Y')
-                        dateOfIssue = date_obj.strftime("%Y%m%d")
+                        dateOfIssue = str(date_obj.strftime("%Y%m%d"))
                         print(dateOfIssue)
                         filename = dateOfIssue+"_naver_news_"+enterprise.strip()+"_"+str(val)
                         val += 1
