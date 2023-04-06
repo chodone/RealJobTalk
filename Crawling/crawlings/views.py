@@ -21,7 +21,6 @@ conn_aws = mysql.connector.connect(
 )
     
 
-
 def title_to_hdfs():
 
     cursor = conn_aws.cursor()
@@ -129,6 +128,8 @@ def naver_news_crawlling():
     conn_aws.close()
 
 def to_hdfs():
+    client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+
     cursor = conn_aws.cursor()
 
     selectSql = "SELECT title, enterprise_id FROM news"
@@ -147,7 +148,6 @@ def to_hdfs():
             val = 0
 
         filename = str(enter_id)+"_naver_news_title_"+str(val)
-        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
         client_hdfs.write(f'/user/root/newsTitleInput/{enter_id}/{filename}.txt', data=title, overwrite=True, encoding="utf-8") 
 
         val += 1
