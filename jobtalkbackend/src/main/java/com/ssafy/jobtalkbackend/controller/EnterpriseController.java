@@ -34,7 +34,7 @@ public class EnterpriseController {
 
     @GetMapping("/{enterpriseId}/news")
     public ResponseEntity<NewsTotalResponse> getNews(@PathVariable Long enterpriseId,
-                                                     @PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                     @PageableDefault(size=5, sort="id", direction = Sort.Direction.ASC) Pageable pageable,
                                                      @AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(enterpriseService.getNews(enterpriseId, pageable, user));
     }
@@ -47,7 +47,7 @@ public class EnterpriseController {
 
     @GetMapping("/{enterpriseId}/pass_review")
     public ResponseEntity<PassReviewTotalResponse> getPassReview(@PathVariable Long enterpriseId,
-                                                                  @PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                  @PageableDefault(size=5, sort="id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                   @AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(enterpriseService.getPassReview(enterpriseId, pageable, user));
     }
