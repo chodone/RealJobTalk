@@ -11,9 +11,9 @@ export default function CompanyPage({ params :{search} }: Props) {
 
   
   return (
-    <h1>
+    <div className=' animate-fade'>
       <SearchForm/>
-    </h1>
+    </div>
   )
   
 }

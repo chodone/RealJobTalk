@@ -3,6 +3,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
 import api from "@/redux/api";
+import ReviewHotRank from "./ReviewHotRank";
 
 
 
@@ -11,6 +12,7 @@ interface Review {
   id: number;
   title: string;
   url: string;
+  hotRank: number;
   content: string;
   dateOfIssue: string;
   isScrap:boolean
@@ -28,11 +30,20 @@ interface Data {
 
 
 
-const ReviewList = ({ reviews}: { reviews: Array<Review>}): ReactElement => {
+const ReviewList = ({
+  reviews,
+  curPage,
+  enterpriseId,
+}: {
+  reviews: Array<Review>;
+  curPage: number;
+  enterpriseId: number;
+}): ReactElement => {
   return (
     <div className="grid ml-4" style={{ height: 900 }}>
+      {curPage === 0 ? <ReviewHotRank enterpriseId={enterpriseId} /> : ""}
       {reviews.map((review: Review) => {
-        return <ReviewCard key={review.id} review={review}/>;
+        return <ReviewCard key={review.id} review={review} />;
       })}
     </div>
   );
@@ -163,8 +174,8 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   };
 
   return (
-    <>
-      <ReviewList reviews={results} />
+    <div className="animate-fade-up">
+      <ReviewList reviews={results} curPage={page} enterpriseId={enterpriseId} />
       <nav className="grid grid justify-center mb-3">
         <ul className="inline-flex items-center -space-x-px cursor-pointer ...">
           <li>
@@ -265,7 +276,7 @@ const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
         </ul>
       </nav>
       
-    </>
+    </div>
   );
 };
 

@@ -66,11 +66,6 @@ export default function RecommendCompany({recommendCompany=[]}:{recommendCompany
           );
         })}
       </div>
-      {/* <Trail open={open}>
-        
-          <span className=''>추천 기업</span>
-        
-      </Trail> */}
     </div>
   )
 }

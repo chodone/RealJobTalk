@@ -19,7 +19,7 @@ const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
   useEffect(() => {
     if (accessToken) {
       api
-        .get(`/api/enterprise/${enterpriseId}/hot_news`, {
+        .get(`/api/enterprise/${enterpriseId}/news`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

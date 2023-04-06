@@ -76,9 +76,9 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
 
   console.log(wordCount[0])
   
-
+  
   return (
-    <div className="grid grid-rows-7  mx-36">
+    <div className=" animate-fade-up grid grid-rows-7  mx-36">
       <div className="grid grid-cols-10 row-end-2 mt-10">
         <div className="pt-4  col-span-2 ml-4 ">
           <CompanyImage imgUrl={companyInfo_.imgUrl} />
@@ -98,7 +98,7 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
               </div>
             </div>
             <div>
-              <p className=" text-base">{companyInfo_.businessInformation}</p>
+              <p className="  p-20 text-lg text">{companyInfo_.businessInformation}</p>
             </div>
           </div>
 

@@ -8,7 +8,7 @@ const CompanyImage = ({imgUrl}:{imgUrl:string}) => {
 
 
   return (
-    <div className=" group flex relative justify-center items-center">
+    <div className=" animate-fade-up group flex relative justify-center items-center">
       <div className="group">
         <Image
           className=" h-80 w-80 "
