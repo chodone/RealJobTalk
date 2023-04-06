@@ -35,12 +35,10 @@
 ### **Backend-crawling**
 |개요|기술|버전|
 |------|---|---|
-| - |python|-|
-| - |python|-|
-| - |python|-|
+|개발환경|python|3.10.10|
+|개발환경|Django|3.2.13|
 <br>
 
-<span style='background-color: #fff5b1'> TODO : crawling 담당자 기술 버전 작성 </span>
 
 ### **분산처리**
 |개요|기술|버전|
