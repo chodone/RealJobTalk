@@ -26,6 +26,8 @@ public class PassReview {
 
     private String url;
 
+    private Integer hotRank;
+
     private String dateOfIssue;
 
     @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
@@ -37,4 +39,11 @@ public class PassReview {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
+
+    public void addScrapCount() {
+        this.hotRank += 1;
+    }
+    public void minusScrapCount() {
+        this.hotRank -= 1;
+    }
 }

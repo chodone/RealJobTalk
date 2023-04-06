@@ -108,6 +108,31 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return hotNewsResponseList;
     }
 
+    @Override
+    public List<HotPassReviewResponse> getHotPassReview(Long enterpriseId, User user) {
+        List<PassReview> passReviewList = passReviewRepository.findTop3ByEnterpriseIdOrderByHotRankDesc(enterpriseId);
+        List<HotPassReviewResponse> hotPassReviewResponseList = new ArrayList<>();
+        Member member = null;
+        if (user != null) {
+            member = memberRepository.findByEmail(user.getUsername()).orElse(null);
+        }
+        if (member != null) {
+            for (PassReview passReview : passReviewList) {
+                boolean isScrap = false;
+                PassReviewLike passReviewLike = passReviewLikeRepository.findByPassReviewAndMember(passReview, member).orElse(null);
+                if (passReviewLike != null) {
+                    isScrap = true;
+                }
+                hotPassReviewResponseList.add(hotPassReviewBuilder(passReview, isScrap));
+            }
+        } else {
+            for (PassReview passReview : passReviewList) {
+                hotPassReviewResponseList.add(hotPassReviewBuilder(passReview, false));
+            }
+        }
+        return hotPassReviewResponseList;
+    }
+
     public HotNewsResponse hotNewsBuilder(News news, boolean isScrap) {
         return HotNewsResponse
                 .builder()
@@ -115,6 +140,17 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .title(news.getTitle())
                 .url(news.getUrl())
                 .count(news.getHotRank())
+                .isScrap(isScrap)
+                .build();
+    }
+
+    public HotPassReviewResponse hotPassReviewBuilder(PassReview passReview, boolean isScrap) {
+        return HotPassReviewResponse
+                .builder()
+                .id(passReview.getId())
+                .title(passReview.getTitle())
+                .url(passReview.getUrl())
+                .count(passReview.getHotRank())
                 .isScrap(isScrap)
                 .build();
     }

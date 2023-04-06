@@ -1,6 +1,7 @@
 package com.ssafy.jobtalkbackend.repository;
 
 import com.ssafy.jobtalkbackend.domain.Enterprise;
+import com.ssafy.jobtalkbackend.domain.News;
 import com.ssafy.jobtalkbackend.domain.PassReview;
 import com.ssafy.jobtalkbackend.domain.PassReviewLike;
 import org.springframework.data.domain.Pageable;
@@ -14,5 +15,8 @@ public interface PassReviewRepository extends JpaRepository<PassReview, Long> {
     PassReviewLike save(PassReviewLike passReviewLike);
 
     Long countAllByEnterprise(Enterprise enterprise);
+
+    List<PassReview> findTop3ByEnterpriseIdOrderByHotRankDesc(Long enterpriseId);
+
 
 }
