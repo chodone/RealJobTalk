@@ -9,19 +9,30 @@ import { FcNews, FcGraduationCap } from "react-icons/fc";
 
 import MypageReviews from "./MypageReviews";
 import MypageNews from "./MypageNews";
+import RecommendCompany from "./RecommendCompany/RecommendCompany";
 import api from "@/redux/api";
 
-interface USER {
+export interface userObjcet {
   email: string
   nickname: string
   scrapNewsCount: number
-  scrapPassReviewCount:number
+  scrapPassReviewCount: number
 }
+
+export interface dbObject {
+  id:number
+  name: string;
+  imgUrl: string;
+}
+
+
+
 
 const Mypage = () => {
 
   const [scrap, setScrap] = useState('news')
   const [user, setUser] = useState(Object)
+  const [companyBtn, setCompanyBtn] = useState(true)
 
   useEffect(() => {
     api
@@ -39,14 +50,25 @@ const Mypage = () => {
       });
   }, [])
 
+  const recommendCompany:Array<dbObject> = user.recommendEnterpriseResponses
+  
   return (
     <div className="p-16">
       <div className="p-8 bg-white shadow mt-16">
-        <div className="flex ">
-          <Image src={logo2} width={81} height={89} alt="" />
-          <h1 className="title-font mt-3 sm:text-3xl md:text-6xl xl:text-6xl font-bold ">
-            취준진담
-          </h1>
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row">
+            <Image src={logo2} width={81} height={89} alt="" />
+            <h1 className="title-font mt-3 sm:text-3xl md:text-6xl xl:text-6xl font-bold ">
+              취준진담
+            </h1>
+          </div>
+          <div >
+            {companyBtn && <button onClick={() => {setCompanyBtn(false)}} className="text-white py-2 px-4 mt-5 uppercase text-xl rounded bg-green-400 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+                  추천기업
+            </button>}
+            {!companyBtn &&<RecommendCompany recommendCompany={recommendCompany} />}
+
+          </div>
         </div>
         <div className="mt-5 ml-5  border-b pb-12">
           <h1 className="text-4xl mb-10 font-medium text-gray-700">
