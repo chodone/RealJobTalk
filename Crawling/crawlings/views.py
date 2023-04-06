@@ -174,7 +174,7 @@ def naver_news_crawlling():
                     
                     if len(content) > 0:
                         date_obj = datetime.strptime(' '.join(jsonIdx['pubDate'].split(', ')[1].split(' ')[:3]), '%d %b %Y')
-                        dateOfIssue = str(date_obj.strftime("%Y%m%d"))
+                        dateOfIssue = date_obj.strftime("%Y%m%d")
                         print(dateOfIssue)
                         filename = dateOfIssue+"_naver_news_"+enterprise.strip()+"_"+str(val)
                         val += 1
@@ -185,10 +185,10 @@ def naver_news_crawlling():
 
                         value = enterprise.strip() + ('\n') + dateOfIssue + ('\n') + jsonIdx['link'] + ('\n') + titleText + ('\n') + contentVal
                         client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
-                        client_hdfs.write(f'/user/root/newsInput/{enterprise_id}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
+                        client_hdfs.write(f'/user/root/newsInput/{str(enterprise_id)}/{filename}.txt', data=value, overwrite=True, encoding="utf-8")
                         
-                        filename = dateOfIssue+"_naver_news_title_"+enterprise_id+"_"+str(val)
-                        client_hdfs.write(f'/user/root/newsTitleInput/{enterprise_id}/{filename}.txt', data=titleText, overwrite=True, encoding="utf-8")
+                        filename = dateOfIssue+"_naver_news_title_"+str(enterprise_id)+"_"+str(val)
+                        client_hdfs.write(f'/user/root/newsTitleInput/{str(enterprise_id)}/{filename}.txt', data=titleText, overwrite=True, encoding="utf-8")
                         time.sleep(3)
 
                         cursor = conn_aws.cursor()
