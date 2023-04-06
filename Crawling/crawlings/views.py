@@ -218,7 +218,7 @@ def to_db():
 
     client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
 
-    for idx in range(300):
+    for idx in range(4):
         try:
             with client_hdfs.read(f"/user/root/newsTitleOutput/{idx}/part-r-00000", encoding="utf-8") as f:
                 result = f.readlines()
