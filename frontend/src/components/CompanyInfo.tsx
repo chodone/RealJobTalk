@@ -41,7 +41,7 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
   const [tab, setTab] = useState(businessInfo);
 
   const [wordCount, setwordCount] = useState(Array<Words>);
-
+  const fontSize = useCallback((word:Words) => Math.log2(word.value) * 6, []);
   const onClick = useCallback((item: string) => {
     setTab(item);
   }, []);
@@ -109,7 +109,7 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
               </div>
             </div>
             <div>
-              <WordCloud data={wordCount} fontSize={30} />
+              <WordCloud data={wordCount} fontSize={fontSize} />
             </div>
           </div>
         </div>
