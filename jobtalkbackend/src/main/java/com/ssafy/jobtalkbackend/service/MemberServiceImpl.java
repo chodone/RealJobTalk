@@ -217,7 +217,6 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    @Override
     public List<EnterpriseResponse> recommendEnterprise(User user) {
         if(user == null) {
             throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
@@ -225,8 +224,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = searchMember(user.getUsername());
 
         // member가 scrap한 뉴스들을 전부 본다. -> 가장 많은 기업을 하나 뽑는다.
-        Enterprise memberFavoriteEnter = enterpriseRepository.getMemberNewsLikeEnterprise(member.getId()).orElseThrow(
-            ()-> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NEED_SCRAP));
+        Enterprise memberFavoriteEnter = enterpriseRepository.getMemberNewsLikeEnterprise(member.getId()).orElse(null);
+        if (memberFavoriteEnter == null) {
+            List<EnterpriseResponse> result = new ArrayList<>();
+            for (int j = 0; j < 5; j++) {
+                Enterprise enterprise = enterpriseRepository.findById(Long.valueOf(j)).orElse(null);
+                result.add(EnterpriseResponse.builder().id(enterprise.getId()).name(enterprise.getName()).imgUrl(enterprise.getImgUrl()).build());
+            }
+            return result;
+        }
 
         String membersKeywordString = keywordListToString(memberFavoriteEnter.getId());
 
@@ -299,6 +305,7 @@ public class MemberServiceImpl implements MemberService {
                     .nickname(member.getNickname())
                     .scrapNewsCount(scrapNewsCount)
                     .scrapPassReviewCount(scrapPassReviewCount)
+                    .recommendEnterpriseResponses(recommendEnterprise(user))
                     .build();
         }
     }
