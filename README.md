@@ -1,5 +1,5 @@
 # 👨‍💼취준진담👩‍💼
-![취준진담](docs/images/JT_main.png)
+![취준진담](docs/images/JT_main.PNG)
 
 ## 프로젝트 소개
 ```
@@ -89,7 +89,7 @@ python manage.py runserver --noreload
 
 ## 멤버
 조승현 : Team Leader & Backend - API Server 개발   
+정민지 : Backend - Crawling Server 개발   
+홍예진 : DevOps - CI/CD 구축   
 이재훈 : Frontend 개발   
 조성욱 : Frontend 개발   
-정민지 : Backend - Crawling Server 개발   
-홍예진 : DevOps - CI/CD 구축
