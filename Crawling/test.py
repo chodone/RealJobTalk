@@ -24,6 +24,16 @@ conn_aws = mysql.connector.connect(
     auth_plugin='mysql_native_password'
 )
 
+def test():
+    cursor = conn_aws.cursor()
+    
+    selectSql = "SELECT title, enterprise_id FROM news WHERE news_id in (400, 401)"
+    cursor.execute(selectSql)
+    result = cursor.fetchall()
+    conn_aws.commit()
+
+    print(result)
+
 def naver_news_crawlling():
     print('naver_news_crawlling 시작합니당')
     
@@ -105,4 +115,5 @@ def naver_news_crawlling():
                 continue        
         enterprise_id += 1
 
-naver_news_crawlling()
+# naver_news_crawlling()
+test()

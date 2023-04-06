@@ -128,6 +128,30 @@ def naver_news_crawlling():
 
     conn_aws.close()
 
+def to_hdfs():
+    cursor = conn_aws.cursor()
+
+    selectSql = "SELECT title, enterprise_id FROM news"
+    cursor.execute(selectSql)
+    result = cursor.fetchall()
+    conn_aws.commit()
+
+    val = 0
+    enter_id = 0
+    for res in result:
+
+        title = res[0]
+
+        if enter_id < res[1]:
+            enter_id = res[1]
+            val = 0
+
+        filename = str(enter_id)+"_naver_news_title_"+str(val)
+        client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
+        client_hdfs.write(f'/user/root/newsTitleInput/{enter_id}/{filename}.txt', data=title, overwrite=True, encoding="utf-8") 
+
+        val += 1
+
 
 def to_db():
 
