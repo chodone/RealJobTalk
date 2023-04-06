@@ -80,7 +80,7 @@ docker가 설치되지 않은 환경에서 다음으로 프로젝트를 빌드�
 
 ## 프론트 엔드 빌드 방법
 ``` bash
-# 
+# 빌드
 npm i
 npm run build
 
