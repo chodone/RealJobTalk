@@ -76,27 +76,6 @@ pipeline
 				}
 			}
 		}
-		stage('build-Hdfs'){
-			when {
-				changeset "Hdfs/**/*"
-			}
-			steps {
-				echo 'Build Start Hdfs'
-				sh 'docker build -t hdfs-img Hdfs/. --no-cache'
-				echo 'Build End Hdfs'
-			}
-			post {
-				success {
-					echo 'Hdfs container stop Start'
-					sh '''
-					if (docker ps | grep "hdfs"); 
-					then docker stop hdfs;
-					fi
-					'''
-					echo 'Hdfs container stop Success';
-				}
-			}
-		}
 		stage('deploy-api') {
 			when {
 				anyOf {
@@ -129,16 +108,6 @@ pipeline
 				echo 'Deploy Start Crawling'
 				sh 'docker run -it -d --rm -p 8084:8084 --name crawling --link master1:master1 --link worker1:worker1 --link worker2:worker2 crawling-img'
 				echo 'Deploy End Crawling'
-			}
-		}
-		stage('deploy-hdfs'){
-			when {
-				changeset "Hdfs/**/*"
-			}
-			steps {
-				echo 'Deploy Start Hdfs'
-				sh 'docker run -it -d --rm -p 8086:8086 --name hdfs --link master1:master1 --link worker1:worker1 --link worker2:worker2 hdfs-img'
-				echo 'Deploy End Hdfs'
 			}
 		}
 	}
