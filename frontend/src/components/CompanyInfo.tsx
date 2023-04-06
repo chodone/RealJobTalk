@@ -41,7 +41,7 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
   const [tab, setTab] = useState(businessInfo);
 
   const [wordCount, setwordCount] = useState(Array<Words>);
-
+  const fontSize = useCallback((word:Words) => Math.log2(word.value) * 6, []);
   const onClick = useCallback((item: string) => {
     setTab(item);
   }, []);
@@ -75,6 +75,7 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
   }, []);
 
   console.log(wordCount[0])
+  
 
   return (
     <div className="grid grid-rows-7  mx-36">
@@ -97,7 +98,7 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
               </div>
             </div>
             <div>
-              <p>{companyInfo_.businessInformation}</p>
+              <p className=" text-base">{companyInfo_.businessInformation}</p>
             </div>
           </div>
 
@@ -108,7 +109,7 @@ const CompanyInfo = ({ company, enterpriseId }: { company: string; enterpriseId:
               </div>
             </div>
             <div>
-              <WordCloud data={wordCount} />
+              <WordCloud data={wordCount} fontSize={fontSize} />
             </div>
           </div>
         </div>
