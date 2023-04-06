@@ -28,7 +28,7 @@ const Company = ({ company }: { company: dbObject }) => {
       <div className=" m-4 border-2 rounded-lg justify-center  flex flex-col items-center transform transition duration-500 hover:scale-110"
         onClick={() => dispatch(numactions.RESET_NUM())}>
         <Image src={imgurl} alt="" width={238} height={87} style={{width :238,height:87}}/>
-        <div>{companyName}</div>
+        <div></div>
 
       </div>
     </Link>
