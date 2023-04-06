@@ -2,18 +2,19 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from .views import naver_news_crawlling
 from .views import naver_pass_review_crawlling
 from .views import to_db
-from .views import title_to_hdfs
+from .views import naver_pass_review_crawlling2
 
 
 def start():
     scheduler=BackgroundScheduler()
 
-    @scheduler.scheduled_job('cron', hour=5, minute=59, id = 'naver_pass_review_crawlling')
+    @scheduler.scheduled_job('cron', hour=6, minute=43, id = 'naver_pass_review_crawlling')
     def job1():
-        to_db()
-        # title_to_hdfs()
-        naver_news_crawlling()
         naver_pass_review_crawlling()
+        naver_news_crawlling()
+        to_db()
+        naver_pass_review_crawlling2
+        
         
         
     # @scheduler.scheduled_job('cron', hour=9, minute=9, id = 'naver_news_crawlling')
