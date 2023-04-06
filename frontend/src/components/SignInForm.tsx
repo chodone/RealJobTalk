@@ -31,7 +31,7 @@ const SignInForm = () => {
   
 
   const onSubmit = handleSubmit(({ email, password }) => {
-    fetch("http://localhost:8082/api/member/login", {
+    fetch("https://j8c205.p.ssafy.io/api/member/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
