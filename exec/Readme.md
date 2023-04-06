@@ -1,24 +1,15 @@
 # 포팅매뉴얼
-<span style='background-color: #fff5b1'> TODO : 하위 내용 작성 후 TODO 지우기</span>
 
-<span style='background-color: #fff5b1'> - 사용한 JVM, 웹 서버, WAS 제품 등의 종류와 설정값, 버전(IDE버전 포함) 기재</span>
-
-<span style='background-color: #fff5b1'> 빌드 시 사용되는 환경 변수 등의 주요 내용 상세 기재 (Done) </span>
-
-<span style='background-color: #fff5b1'> 배포 시 특이 사항 기재 (Done) </span> 
-
-<span style='background-color: #fff5b1'> DB 접속 정보 등 프로젝트(ERD)에 활용되는 주요 계정 및 프로퍼티가 정의된 파일 목록 </span>
 ## 🛫 기술 스택 및 배포 환경
 
 ### **Frontend**
 |개요|기술|버전|
 |------|---|---|
 |개발환경|node.js|18.12.1|
-|개발환경|react| - |
-|개발환경|nextjs| - |
-|개발환경|VScode|-|
+|개발환경|react|18.2.0|
+|개발환경|nextjs|13.2.4|
+|개발환경|VScode|1.74.2|
 
-<span style='background-color: #fff5b1'> TODO : front 담당자 기술 버전 작성 </span>
 
 <br>
 
@@ -71,10 +62,6 @@ docker가 설치되지 않은 환경에서 다음으로 프로젝트를 빌드�
 # 실행
 # java -jar build/libs/jobtalkbackend-0.0.1-SNAPSHOT.jar
 ```
-
-## Kakao Dev 설정
-
-<span style='background-color: #fff5b1'> TODO : backend 담당자 설정 방법 작성 </span>
 
 ## 프론트 엔드 빌드 방법
 ``` bash
