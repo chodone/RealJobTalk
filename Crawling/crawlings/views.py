@@ -128,6 +128,7 @@ def naver_news_crawlling():
     conn_aws.close()
 
 def to_hdfs():
+    print('to_hdfs 시작합니다.')
     client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
 
     cursor = conn_aws.cursor()
@@ -154,6 +155,7 @@ def to_hdfs():
 
 
 def to_db():
+    print('to_db 시작합니다.')
 
     client_hdfs = InsecureClient(getattr(settings, 'HDFS_IP', None), user="root")
 
