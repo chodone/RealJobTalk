@@ -1,2 +1,2 @@
 Jenkins pipeline test file for frontend
-v4
+v5
