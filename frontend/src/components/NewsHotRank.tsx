@@ -13,13 +13,13 @@ interface HOT {
 
 const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
 
-  const [Hotrank, setHotrank] = useState(Array<HOT>);
+  const [Hotrank, setHotrank] = useState<Array<HOT>>([]);
   const accessToken = localStorage.getItem('accessToken')
 
   useEffect(() => {
     if (accessToken) {
       api
-        .get(`/api/enterprise/${enterpriseId}/news`, {
+        .get(`/api/enterprise/${enterpriseId}/hot_news`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -61,9 +61,9 @@ const HotRank = ({enterpriseId} :{enterpriseId :number}) => {
             ISSUE
           </div>
           <div className="grow ml-5">
-            {Hotrank.map((item:HOT, idx:number) => (
-              <HotRankCard news={item}  key={idx}/>
-            ))}
+          {Hotrank.length > 0 && Hotrank.map((item: HOT, idx: number) => (
+            <HotRankCard news={item} key={idx} />
+          ))}
           </div>
         </div>
       </div>

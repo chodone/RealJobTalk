@@ -10,13 +10,10 @@ type Props = {
 
 export default async function CompanyPage({ params: { company,enterpriseId } }: Props) {
   
-  const companyName = decodeURI(company)
   const enterpriseId_ = enterpriseId
   
   return (
-    <h1>
       <CompanyNews enterpriseId={enterpriseId_}/>
-    </h1>
   )
   
 }

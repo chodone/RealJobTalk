@@ -33,7 +33,7 @@ const NewsList = ({
   news: Array<News>;
   curPage: number;
   enterpriseId: number;
-}) => {
+}): ReactElement  => {
   return (
     <div className="grid ml-4" style={{ height: 900 }}>
       {curPage === 0 ? <HotRank enterpriseId={enterpriseId} /> : ""}
