@@ -45,7 +45,7 @@ export default async function CompanyPage({ params :{company, enterpriseId} }: P
   
   
   return (
-    <div>
+    <div >
       <CompanyInfo company={companyName} enterpriseId={enterpriseId_} />
     </div>
   )

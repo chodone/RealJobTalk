@@ -61,7 +61,7 @@ export default function ScrapModal({
                         as="h2"
                         className="text-2xl font-bold leading-6 text-gray-900 pt-4 pb-4"
                       >
-                        {word}
+                        {logined? (word):('로그인시 사용할 수 있는 서비스 입니다')}
                       </Dialog.Title>
                     </div>
                   </div>
@@ -112,9 +112,10 @@ export default function ScrapModal({
                       onClick={(e) => {
                         e.preventDefault();
                         setOpen(false);
+                        navigate.push('/signin')
                       }}
                     >
-                      SINGIN
+                      SIGNIN
                     </button>
                   )}
                   <button

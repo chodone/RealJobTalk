@@ -19,10 +19,17 @@ module.exports = {
       // => @media (min-width: 1536px) { ... }
     },
     extend: {
+      keyframes: {
+        intro: {
+          from: { transform: "rotateY(0deg) scale(2.0)" },
+          to: { transform: "rotateY(360deg) scale(1.0)" },
+        },
+      },
       animation: {
-        wiggle: 'wiggle 1s ease-in-out infinite',
-      }
+        intro: "intro 2s ease-in-out",
+      },
+
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animated')],
 }

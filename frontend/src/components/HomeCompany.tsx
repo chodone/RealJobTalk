@@ -58,13 +58,16 @@ const HomeCompany = () => {
           <ParallaxLayer offset={1} speed={1} style={{ backgroundColor: "#fafafa" }} />
           <ParallaxLayer offset={0} speed={0.8} style={{ opacity: 0.5 }}>
           <Image src={hd} width={238} height={87} style={{ display: "block", width: "10%", marginLeft: "15%" }} alt="" />
-            <Image className="animate-bounce" src={samsung} width={238} height={87} style={{ display: "block", width: "15%", marginLeft: "75%" }} alt="" />
-            <Image src={lg} width={238} height={87} style={{ display: "block", width: "10%", marginLeft: "40%" }} alt="" />
-            <Image src={hana} width={238} height={87} style={{ display: "block", width: "7%", marginLeft: "60%" }} alt="" />
-            <Image src={hanhwa} width={238} height={87} style={{ display: "block", width: "13%", marginLeft: "5%" }} alt="" />
-            <Image src={sk} width={238} height={87} alt="" style={{ display: "block", width: "8%", marginLeft: "35%" }}/>
-            <Image src={kia} width={238} height={87} style={{ display: "block", width: "9%", marginLeft: "80%" }} alt="" />
-            <Image src={mobis} width={238} height={87} style={{ display: "block", width: "6%", marginLeft: "15%" }} alt=""/>
+            <div className="animate-fade-up">
+              <Image src={samsung} width={238} height={87} style={{ display: "block", width: "15%", marginLeft: "75%" }} alt="" />
+              <Image src={lg} width={238} height={87} style={{ display: "block", width: "10%", marginLeft: "40%" }} alt="" />
+              <Image src={hana} width={238} height={87} style={{ display: "block", width: "7%", marginLeft: "60%" }} alt="" />
+              <Image src={hanhwa} width={238} height={87} style={{ display: "block", width: "13%", marginLeft: "5%" }} alt="" />
+              <Image src={sk} width={238} height={87} alt="" style={{ display: "block", width: "8%", marginLeft: "35%" }}/>
+              <Image src={kia} width={238} height={87} style={{ display: "block", width: "9%", marginLeft: "80%" }} alt="" />
+              <Image src={mobis} width={238} height={87} style={{ display: "block", width: "6%", marginLeft: "15%" }} alt=""/>
+
+            </div>
 
           </ParallaxLayer>
 
@@ -76,7 +79,7 @@ const HomeCompany = () => {
             }}
           >
             {/* <img src={url('server')} style={{ width: '20%' }} /> */}
-            <section className="text-black body-font">
+            <section className=" animate-fade-up text-black body-font">
               <div className="container mx-auto mt-40 flex px-5 py-5 md:flex-row flex-col items-center">
                 <div className="lg:flex-grow flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
                   <h1 className="title-font tracking-wide sm:text3xl md:text-6xl xl:text-6xl mb-4 font-bold ">
