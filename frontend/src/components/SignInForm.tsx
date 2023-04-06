@@ -29,8 +29,6 @@ const SignInForm = () => {
   const router = useRouter()
   const { register, handleSubmit } = useForm<FormData>()
   
-  console.log(process.env.NEXT_PUBLIC_REST_API_KEY)
-  console.log(KAKAO_AUTH_URI)
 
   const onSubmit = handleSubmit(({ email, password }) => {
     fetch("https://j8c205.p.ssafy.io/api/member/login", {
@@ -50,7 +48,7 @@ const SignInForm = () => {
           localStorage.setItem('accessToken', data.accessToken)
           localStorage.setItem('refreshToken' , data.refreshToken)
           const data_ = jwtDecode(data.accessToken)
-          console.log(data_)
+
           dispatch(authActions.logIn({data:data_}))
 
           router.push("/");
