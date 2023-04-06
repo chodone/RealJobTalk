@@ -206,8 +206,6 @@ def naver_news_crawlling():
                             cursor.execute(sql, value)
 
                             conn_aws.commit()
-
-                            
             except:
                 continue        
         enterprise_id += 1
