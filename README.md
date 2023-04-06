@@ -71,6 +71,8 @@ npm run start
 ```
 
 ### Backend-crawling
+크롤링으로 수집된 데이터는 HDFS로 전송되어 분산 시스템의 Map-Reduce 단계를 거친뒤 DB에 저장됩니다. 따라서 crawling 서버는 데이터를 전송할 Hadoop Cluster 구축이 선행되어야합니다.
+자세한 방법은 [Hadoop Cluster 구축 문서](docs/Hadoop/분산_Docker로_Hadoop_클러스터_구축하기_-_Hadoop_3.2.3.pdf)를 참조하세요.
 ``` bash
 pip install -r requirements.txt
 apt-get update && apt-get -y install sudo 
@@ -88,8 +90,12 @@ python manage.py runserver --noreload
 
 
 ## 멤버
-조승현 : Team Leader & Backend - API Server 개발   
-정민지 : Backend - Crawling Server 개발   
-홍예진 : DevOps - CI/CD 구축   
-이재훈 : Frontend 개발   
-조성욱 : Frontend 개발   
+- 조승현 : Team Leader & Backend - API Server 개발   
+- 정민지 : Backend - Crawling Server 개발   
+- 홍예진 : DevOps - CI/CD 구축
+    - Jenkins pipeline 구축
+    - Dockerfile 작성
+    - Hadoop Cluster 구축
+    - 자연어 처리 모델 Komoran 적용
+- 이재훈 : Frontend 개발   
+- 조성욱 : Frontend 개발   
