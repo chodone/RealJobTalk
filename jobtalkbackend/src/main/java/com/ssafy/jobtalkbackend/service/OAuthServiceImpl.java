@@ -170,7 +170,6 @@ public class OAuthServiceImpl implements OAuthService {
         } catch (IOException e) {
             throw new AuthRuntimeException(AuthExceptionEnum.AUTH_KAKAO_ACCESSTOKEN_FAILED);
         }
-//        return null;
     }
 
     @Override
