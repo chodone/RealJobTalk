@@ -35,6 +35,5 @@ public interface MemberService {
 
     Boolean scrapPassReview(Long passReviewId, User user);
 
-    List<EnterpriseResponse> recommendEnterprise(User user);
 
 }

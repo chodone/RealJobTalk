@@ -1,5 +1,7 @@
 package com.ssafy.jobtalkbackend.dto.response;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,5 +16,7 @@ public class ScrapCountResponse {
     private Long scrapNewsCount;
 
     private Long scrapPassReviewCount;
+
+    private List<EnterpriseResponse> recommendEnterpriseResponses;
 
 }
