@@ -52,6 +52,12 @@ public class EnterpriseController {
         return ResponseEntity.ok().body(enterpriseService.getPassReview(enterpriseId, pageable, user));
     }
 
+    @GetMapping("/{enterpriseId}/hot_pass_review")
+    public ResponseEntity<List<HotPassReviewResponse>> getHotPassReview(@PathVariable Long enterpriseId,
+                                                                        @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(enterpriseService.getHotPassReview(enterpriseId, user));
+    }
+
     @GetMapping("/{enterpriseId}/keyword")
     public ResponseEntity<?> getKeyword(@PathVariable Long enterpriseId) {
         return ResponseEntity.ok().body(enterpriseService.getKeyword(enterpriseId));

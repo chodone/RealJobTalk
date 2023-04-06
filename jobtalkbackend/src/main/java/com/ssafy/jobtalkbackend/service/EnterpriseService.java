@@ -14,6 +14,8 @@ public interface EnterpriseService {
 
     List<HotNewsResponse> getHotNews(Long enterpriseId, User user);
 
+    List<HotPassReviewResponse> getHotPassReview(Long enterpriseId, User user);
+
     PassReviewTotalResponse getPassReview(Long enterpriseId, Pageable pageable, User user);
 
     List<EnterpriseResponse> getEnterprises();

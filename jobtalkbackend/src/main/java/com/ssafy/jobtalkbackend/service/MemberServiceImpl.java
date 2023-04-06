@@ -208,9 +208,11 @@ public class MemberServiceImpl implements MemberService {
                     .passReview(passReview)
                     .build();
             passReviewLikeRepository.save(passReviewLike);
+            passReview.addScrapCount();
             return true;
         } else {
             passReviewLikeRepository.deleteById(passReviewLike.getId());
+            passReview.minusScrapCount();
             return false;
         }
     }
