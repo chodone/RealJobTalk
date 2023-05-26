@@ -28,6 +28,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     private final NewsLikeRepository newsLikeRepository;
     private final PassReviewLikeRepository passReviewLikeRepository;
     private final MemberRepository memberRepository;
+    private final KeywordRepository keywordRepository;
 
 
     @Override
@@ -49,8 +50,11 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
         List<NewsResponse> resultNewsList = new ArrayList<>();
 
+        Enterprise enterprise = enterpriseRepository.findById(enterpriseId).orElse(null);
+
+        long totalSize = newsRepository.countAllByEnterprise(enterprise);
         List<News> newsList = newsRepository.findAllByEnterpriseId(enterpriseId, pageable);
-        int totalPages = (int) Math.ceil((double) newsRepository.count() / pageable.getPageSize());
+        int totalPages = (int) Math.ceil((double) totalSize / pageable.getPageSize());
 
         Member member = null;
         if (user != null) {
@@ -79,6 +83,79 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
+    public List<HotNewsResponse> getHotNews(Long enterpriseId, User user) {
+        List<News> newsList = newsRepository.findTop3ByEnterpriseIdOrderByHotRankDesc(enterpriseId);
+        List<HotNewsResponse> hotNewsResponseList = new ArrayList<>();
+
+        Member member = null;
+        if (user != null) {
+            member = memberRepository.findByEmail(user.getUsername()).orElse(null);
+        }
+        if (member != null) {
+            for (News news : newsList) {
+                boolean isScrap = false;
+                NewsLike newsLike = newsLikeRepository.findByNewsAndMember(news, member).orElse(null);
+                if (newsLike != null) {
+                    isScrap = true;
+                }
+               hotNewsResponseList.add(hotNewsBuilder(news, isScrap));
+            }
+        } else {
+            for (News news : newsList) {
+                hotNewsResponseList.add(hotNewsBuilder(news, false));
+            }
+        }
+        return hotNewsResponseList;
+    }
+
+    @Override
+    public List<HotPassReviewResponse> getHotPassReview(Long enterpriseId, User user) {
+        List<PassReview> passReviewList = passReviewRepository.findTop3ByEnterpriseIdOrderByHotRankDesc(enterpriseId);
+        List<HotPassReviewResponse> hotPassReviewResponseList = new ArrayList<>();
+        Member member = null;
+        if (user != null) {
+            member = memberRepository.findByEmail(user.getUsername()).orElse(null);
+        }
+        if (member != null) {
+            for (PassReview passReview : passReviewList) {
+                boolean isScrap = false;
+                PassReviewLike passReviewLike = passReviewLikeRepository.findByPassReviewAndMember(passReview, member).orElse(null);
+                if (passReviewLike != null) {
+                    isScrap = true;
+                }
+                hotPassReviewResponseList.add(hotPassReviewBuilder(passReview, isScrap));
+            }
+        } else {
+            for (PassReview passReview : passReviewList) {
+                hotPassReviewResponseList.add(hotPassReviewBuilder(passReview, false));
+            }
+        }
+        return hotPassReviewResponseList;
+    }
+
+    public HotNewsResponse hotNewsBuilder(News news, boolean isScrap) {
+        return HotNewsResponse
+                .builder()
+                .id(news.getId())
+                .title(news.getTitle())
+                .url(news.getUrl())
+                .count(news.getHotRank())
+                .isScrap(isScrap)
+                .build();
+    }
+
+    public HotPassReviewResponse hotPassReviewBuilder(PassReview passReview, boolean isScrap) {
+        return HotPassReviewResponse
+                .builder()
+                .id(passReview.getId())
+                .title(passReview.getTitle())
+                .url(passReview.getUrl())
+                .count(passReview.getHotRank())
+                .isScrap(isScrap)
+                .build();
+    }
+
+    @Override
     public NewsResponse buildNewsResponse(News news, boolean isScrap) {
         return NewsResponse
                 .builder()
@@ -99,7 +176,11 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
         List<PassReview> passReviewList = passReviewRepository.findAllByEnterpriseId(enterpriseId, pageable);
 
-        int totalPages = (int) Math.ceil((double) passReviewRepository.count() / pageable.getPageSize());
+        Enterprise enterprise = enterpriseRepository.findById(enterpriseId).orElse(null);
+
+        long totalSize = passReviewRepository.countAllByEnterprise(enterprise);
+
+        int totalPages = (int) Math.ceil((double) totalSize / pageable.getPageSize());
 
         Member member = null;
 
@@ -151,10 +232,23 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 .name(enterprise.getName())
                 .imgUrl(enterprise.getImgUrl())
                 .recruitpageUrl(enterprise.getRecruitpageUrl())
+                .homepageUrl(enterprise.getHomepageUrl())
                 .blogUrl(enterprise.getBlogUrl())
                 .youtubeUrl(enterprise.getYoutubeUrl())
                 .businessInformation(enterprise.getBusinessInformation())
                 .idealTalent(enterprise.getIdealTalent())
                 .build();
     }
+
+    @Override
+    public List<KeywordResponse> getKeyword(Long enterpriseId) {
+        List<Keyword> keywordList = keywordRepository.findTop100ByEnterpriseIdOrderByCountDesc(enterpriseId);
+        return keywordList.stream().map(keyword -> {
+            return KeywordResponse.builder()
+                .text(keyword.getName())
+                .value(keyword.getCount())
+                .build();
+        }).collect(Collectors.toList());
+    }
+
 }

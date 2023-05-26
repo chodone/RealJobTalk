@@ -22,7 +22,6 @@ type Props = {
 
 const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
-  const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   const MainLogo = logo;
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -43,7 +42,7 @@ const Navbar = () => {
 
 
   const getAuth = useAppSelector((state) => state.auth);
-  console.log(getAuth);
+  const nickname = getAuth.nickname;
   const logined = getAuth.isLogined;
 
   return (
@@ -83,9 +82,17 @@ const Navbar = () => {
                 className="py-5 px-3"
                 onClick={() => {
                   dispatch(authActions.logOut());
+                  router.push('/')
                 }}
               >
                 로그아웃
+              </button>
+              <button
+                type="button"
+                className="py-5 px-3"
+                onClick={() => router.push(`mypage/${nickname}`)}
+              >
+                마이페이지
               </button>
             </div>
           )}

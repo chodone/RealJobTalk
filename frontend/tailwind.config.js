@@ -18,7 +18,18 @@ module.exports = {
       '2xl': '1536px',
       // => @media (min-width: 1536px) { ... }
     },
-    extend: {},
+    extend: {
+      keyframes: {
+        intro: {
+          from: { transform: "rotateY(0deg) scale(2.0)" },
+          to: { transform: "rotateY(360deg) scale(1.0)" },
+        },
+      },
+      animation: {
+        intro: "intro 2s ease-in-out",
+      },
+
+    },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animated')],
 }

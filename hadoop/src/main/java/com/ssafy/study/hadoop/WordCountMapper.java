@@ -32,11 +32,6 @@ public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritabl
                 context.write(word, one);
             }
         }
-
-        StringTokenizer itr = new StringTokenizer(value.toString());
-        while (itr.hasMoreTokens()) {
-            word.set(itr.nextToken());
-            context.write(word, one);
-        }
+        
     }
 }

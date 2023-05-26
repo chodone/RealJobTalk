@@ -1,4 +1,4 @@
-
+import SearchForm from '@/components/SearchForm'
 
 type Props = {
   params: {
@@ -6,14 +6,14 @@ type Props = {
   }
 }
 
-export default async function CompanyPage({ params :{search} }: Props) {
+export default function CompanyPage({ params :{search} }: Props) {
   
 
   
   return (
-    <h1>
-      {search}
-    </h1>
+    <div className=' animate-fade'>
+      <SearchForm/>
+    </div>
   )
   
 }

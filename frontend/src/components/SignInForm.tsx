@@ -23,13 +23,15 @@ interface FormData {
 
 const SignInForm = () => {
   const dispatch = useAppDispatch();
+  const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code`;
   const MainLogo = logo;
   const kakao = kakaoButton;
   const router = useRouter()
   const { register, handleSubmit } = useForm<FormData>()
   
+
   const onSubmit = handleSubmit(({ email, password }) => {
-    fetch("http://localhost:8082/api/member/login", {
+    fetch("https://j8c205.p.ssafy.io/api/member/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -46,7 +48,7 @@ const SignInForm = () => {
           localStorage.setItem('accessToken', data.accessToken)
           localStorage.setItem('refreshToken' , data.refreshToken)
           const data_ = jwtDecode(data.accessToken)
-          console.log(data_)
+
           dispatch(authActions.logIn({data:data_}))
 
           router.push("/");
@@ -61,7 +63,7 @@ const SignInForm = () => {
   })
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div className="animate-fade-up min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         <div className="absolute inset-0 bg-gradient-to-r from-green-300 to-green-400 shadow-lg transhtmlForm -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
@@ -118,7 +120,9 @@ const SignInForm = () => {
                   <button className="bg-green-500 h-14 w-full text-white rounded-md px-2 py-1">Submit</button>
                 </div>
               </form>
-              <Image className="" src={kakao} alt="" />
+              <a href={KAKAO_AUTH_URI}>
+                <Image className="" src={kakao} alt="" />
+              </a>
             </div>
           </div>
         </div>

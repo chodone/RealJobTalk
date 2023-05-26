@@ -20,5 +20,4 @@ public class NewsResponse {
 
     private Boolean isScrap;
 
-
 }
