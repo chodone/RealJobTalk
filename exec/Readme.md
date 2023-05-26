@@ -14,9 +14,9 @@
 |개요|기술|버전|
 |------|---|---|
 |개발환경|node.js|18.12.1|
-|개발환경|react| - |
-|개발환경|nextjs| - |
-|개발환경|VScode|-|
+|개발환경|react| 18.2.0 |
+|개발환경|nextjs| 13.2.4 |
+|개발환경|VScode| 1.74.3 |
 
 <span style='background-color: #fff5b1'> TODO : front 담당자 기술 버전 작성 </span>
 

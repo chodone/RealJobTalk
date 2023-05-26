@@ -98,4 +98,6 @@ python manage.py runserver --noreload
     - Hadoop Cluster 구축
     - 자연어 처리 모델 Komoran 적용
 - 이재훈 : Frontend 개발   
-- 조성욱 : Frontend 개발   
+- 조성욱 : Frontend 개발 
+    - 프론트엔드 패키지 설계
+    - 프론트엔드 UI/UX 설계  

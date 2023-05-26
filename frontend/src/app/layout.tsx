@@ -18,8 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header>
             <Navbar />
           </header>
-
-          {children}
+          <div className=" mx-auto">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
