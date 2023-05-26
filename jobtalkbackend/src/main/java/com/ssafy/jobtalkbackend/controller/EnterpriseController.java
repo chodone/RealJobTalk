@@ -34,16 +34,35 @@ public class EnterpriseController {
 
     @GetMapping("/{enterpriseId}/news")
     public ResponseEntity<NewsTotalResponse> getNews(@PathVariable Long enterpriseId,
-                                                     @PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                     @PageableDefault(size=5, sort="id", direction = Sort.Direction.ASC) Pageable pageable,
                                                      @AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(enterpriseService.getNews(enterpriseId, pageable, user));
     }
 
+    @GetMapping("/{enterpriseId}/hot_news")
+    public ResponseEntity<List<HotNewsResponse>> getHotNews(@PathVariable Long enterpriseId,
+                                                   @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(enterpriseService.getHotNews(enterpriseId, user));
+    }
+
     @GetMapping("/{enterpriseId}/pass_review")
     public ResponseEntity<PassReviewTotalResponse> getPassReview(@PathVariable Long enterpriseId,
-                                                                  @PageableDefault(size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                  @PageableDefault(size=5, sort="id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                   @AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(enterpriseService.getPassReview(enterpriseId, pageable, user));
     }
 
+    @GetMapping("/{enterpriseId}/hot_pass_review")
+    public ResponseEntity<List<HotPassReviewResponse>> getHotPassReview(@PathVariable Long enterpriseId,
+                                                                        @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(enterpriseService.getHotPassReview(enterpriseId, user));
+    }
+
+    @GetMapping("/{enterpriseId}/keyword")
+    public ResponseEntity<?> getKeyword(@PathVariable Long enterpriseId) {
+        return ResponseEntity.ok().body(enterpriseService.getKeyword(enterpriseId));
+    }
+
+
 }
+

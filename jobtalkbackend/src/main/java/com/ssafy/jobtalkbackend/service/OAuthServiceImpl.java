@@ -170,13 +170,12 @@ public class OAuthServiceImpl implements OAuthService {
         } catch (IOException e) {
             throw new AuthRuntimeException(AuthExceptionEnum.AUTH_KAKAO_ACCESSTOKEN_FAILED);
         }
-//        return null;
     }
 
     @Override
     @Transactional
     public ResponseEntity<TokenResponse> joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse) {
-        Member joinMember = memberRepository.findByOauthId(kakaoUserInfoResponse.getId()).orElse(null);
+        Member joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail()).orElse(null);
         if (joinMember == null) {
             Member member = Member
                     .builder()
@@ -195,15 +194,16 @@ public class OAuthServiceImpl implements OAuthService {
 
             return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
         } else {
-            LoginRequest loginRequest = LoginRequest
-                    .builder()
-                    .email(joinMember.getEmail())
-                    .password(JOBTALK_KEY)
-                    .build();
-
-            return memberService.login(loginRequest, true);
+            if (joinMember.getOauthId() == null) {
+                throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_NEED_NOT_OAUTH);
+            } else{
+                LoginRequest loginRequest = LoginRequest
+                        .builder()
+                        .email(joinMember.getEmail())
+                        .password(JOBTALK_KEY)
+                        .build();
+                return memberService.login(loginRequest, true);
+            }
         }
-
-
     }
 }

@@ -25,7 +25,7 @@ function EmailInput({ register, errors, name }:{ register:UseFormRegister<FormDa
   const callApi = debounce(async (value) => {
     console.log(value)
     const email = value
-    await fetch("http://localhost:8082/api/member/email/check", {
+    await fetch("https://j8c205.p.ssafy.io/api/member/email/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -135,7 +135,7 @@ function NicknameInput({ register, errors, name }:{ register:UseFormRegister<For
   const callApi = debounce(async (value) => {
     console.log(value)
     const nickname = value
-    await fetch("http://localhost:8082/api/member/nickname/check", {
+    await fetch("https://j8c205.p.ssafy.io/api/member/nickname/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -254,7 +254,7 @@ const SignUphtmlForm = () => {
     
   
   const onSubmit = handleSubmit(({ email, nickname, password }) => {
-    fetch("http://localhost:8082/api/member/signup", {
+    fetch("https://j8c205.p.ssafy.io/api/member/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -280,7 +280,7 @@ const SignUphtmlForm = () => {
   })
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div className=" animate-fade-up min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         <div className="absolute inset-0 bg-gradient-to-r from-green-300 to-green-400 shadow-lg transhtmlForm -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">

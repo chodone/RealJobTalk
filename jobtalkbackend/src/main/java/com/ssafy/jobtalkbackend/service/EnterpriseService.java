@@ -12,6 +12,10 @@ public interface EnterpriseService {
 
     NewsTotalResponse getNews(Long enterpriseId, Pageable pageable, User user);
 
+    List<HotNewsResponse> getHotNews(Long enterpriseId, User user);
+
+    List<HotPassReviewResponse> getHotPassReview(Long enterpriseId, User user);
+
     PassReviewTotalResponse getPassReview(Long enterpriseId, Pageable pageable, User user);
 
     List<EnterpriseResponse> getEnterprises();
@@ -21,4 +25,7 @@ public interface EnterpriseService {
     PassReviewResponse buildPassReviewResponse(PassReview passReview, boolean isScrap);
 
     EnterpriseDetailResponse getEnterpriseDetail(Long enterpriseId);
+
+    List<KeywordResponse> getKeyword(Long enterpriseId);
+
 }

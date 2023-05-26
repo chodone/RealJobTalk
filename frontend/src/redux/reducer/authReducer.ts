@@ -35,8 +35,8 @@ const authReducer = createSlice({
       state.isLogined = false
       state.email = ''
       state.nickname = ''
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+      localStorage.setItem('accessToken','')
+      localStorage.setItem('refreshToken','')
       // api 요청 필요
     },
     
@@ -50,7 +50,6 @@ const authReducer = createSlice({
       try {
         // 나중에 만료시간 관련 처리도 해야한다
         const data_ = jwtDecode(localStorage.getItem('accessToken') ?? '') as DecodedToken;
-        console.log(data_);
         state.isLogined = true;
         state.email = data_.sub;
         state.nickname = data_.jti;

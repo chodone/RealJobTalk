@@ -1,14 +1,21 @@
-'use client';
+"use client";
 
 import React, { ReactElement, useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
 import api from "@/redux/api";
+import ReviewHotRank from "./ReviewHotRank";
+
+
+
 
 interface Review {
-  id: number,
-  title: string,
-  url: string,
-  dateOfIssue: string
+  id: number;
+  title: string;
+  url: string;
+  hotRank: number;
+  content: string;
+  dateOfIssue: string;
+  isScrap:boolean
 }
 
 // interface Reviews {
@@ -17,103 +24,160 @@ interface Review {
 // }
 
 interface Data {
-  totalpage: number,
-  review: Array<Review>
+  totalPages: number;
+  passReviewResponseList: Array<Review>;
 }
 
 
-const ReviewList = ({reviews}:{reviews:Array<Review>}) => {
 
+const ReviewList = ({
+  reviews,
+  curPage,
+  enterpriseId,
+}: {
+  reviews: Array<Review>;
+  curPage: number;
+  enterpriseId: number;
+}): ReactElement => {
   return (
-    <div className="grid grid-cols-2 gap-4 ml-4">
-      {reviews.map((review:Review)=> {
-        // console.debug(post.id);
-        return (
-          <ReviewCard
-            key={review.id}
-            review ={review}
-          />
-        );
+    <div className="grid ml-4" style={{ height: 900 }}>
+      {curPage === 0 ? <ReviewHotRank enterpriseId={enterpriseId} /> : ""}
+      {reviews.map((review: Review) => {
+        return <ReviewCard key={review.id} review={review} />;
       })}
     </div>
-  )
+  );
 };
 
-const Reviews = () => {
+const Reviews = ({ enterpriseId }: { enterpriseId: number }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState(Array<Review>);
   const [page, setPage] = useState(0);
-  const size = 10;
-
-  const pageCurSelect = "z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700   ";
-  const pageNonSelect = "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ";
+  const[accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'))
+  const size = 4;
 
 
+  const pageCurSelect =
+    "z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700   ";
+  const pageNonSelect =
+    "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ";
 
   useEffect(() => {
-    api
-      .get(`post/enterprise/{:enterprise_id}/pass_review?page=${page}&size=${size}`)
-      .then(({ data }:{data:Data}) => {
-        setTotalPages(data.totalpage);
-        setResults([...data.review]);
-      })
-      .catch((error) => {
-        console.debug(error);
-      });
+    if (accessToken) {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then(({ data }: { data: Data }) => {
+          setTotalPages(data.totalPages);
+          setResults([...data.passReviewResponseList]);
+          console.log(data);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });  
+    }
+    else {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${page}&size=${size}`)
+        .then(({ data }: { data: Data }) => {
+          setTotalPages(data.totalPages);
+          setResults([...data.passReviewResponseList]);
+          console.log(data)
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+    }
+  }, []);
 
-  }, [])
 
-  const changePage = (num:number) => {
-    api
-      .get(`post/enterprise/{:enterprise_id}/pass_review?page=${num}&size=${size}`)
-      .then(({ data }:{data:Data}) => {
+
+  const changePage = (num: number) => {
+    if (accessToken) {
+      api
+        .get(`api/enterprise/${enterpriseId}/pass_review?page=${num}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then(({ data }: { data: Data }) => {
+          setPage(num);
+          setResults([...data.passReviewResponseList]);
+        })
+        .catch((error) => {
+          console.debug(error);
+        });
+      
+    } else {
+      api
+      .get(`api/enterprise/${enterpriseId}/pass_review?page=${num}&size=${size}`)
+      .then(({ data }: { data: Data }) => {
         setPage(num);
-        setResults([...data.review]);
+        setResults([...data.passReviewResponseList]);
       })
       .catch((error) => {
         console.debug(error);
       });
-  }
+    }
 
-  const getPreviousData = (num:number) => {
-    if (num == -1) alert({ message: "첫 페이지입니다." });
-    else changePage(num);
-  }
 
-  const getNextData = (num:number) => {
-    if (num == totalPages) alert({ message: "마지막 페이지입니다." });
+  };
+
+  const getPreviousData = (num: number) => {
+    if (num == -1) alert("첫 페이지입니다.");
     else changePage(num);
-  }
+  };
+
+  const getNextData = (num: number) => {
+    if (num == totalPages) alert("마지막 페이지입니다.");
+    else changePage(num);
+  };
   const getPreviousTenData = () => {
     if (page - 10 < 0) changePage(0);
     else changePage(page - 10);
-  }
+  };
 
   const getNextTenData = () => {
     if (page + 10 > totalPages - 1) changePage(totalPages - 1);
     else changePage(page + 10);
-  }
+  };
 
-  const Pagination = ({ curPage, totalPage }:{curPage:number, totalPage:number}): JSX.Element => {
-    let start = Math.floor(((curPage % 10) == 9 ? curPage : (curPage + 1)) / 10) * 10;
-    let tenend = Math.ceil(((curPage % 10) == 9 ? curPage : (curPage + 1)) / 10) * 10;
+  const Pagination = ({
+    curPage,
+    totalPage,
+  }: {
+    curPage: number;
+    totalPage: number;
+  }): JSX.Element => {
+    let start = Math.floor((curPage % 10 == 9 ? curPage : curPage + 1) / 10) * 10;
+    let tenend = Math.ceil((curPage % 10 == 9 ? curPage : curPage + 1) / 10) * 10;
     let end = tenend > totalPage ? totalPage : tenend;
     let result = [];
     for (let i = start; i < end; i++) {
       result.push(
         <li key={i}>
-          <div onClick={() => { changePage(i) }} className={curPage == i ? pageCurSelect : pageNonSelect}>{i + 1}</div>
+          <div
+            onClick={() => {
+              changePage(i);
+            }}
+            className={curPage == i ? pageCurSelect : pageNonSelect}
+          >
+            {i + 1}
+          </div>
         </li>
-      )
+      );
     }
     return <>{result}</>;
-  }
-
+  };
 
   return (
-    <>
-      <nav className="grid grid justify-center pb-3">
-        <ul className="inline-flex items-center -space-x-px">
+    <div className="animate-fade-up">
+      <ReviewList reviews={results} curPage={page} enterpriseId={enterpriseId} />
+      <nav className="grid grid justify-center mb-3">
+        <ul className="inline-flex items-center -space-x-px cursor-pointer ...">
           <li>
             <div
               onClick={() => {
@@ -211,10 +275,9 @@ const Reviews = () => {
           </li>
         </ul>
       </nav>
-      <ReviewList reviews={results} />
-    </>
+      
+    </div>
   );
-
-}
+};
 
 export default Reviews;

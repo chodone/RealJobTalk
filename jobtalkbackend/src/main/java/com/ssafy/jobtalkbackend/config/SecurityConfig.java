@@ -70,7 +70,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins( "http://localhost:3000")
+                        .allowedOrigins( "http://localhost:3000", "https://j8c205.p.ssafy.io")
                         .allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
