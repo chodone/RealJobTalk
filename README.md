@@ -1,5 +1,5 @@
 # 👨‍💼취준진담👩‍💼
-![취준진담](docs/images/JT_main.PNG)
+![JT_main](https://github.com/chodone/RealJobTalk/assets/89058129/8b0b0bcc-61ce-421f-87f9-2ac023d0352d)
 
 ## 프로젝트 소개
 ```
@@ -20,22 +20,24 @@
 
 ## 서비스 Overview
 ### 메인페이지
-![취준진담](docs/images/JT_overview1.PNG)
-![취준진담](docs/images/JT_overview2.PNG)
+![JT_overview1](https://github.com/chodone/RealJobTalk/assets/89058129/c99c46f1-6924-4039-9103-2d788093762c)
+![JT_overview2](https://github.com/chodone/RealJobTalk/assets/89058129/131b9c90-01d7-4cc9-a117-9d803ab28b6e)
+
 ### 기업 정보 조회
-![취준진담](docs/images/JT_overview3.PNG)
+![JT_overview3](https://github.com/chodone/RealJobTalk/assets/89058129/27bc34a7-0d5b-459f-a6f4-fb09e24ecd1a)
 ### 기업 뉴스 조회
-![취준진담](docs/images/JT_overview4.PNG)
+![JT_overview4](https://github.com/chodone/RealJobTalk/assets/89058129/7d984aac-5df2-4069-af77-9ddcef61386f)
 ### 기업별 합격 후기
-![취준진담](docs/images/JT_overview6.PNG)
+![JT_overview6](https://github.com/chodone/RealJobTalk/assets/89058129/46eb77a9-8882-43dd-aac1-958f32dc1123)
 ### 로그인 
-![취준진담](docs/images/JT_overview7.PNG)
+![JT_overview7](https://github.com/chodone/RealJobTalk/assets/89058129/f1f815c6-1724-4d40-b702-a4fc9ee6c4a5)
 ### 회원가입
-![취준진담](docs/images/JT_overview8.PNG)
+![JT_overview8](https://github.com/chodone/RealJobTalk/assets/89058129/4cc243f6-87c3-4b88-86b5-1ffce5b151ec)
 ### 마이페이지 - 스크랩 모아보기
-![취준진담](docs/images/JT_overview10.PNG)
+![JT_overview10](https://github.com/chodone/RealJobTalk/assets/89058129/61829c73-d5f1-40ce-b770-370d282a8c7b)
 ### 마이페이지 - 추천 기업 조회
-![취준진담](docs/images/JT_overview11.PNG)
+![JT_overview11](https://github.com/chodone/RealJobTalk/assets/89058129/596b5a39-e3f1-4eee-a85f-be411a8f4795)
+
 
 ## 기대효과 & 고도화 방안
 - 취업 정보 수집에 대한 시간을 단축시켜 구직활동의 허들을 낮출 수 있다.
@@ -43,11 +45,11 @@
 - 커뮤니티 기능을 통한 정보 유동성 증대
 
 ## 기술 스택
-![취준진담](docs/images/JT_system_architecture.jpg)
+![JT_system_architecture](https://github.com/chodone/RealJobTalk/assets/89058129/8055e2d6-e924-41f9-851a-013c772bf45f)
 
 
 ## ERD
-![취준진담](docs/images/취준진담_ERD_v2.PNG)
+![취준진담_ERD_v2](https://github.com/chodone/RealJobTalk/assets/89058129/47491c8c-6059-42a3-ae04-ef12c426859b)
 
 ## 실행
 자세한 배포 방법에 대한 내용은 [포팅매뉴얼](/exec/Readme.md) 참고
